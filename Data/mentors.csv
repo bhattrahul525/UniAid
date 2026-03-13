@@ -1,0 +1,801 @@
+mentor_id,first_name,last_name,mentor_type,university,field_of_study,degree_level,years_in_country,visa_experience,housing_experience,cultural_adaptation_experience,career_guidance_experience,languages_spoken,availability_hours_per_week,sessions_completed,response_time_hours,graduation_year,mentor_rating
+1,Sumaiya,Kim,student,Monash University,Data Science,Bachelor,14,0,0,0,0,"English,French",15,105,46,NULL,4.6
+2,Ji-won,Sato,student,UNSW,Mechanical Engineering,Master,8,0,1,0,0,"English,Japnese",12,184,6,NULL,4.0
+3,Tanvir,Suzuki,student,University of Western Australia,Mechanical Engineering,Master,10,0,0,0,1,"English,Indonesian",6,172,21,NULL,4.6
+4,Nusrat,Ahmed,student,University of Adelaide,Artificial Intelligence,PhD,15,0,1,0,1,"English,Japnese",16,99,24,NULL,4.2
+5,Chloé,Sharma,student,UNSW,Business Analytics,Master,8,1,0,1,1,English,1,160,47,NULL,3.7
+6,Sofia,Chen,student,University of Queensland,Psychology,Master,5,1,1,0,1,"English,Hindi",10,90,9,NULL,4.1
+7,Hamza,Chaudhary,student,Australian National University,Computer Science,Master,14,0,0,1,0,"English,Mandarin",18,26,24,NULL,3.9
+8,Mathis,Das,student,University of Adelaide,Artificial Intelligence,PhD,6,1,0,1,0,"English,Hindi",14,87,43,NULL,4.9
+9,Sofia,Suzuki,student,University of Sydney,Finance,Bachelor,9,0,1,0,1,"English,Japnese",9,119,39,NULL,4.1
+10,Mathis,Nguyen,student,University of Queensland,Artificial Intelligence,Bachelor,11,0,1,0,1,"English,French",7,105,17,NULL,5.0
+11,Omar,Siddiqui,student,University of Sydney,Mechanical Engineering,Bachelor,5,0,1,1,1,"English,Mandarin",17,200,44,NULL,4.2
+12,Lucas,Wei,student,University of Sydney,Artificial Intelligence,Bachelor,14,0,1,1,0,"English,Indonesian",12,90,43,NULL,3.9
+13,Suresh,Olsen,student,University of Melbourne,Mechanical Engineering,Bachelor,11,0,0,1,0,"English,Indonesian",19,137,2,NULL,4.9
+14,Arjun,Wong,student,University of Adelaide,Artificial Intelligence,Bachelor,11,0,1,0,0,"English,French",13,143,41,NULL,4.6
+15,Ivan,Iyer,student,UNSW,Business Analytics,PhD,6,1,1,1,1,"English,Hindi",2,92,3,NULL,4.8
+16,Nusrat,Siddiqui,student,Monash University,Data Science,PhD,3,1,0,1,1,"English,Indonesian",4,163,19,NULL,4.6
+17,Suresh,Al-Farsi,student,University of Melbourne,Finance,Master,1,0,1,1,1,"English,Japnese",1,43,42,NULL,4.4
+18,Tanvir,Mansoor,student,University of Western Australia,Mechanical Engineering,PhD,3,1,1,1,1,"English,French",19,118,12,NULL,3.8
+19,Zane,Hernandez,student,University of Queensland,Data Science,PhD,7,0,1,0,1,"English,Japnese",15,57,41,NULL,3.6
+20,Sumaiya,Khan,student,University of Western Australia,Psychology,PhD,9,1,1,0,1,"English,Mandarin",14,164,31,NULL,3.6
+21,Hans,Kim,student,University of Western Australia,Business Analytics,Bachelor,7,0,0,1,1,"English,French",5,61,8,NULL,4.8
+22,Suresh,Bakare,student,Monash University,Mechanical Engineering,Bachelor,5,0,1,0,0,"English,Mandarin",9,155,3,NULL,4.5
+23,Mateo,Müller,student,University of Sydney,Finance,Bachelor,11,0,0,1,0,"English,Spanish",15,86,24,NULL,4.4
+24,Julien,Hernandez,student,Monash University,Computer Science,PhD,1,0,1,0,1,"English,Hindi",20,123,37,NULL,4.1
+25,Sarvesh,Garcia,student,University of Western Australia,Artificial Intelligence,Bachelor,5,0,0,1,1,"English,French",19,154,16,NULL,4.4
+26,Jueqing,Silva,student,Monash University,Computer Science,PhD,13,0,1,1,1,"English,French",14,104,45,NULL,4.8
+27,Sumaiya,Iqbal,student,University of Western Australia,Artificial Intelligence,Master,11,0,0,0,0,"English,Mandarin",20,19,9,NULL,4.0
+28,Mei,Chaudhary,student,University of Adelaide,Artificial Intelligence,Master,9,0,0,0,0,"English,French",10,196,35,NULL,5.0
+29,Aisha,Haddad,student,Monash University,Data Science,PhD,15,0,0,0,1,"English,Spanish",12,113,16,NULL,3.6
+30,Zane,Al-Farsi,student,Australian National University,Business Analytics,Bachelor,4,1,1,0,0,"English,Hindi",10,62,29,NULL,3.9
+31,Clara,Nguyen,student,Australian National University,Computer Science,Bachelor,14,1,0,1,0,"English,Spanish",19,199,19,NULL,4.9
+32,Zane,Mansoor,student,University of Adelaide,Data Science,PhD,10,1,1,0,0,"English,Indonesian",2,134,5,NULL,4.8
+33,Omar,Smirnov,student,Monash University,Finance,Bachelor,6,0,0,0,1,"English,Japnese",5,142,35,NULL,5.0
+34,Diego,Ahmed,student,University of Sydney,Artificial Intelligence,Bachelor,1,0,1,1,1,"English,Mandarin",1,102,16,NULL,3.9
+35,Hiroshi,Garcia,student,UNSW,Data Science,Master,7,0,0,1,0,"English,Mandarin",7,145,40,NULL,4.1
+36,Ivan,Garcia,student,University of Adelaide,Data Science,PhD,15,1,1,1,1,"English,Spanish",1,126,1,NULL,4.5
+37,Elena,Dubois,student,University of Adelaide,Business Analytics,Master,15,1,0,0,0,"English,Spanish",18,82,14,NULL,4.6
+38,Rohan,Chatterjee,student,University of Western Australia,Business Analytics,Bachelor,14,0,0,0,1,"English,Spanish",9,181,4,NULL,4.3
+39,Fatima,Chen,student,UNSW,Finance,PhD,8,1,0,1,0,"English,Mandarin",12,147,19,NULL,4.0
+40,Lucas,Müller,student,University of Adelaide,Psychology,Bachelor,4,1,1,1,1,"English,Spanish",13,98,42,NULL,3.7
+41,Trang,Ahmed,student,University of Melbourne,Data Science,PhD,3,0,1,1,0,"English,Spanish",12,135,12,NULL,4.5
+42,Clara,Patil,student,University of Queensland,Data Science,Master,12,0,1,0,0,"English,Japnese",9,131,41,NULL,4.6
+43,Priya,Silva,student,University of Queensland,Psychology,PhD,6,0,0,1,1,English,15,39,33,NULL,4.8
+44,Sumaiya,Müller,student,Australian National University,Mechanical Engineering,PhD,9,0,1,0,0,"English,Spanish",9,144,31,NULL,4.4
+45,Zaid,Hossain,student,University of Sydney,Finance,Master,4,1,0,0,0,"English,French",16,120,40,NULL,4.6
+46,Trang,Chen,student,UNSW,Mechanical Engineering,PhD,7,1,0,1,1,"English,Japnese",12,66,13,NULL,4.1
+47,Ji-won,Sato,student,University of Adelaide,Business Analytics,Master,6,0,1,1,1,"English,Mandarin",3,60,8,NULL,4.6
+48,Ishaan,Al-Farsi,student,Monash University,Artificial Intelligence,Master,13,1,1,0,0,"English,Hindi",18,25,15,NULL,4.8
+49,Sofia,Hernandez,student,Australian National University,Finance,Bachelor,1,1,1,0,0,"English,Mandarin",7,88,16,NULL,4.8
+50,Sana,Siddiqui,student,Australian National University,Mechanical Engineering,PhD,15,1,1,0,1,"English,French",9,134,8,NULL,4.5
+51,Arjun,Tanaka,student,University of Melbourne,Mechanical Engineering,Bachelor,12,0,0,0,0,"English,Japnese",9,131,33,NULL,3.6
+52,Saanvi,Garcia,student,University of Western Australia,Data Science,Master,4,1,1,0,0,English,16,8,12,NULL,4.5
+53,Hans,Sato,student,Monash University,Business Analytics,PhD,6,1,1,0,0,"English,French",7,124,38,NULL,3.9
+54,Yuki,Das,student,University of Western Australia,Business Analytics,PhD,15,0,1,0,1,"English,Spanish",9,29,33,NULL,4.6
+55,Zoya,Smirnov,student,University of Sydney,Mechanical Engineering,Bachelor,11,0,1,1,1,English,15,126,22,NULL,3.5
+56,Trang,Chaudhary,student,Australian National University,Finance,PhD,7,0,1,0,1,"English,Hindi",19,164,42,NULL,3.9
+57,Tanvir,Wong,student,UNSW,Business Analytics,Bachelor,2,1,1,1,0,"English,Hindi",4,102,37,NULL,3.6
+58,Fatima,Sharma,student,Monash University,Psychology,PhD,1,0,0,1,0,"English,Hindi",9,34,29,NULL,4.6
+59,Amira,Sato,student,Monash University,Mechanical Engineering,Master,11,1,1,1,0,"English,Indonesian",11,163,28,NULL,4.7
+60,Abrar,Hernandez,student,University of Western Australia,Computer Science,PhD,4,1,0,0,1,"English,Hindi",16,161,20,NULL,3.8
+61,Sumaiya,Hernandez,student,Australian National University,Artificial Intelligence,Master,2,0,0,1,1,"English,Mandarin",15,6,18,NULL,3.7
+62,Bilal,Rahman,student,UNSW,Finance,Master,8,0,0,1,0,"English,Japnese",1,143,23,NULL,4.7
+63,Lucas,Dubois,student,Australian National University,Mechanical Engineering,Bachelor,13,0,1,1,0,"English,Japnese",20,73,39,NULL,4.1
+64,Zane,Hernandez,student,Monash University,Mechanical Engineering,Master,12,0,0,1,1,"English,Spanish",7,72,17,NULL,4.5
+65,Li,Ahmed,student,Monash University,Business Analytics,Master,5,1,1,0,1,"English,Indonesian",12,170,20,NULL,4.2
+66,Clara,Haddad,student,University of Western Australia,Artificial Intelligence,Master,14,0,1,0,1,"English,Hindi",7,200,19,NULL,4.6
+67,Julien,Smirnov,student,University of Queensland,Data Science,Master,15,1,0,1,1,"English,Hindi",13,58,30,NULL,4.6
+68,Rohan,Bakare,student,Monash University,Mechanical Engineering,PhD,12,1,0,1,1,"English,Indonesian",17,102,46,NULL,4.8
+69,Fatima,Dubois,student,Australian National University,Finance,PhD,2,0,1,1,0,"English,French",8,1,30,NULL,3.9
+70,Hans,Siddiqui,student,University of Sydney,Business Analytics,Bachelor,5,1,1,1,0,"English,Indonesian",16,43,48,NULL,5.0
+71,Hiroshi,Sharma,student,University of Melbourne,Business Analytics,PhD,2,0,1,1,0,"English,Hindi",20,130,45,NULL,4.5
+72,Yuki,Khan,student,University of Western Australia,Finance,Master,12,1,1,0,0,"English,Spanish",4,170,28,NULL,3.8
+73,Fatima,Sharma,student,UNSW,Mechanical Engineering,Master,13,1,1,1,0,English,14,61,1,NULL,4.2
+74,Sumaiya,Chaudhary,student,University of Western Australia,Mechanical Engineering,Master,4,1,1,0,0,"English,Hindi",15,131,47,NULL,4.3
+75,Amira,Malik,student,University of Sydney,Finance,Master,8,1,1,1,0,"English,Spanish",18,157,30,NULL,5.0
+76,Clara,Khan,student,University of Melbourne,Finance,Bachelor,6,0,1,1,1,"English,Mandarin",19,41,33,NULL,3.9
+77,Aisha,Tanaka,student,University of Melbourne,Psychology,Bachelor,5,1,1,0,0,"English,Mandarin",10,143,36,NULL,4.0
+78,Mei,Malik,student,University of Western Australia,Business Analytics,Bachelor,4,1,0,1,0,"English,Hindi",17,75,17,NULL,4.1
+79,Jueqing,Suzuki,student,University of Melbourne,Computer Science,Master,4,0,1,0,0,"English,Indonesian",1,191,6,NULL,4.2
+80,Hans,Rossi,student,University of Adelaide,Mechanical Engineering,Bachelor,12,0,1,1,1,"English,Spanish",5,39,8,NULL,4.7
+81,Mathis,Bakare,student,University of Sydney,Psychology,PhD,8,1,0,1,1,"English,Japnese",9,171,24,NULL,4.4
+82,Ivan,Park,student,University of Melbourne,Finance,Master,13,1,0,0,1,"English,Japnese",14,139,43,NULL,4.0
+83,Rohan,Garcia,student,University of Melbourne,Finance,Bachelor,11,0,1,1,0,English,4,29,44,NULL,4.8
+84,Yuki,Chaudhary,student,University of Sydney,Business Analytics,PhD,5,0,1,1,0,"English,Indonesian",7,165,45,NULL,4.7
+85,Yuki,Garcia,student,University of Sydney,Mechanical Engineering,PhD,13,1,1,0,1,English,5,58,2,NULL,4.4
+86,Ivan,Wei,student,University of Queensland,Business Analytics,Bachelor,11,1,1,0,1,"English,French",6,19,7,NULL,3.7
+87,Lucas,Nguyen,student,Monash University,Business Analytics,Bachelor,11,0,1,0,1,"English,French",12,176,6,NULL,4.1
+88,Tanvir,Tanaka,student,University of Adelaide,Finance,PhD,10,0,1,0,1,English,11,118,42,NULL,4.4
+89,Ivan,Suzuki,student,University of Adelaide,Artificial Intelligence,PhD,8,0,1,1,1,"English,Mandarin",15,198,40,NULL,3.7
+90,Ananya,Rossi,student,University of Adelaide,Finance,Bachelor,10,1,1,1,0,"English,Japnese",18,11,7,NULL,3.9
+91,Ji-won,Sharma,student,University of Queensland,Business Analytics,Bachelor,11,0,0,1,1,"English,Spanish",6,52,20,NULL,4.8
+92,Ji-won,Sharma,student,University of Sydney,Finance,PhD,3,0,0,0,1,"English,Japnese",17,92,2,NULL,4.7
+93,Ji-won,Sato,student,Australian National University,Mechanical Engineering,PhD,1,0,0,0,0,English,14,29,17,NULL,4.3
+94,Sofia,Dubois,student,University of Melbourne,Data Science,Bachelor,5,0,1,1,0,"English,Hindi",16,139,39,NULL,4.2
+95,Hamza,Gomez,student,Australian National University,Computer Science,PhD,9,0,0,0,0,"English,French",13,146,27,NULL,4.9
+96,Priya,Rossi,student,University of Melbourne,Mechanical Engineering,PhD,10,1,0,0,0,"English,Mandarin",19,92,29,NULL,4.0
+97,Kavya,Bakare,student,University of Adelaide,Psychology,PhD,3,1,1,0,1,"English,Indonesian",13,171,2,NULL,4.8
+98,Léa,Tanaka,student,University of Western Australia,Artificial Intelligence,Master,10,0,0,0,1,"English,French",9,7,27,NULL,4.9
+99,Hans,Rossi,student,Australian National University,Data Science,Bachelor,6,0,1,0,1,English,17,159,22,NULL,3.6
+100,Ananya,Chatterjee,student,University of Melbourne,Data Science,Bachelor,10,0,1,1,0,"English,French",11,31,9,NULL,3.8
+101,Sofia,Kim,student,Australian National University,Mechanical Engineering,Bachelor,9,1,0,1,0,"English,Spanish",1,90,10,NULL,4.3
+102,Hamza,Mansoor,student,University of Queensland,Data Science,Bachelor,6,1,0,0,0,"English,Mandarin",14,157,43,NULL,4.9
+103,Sofia,Tanaka,student,University of Melbourne,Artificial Intelligence,Bachelor,1,0,0,1,0,"English,Indonesian",7,70,4,NULL,4.1
+104,Mei,Bakare,student,University of Western Australia,Psychology,PhD,7,0,0,1,1,"English,Mandarin",8,175,30,NULL,3.7
+105,Tanvir,Rossi,student,University of Western Australia,Psychology,Master,14,1,1,1,1,"English,Spanish",14,80,41,NULL,3.7
+106,Amara,Chen,student,Australian National University,Psychology,PhD,12,1,1,1,0,"English,Japnese",11,20,11,NULL,4.3
+107,Kavya,Bakare,student,University of Queensland,Business Analytics,Master,12,1,1,1,0,"English,Japnese",12,66,23,NULL,4.7
+108,Ishaan,Haddad,student,Monash University,Artificial Intelligence,Bachelor,1,0,1,0,1,"English,Hindi",17,130,40,NULL,4.5
+109,Yuki,Lefebvre,student,University of Western Australia,Artificial Intelligence,Bachelor,8,1,1,1,1,"English,Mandarin",20,117,34,NULL,4.7
+110,Sana,Sato,student,University of Melbourne,Computer Science,Master,14,1,1,0,0,"English,Mandarin",18,24,25,NULL,4.3
+111,Ishaan,Khan,student,University of Adelaide,Business Analytics,Bachelor,7,0,1,1,1,"English,Japnese",4,78,21,NULL,4.5
+112,Abrar,Chaudhary,student,University of Queensland,Computer Science,Master,3,1,0,0,1,"English,Mandarin",19,6,11,NULL,4.2
+113,Amara,Al-Farsi,student,Australian National University,Data Science,PhD,4,1,0,0,0,"English,Japnese",14,101,7,NULL,5.0
+114,Zaid,Sato,student,University of Melbourne,Finance,Bachelor,12,1,0,1,1,"English,French",16,173,24,NULL,3.7
+115,Sana,Bakare,student,University of Sydney,Finance,PhD,7,0,0,0,0,"English,Japnese",10,89,16,NULL,4.7
+116,Li,Ahmed,student,University of Melbourne,Business Analytics,Master,6,1,1,0,0,English,3,106,7,NULL,4.9
+117,Mei,Hernandez,student,University of Queensland,Business Analytics,Bachelor,6,0,1,1,1,"English,Japnese",17,33,20,NULL,3.8
+118,Ishaan,Gomez,student,University of Western Australia,Computer Science,PhD,9,1,1,1,0,"English,Mandarin",16,104,28,NULL,4.1
+119,Nusrat,Patil,student,Australian National University,Computer Science,PhD,15,0,0,0,1,"English,Hindi",18,83,45,NULL,4.9
+120,Chloé,Al-Farsi,student,Australian National University,Mechanical Engineering,Bachelor,10,1,0,0,1,"English,Mandarin",19,123,46,NULL,4.2
+121,Hiroshi,Iqbal,student,Australian National University,Mechanical Engineering,Bachelor,15,1,0,1,1,"English,French",2,37,43,NULL,4.8
+122,Omar,Patil,student,Australian National University,Computer Science,Bachelor,13,1,1,0,0,English,2,51,14,NULL,3.9
+123,Amira,Kim,student,Australian National University,Computer Science,Master,13,0,1,0,1,"English,Spanish",7,155,35,NULL,4.1
+124,Chloé,Das,student,Australian National University,Psychology,Bachelor,6,1,1,1,0,"English,French",9,150,46,NULL,4.6
+125,Ananya,Kim,student,University of Adelaide,Computer Science,Master,8,1,0,0,1,"English,Hindi",3,6,25,NULL,4.4
+126,Priya,Sato,student,University of Adelaide,Computer Science,PhD,2,1,1,0,1,English,15,156,23,NULL,4.1
+127,Mei,Chen,student,UNSW,Psychology,Master,10,1,0,0,1,"English,Indonesian",15,171,11,NULL,3.6
+128,Suresh,Silva,student,Australian National University,Data Science,Bachelor,14,1,1,0,0,"English,Indonesian",14,199,36,NULL,4.3
+129,Hans,Rossi,student,University of Adelaide,Mechanical Engineering,PhD,12,0,0,0,1,"English,Mandarin",7,29,3,NULL,5.0
+130,Chloé,Olsen,student,Monash University,Data Science,PhD,14,0,1,0,0,"English,Spanish",14,113,45,NULL,4.3
+131,Trang,Chaudhary,student,University of Western Australia,Business Analytics,Bachelor,6,1,1,1,0,English,19,101,32,NULL,3.6
+132,Hiroshi,Chatterjee,student,University of Western Australia,Business Analytics,Bachelor,6,0,1,1,1,"English,Mandarin",18,84,36,NULL,3.8
+133,Diego,Iyer,student,University of Sydney,Computer Science,Master,8,1,0,1,0,"English,Mandarin",5,170,45,NULL,3.7
+134,Mathis,Kumar,student,University of Sydney,Finance,Master,1,1,1,0,0,"English,Hindi",5,30,7,NULL,3.7
+135,Elena,Sato,student,University of Western Australia,Business Analytics,Master,4,0,0,0,0,English,5,65,22,NULL,4.3
+136,Ishaan,Siddiqui,student,University of Queensland,Artificial Intelligence,Bachelor,13,0,1,0,0,"English,Hindi",3,20,2,NULL,3.7
+137,Jueqing,Lefebvre,student,University of Adelaide,Business Analytics,PhD,6,1,1,0,0,"English,Japnese",3,121,3,NULL,4.4
+138,Sumaiya,Garcia,student,University of Queensland,Finance,Master,12,1,0,1,0,"English,Japnese",17,102,1,NULL,4.0
+139,Aisha,Sharma,student,University of Western Australia,Data Science,PhD,6,0,0,1,1,"English,Japnese",19,61,16,NULL,3.6
+140,Aisha,Haddad,student,University of Adelaide,Business Analytics,Master,14,0,1,1,0,"English,Indonesian",13,185,27,NULL,4.2
+141,Mateo,Iyer,student,Monash University,Business Analytics,PhD,13,0,0,0,1,"English,Mandarin",17,173,34,NULL,4.0
+142,Elena,Moreau,student,UNSW,Computer Science,Master,10,1,0,1,0,"English,Spanish",8,10,33,NULL,4.8
+143,Tanvir,Chen,student,University of Western Australia,Finance,Master,13,0,0,1,0,"English,Indonesian",13,144,8,NULL,4.5
+144,Mateo,Wong,student,University of Queensland,Psychology,Bachelor,15,0,0,1,0,"English,Hindi",4,185,7,NULL,4.6
+145,Ivan,Garcia,student,UNSW,Finance,PhD,5,1,0,0,0,"English,Japnese",16,129,3,NULL,3.8
+146,Nusrat,Silva,student,University of Western Australia,Artificial Intelligence,Master,11,0,0,0,1,"English,Hindi",8,1,32,NULL,3.7
+147,Chloé,Nguyen,student,University of Sydney,Computer Science,Bachelor,4,1,1,1,1,"English,Indonesian",14,148,3,NULL,3.6
+148,Trang,Kim,student,Australian National University,Mechanical Engineering,PhD,6,1,1,1,1,"English,Spanish",8,152,16,NULL,4.5
+149,Hamza,Mansoor,student,University of Western Australia,Psychology,Master,14,1,0,1,1,English,15,117,13,NULL,4.8
+150,Aisha,Rossi,student,University of Melbourne,Psychology,Bachelor,1,1,0,0,1,"English,Spanish",1,24,25,NULL,4.3
+151,Sarvesh,Garcia,student,UNSW,Computer Science,Bachelor,13,1,0,1,0,"English,Indonesian",19,128,14,NULL,4.8
+152,Arjun,Malik,student,University of Melbourne,Computer Science,PhD,4,0,0,0,1,"English,Hindi",20,66,11,NULL,3.9
+153,Diego,Chaudhary,student,University of Queensland,Business Analytics,PhD,8,1,0,0,0,"English,Spanish",9,119,9,NULL,4.8
+154,Zoya,Wei,student,University of Melbourne,Data Science,Master,5,0,1,0,1,"English,French",18,140,26,NULL,3.8
+155,Suresh,Dubois,student,University of Queensland,Business Analytics,Bachelor,5,0,1,1,1,"English,French",8,179,45,NULL,4.0
+156,Omar,Patil,student,Australian National University,Business Analytics,PhD,10,1,0,0,0,English,2,138,12,NULL,3.9
+157,Priya,Sato,student,University of Melbourne,Psychology,Master,7,0,1,0,1,"English,Indonesian",11,187,6,NULL,4.0
+158,Amara,Kumar,student,University of Melbourne,Mechanical Engineering,PhD,5,0,1,0,0,"English,Hindi",19,7,33,NULL,4.7
+159,Kenji,Hossain,student,University of Melbourne,Business Analytics,Master,6,0,0,0,1,"English,Hindi",1,21,33,NULL,3.9
+160,Sumaiya,Park,student,University of Sydney,Business Analytics,Master,15,1,1,1,0,English,14,177,33,NULL,3.5
+161,Nina,Rossi,student,University of Sydney,Data Science,Bachelor,5,1,1,1,0,"English,Hindi",17,6,28,NULL,4.3
+162,Aisha,Lefebvre,student,University of Western Australia,Business Analytics,Master,3,0,1,0,1,"English,Hindi",19,89,39,NULL,4.8
+163,Zoya,Wong,student,University of Western Australia,Psychology,PhD,6,0,0,1,1,English,10,38,16,NULL,4.9
+164,Saanvi,Smirnov,student,Australian National University,Mechanical Engineering,PhD,11,1,0,0,1,"English,Japnese",4,46,26,NULL,4.2
+165,Saanvi,Rahman,student,Australian National University,Artificial Intelligence,PhD,15,0,0,1,0,"English,Japnese",20,9,32,NULL,4.8
+166,Ivan,Lefebvre,student,University of Adelaide,Business Analytics,Bachelor,15,1,0,1,0,"English,Spanish",20,41,42,NULL,3.6
+167,Mei,Iqbal,student,Australian National University,Psychology,Master,8,1,1,0,0,English,8,21,8,NULL,4.8
+168,Rohan,Wong,student,University of Sydney,Artificial Intelligence,PhD,14,1,0,0,1,"English,French",12,189,21,NULL,4.9
+169,Ji-won,Moreau,student,UNSW,Business Analytics,Master,10,0,0,1,0,"English,Hindi",6,110,22,NULL,4.7
+170,Li,Garcia,student,University of Western Australia,Psychology,Master,3,1,1,0,1,"English,Mandarin",1,27,6,NULL,3.5
+171,Abrar,Tanaka,student,University of Western Australia,Finance,PhD,3,1,0,1,1,"English,Hindi",19,195,46,NULL,3.8
+172,Sofia,Patil,student,Monash University,Artificial Intelligence,Master,4,0,1,1,0,"English,French",14,45,16,NULL,4.7
+173,Hiroshi,Moreau,student,University of Adelaide,Mechanical Engineering,Master,12,0,0,0,1,"English,Mandarin",9,121,23,NULL,4.3
+174,Kavya,Bakare,student,University of Adelaide,Computer Science,PhD,10,0,1,0,0,English,4,11,12,NULL,4.6
+175,Suresh,Kumar,student,Monash University,Mechanical Engineering,Master,5,0,0,0,0,"English,Japnese",7,46,28,NULL,3.5
+176,Nina,Haddad,student,Australian National University,Computer Science,PhD,10,1,1,1,0,"English,Indonesian",19,97,42,NULL,4.7
+177,Elena,Khan,student,UNSW,Business Analytics,Bachelor,4,0,0,1,0,English,15,97,16,NULL,3.6
+178,Sarvesh,Chatterjee,student,University of Adelaide,Artificial Intelligence,Master,13,1,0,1,0,"English,Japnese",12,33,5,NULL,3.6
+179,Zoya,Moreau,student,Australian National University,Business Analytics,PhD,13,0,0,0,0,"English,Hindi",18,116,44,NULL,3.5
+180,Ishaan,Wei,student,UNSW,Psychology,Bachelor,12,1,0,1,1,"English,Mandarin",10,142,13,NULL,4.4
+181,Abrar,Dubois,student,University of Queensland,Finance,Master,8,1,0,0,0,"English,Indonesian",9,137,15,NULL,4.1
+182,Hans,Wei,student,Monash University,Data Science,PhD,4,1,0,0,0,"English,Indonesian",13,118,25,NULL,4.2
+183,Ananya,Dubois,student,UNSW,Psychology,PhD,9,1,1,1,1,"English,Mandarin",10,6,39,NULL,4.0
+184,Rohan,Garcia,student,Monash University,Artificial Intelligence,Bachelor,11,0,1,0,1,"English,Mandarin",14,183,35,NULL,4.6
+185,Nina,Chatterjee,student,University of Melbourne,Data Science,Bachelor,10,1,0,1,1,"English,Mandarin",17,138,34,NULL,4.6
+186,Ishaan,Wong,student,University of Queensland,Computer Science,PhD,12,1,0,0,1,"English,Japnese",12,167,10,NULL,4.0
+187,Amira,Tanaka,student,University of Queensland,Data Science,Master,8,0,1,1,1,"English,Spanish",2,109,21,NULL,3.6
+188,Zaid,Iyer,student,Monash University,Data Science,Bachelor,9,1,1,1,1,"English,French",20,125,42,NULL,3.7
+189,Kavya,Moreau,student,University of Queensland,Finance,Master,13,0,1,1,1,English,2,53,42,NULL,3.9
+190,Ananya,Iqbal,student,UNSW,Computer Science,Master,7,1,0,0,1,"English,Spanish",12,149,15,NULL,4.4
+191,Zoya,Siddiqui,student,Monash University,Business Analytics,Bachelor,11,1,0,0,1,"English,Spanish",1,34,42,NULL,3.5
+192,Hans,Tanaka,student,UNSW,Computer Science,PhD,8,1,1,1,0,"English,Spanish",16,88,48,NULL,4.5
+193,Elena,Hossain,student,University of Adelaide,Finance,Master,9,1,1,1,0,"English,French",3,164,21,NULL,5.0
+194,Ji-won,Chatterjee,student,University of Sydney,Computer Science,PhD,5,1,0,1,1,English,16,117,47,NULL,4.1
+195,Ji-won,Patil,student,University of Queensland,Computer Science,Bachelor,5,0,0,0,0,"English,Mandarin",20,168,2,NULL,4.9
+196,Saanvi,Ahmed,student,University of Western Australia,Psychology,Bachelor,6,1,0,1,1,"English,Japnese",4,134,40,NULL,4.2
+197,Julien,Kim,student,University of Adelaide,Computer Science,Bachelor,10,0,1,1,0,"English,Spanish",13,34,10,NULL,4.9
+198,Abrar,Iyer,student,University of Melbourne,Artificial Intelligence,Bachelor,7,0,0,0,0,"English,Indonesian",17,64,31,NULL,5.0
+199,Lucas,Smirnov,student,University of Melbourne,Psychology,Bachelor,15,1,0,0,0,"English,French",17,165,33,NULL,4.9
+200,Mathis,Chen,student,University of Western Australia,Mechanical Engineering,Bachelor,2,0,1,0,0,"English,Japnese",13,22,3,NULL,4.7
+201,Sana,Dubois,student,University of Western Australia,Psychology,Bachelor,6,1,1,1,0,"English,French",4,135,7,NULL,3.6
+202,Zane,Iyer,student,Monash University,Mechanical Engineering,Bachelor,3,1,0,0,0,"English,Indonesian",14,200,16,NULL,4.9
+203,Saanvi,Moreau,student,University of Sydney,Artificial Intelligence,Master,1,0,1,0,0,"English,Hindi",7,197,1,NULL,4.5
+204,Sofia,Moreau,student,UNSW,Business Analytics,Master,2,0,0,0,1,"English,Japnese",19,142,43,NULL,4.8
+205,Hamza,Olsen,student,UNSW,Psychology,PhD,6,1,1,0,1,"English,Indonesian",13,44,19,NULL,4.9
+206,Julien,Haddad,student,University of Queensland,Finance,PhD,14,0,1,0,1,"English,Mandarin",19,138,9,NULL,3.8
+207,Amara,Sharma,student,University of Melbourne,Data Science,Bachelor,4,0,0,1,0,"English,French",20,57,23,NULL,3.8
+208,Chloé,Wei,student,Monash University,Artificial Intelligence,Bachelor,6,0,1,1,0,"English,Hindi",12,162,15,NULL,4.3
+209,Kavya,Malik,student,Monash University,Artificial Intelligence,PhD,13,1,1,0,1,"English,French",11,176,36,NULL,3.7
+210,Amira,Malik,student,University of Adelaide,Psychology,Master,8,0,1,0,0,"English,Japnese",15,44,18,NULL,4.9
+211,Zane,Chen,student,University of Melbourne,Psychology,PhD,13,1,0,0,1,"English,French",10,96,41,NULL,4.6
+212,Rohan,Park,student,UNSW,Computer Science,PhD,12,0,0,0,0,"English,Spanish",14,4,11,NULL,4.8
+213,Mei,Malik,student,University of Melbourne,Artificial Intelligence,PhD,6,1,0,1,0,"English,Spanish",17,184,12,NULL,4.0
+214,Trang,Moreau,student,University of Queensland,Finance,Master,13,0,1,1,1,"English,Japnese",19,162,5,NULL,3.7
+215,Mei,Kim,student,University of Western Australia,Finance,Master,2,0,0,1,0,"English,Japnese",8,162,15,NULL,3.6
+216,Ji-won,Bakare,student,University of Queensland,Computer Science,PhD,13,0,1,0,1,"English,Spanish",13,110,27,NULL,3.6
+217,Tanvir,Tanaka,student,University of Queensland,Business Analytics,Bachelor,13,1,1,0,1,"English,Indonesian",11,161,18,NULL,4.5
+218,Priya,Hossain,student,Australian National University,Artificial Intelligence,Bachelor,1,0,1,1,1,"English,Spanish",3,44,34,NULL,3.6
+219,Suresh,Chaudhary,student,University of Queensland,Artificial Intelligence,Bachelor,9,0,1,0,1,"English,Mandarin",6,135,26,NULL,3.8
+220,Nina,Smirnov,student,University of Western Australia,Psychology,Master,10,0,1,1,1,"English,Indonesian",1,21,47,NULL,3.6
+221,Jueqing,Gomez,student,UNSW,Mechanical Engineering,Master,11,0,1,1,0,"English,Spanish",14,200,26,NULL,3.6
+222,Clara,Hossain,student,University of Western Australia,Artificial Intelligence,Bachelor,9,1,0,0,1,"English,Mandarin",5,135,48,NULL,4.8
+223,Ishaan,Siddiqui,student,University of Western Australia,Psychology,PhD,12,0,1,0,0,"English,Spanish",3,155,17,NULL,4.7
+224,Mateo,Malik,student,Monash University,Artificial Intelligence,Bachelor,13,0,0,0,1,"English,Japnese",14,155,4,NULL,4.5
+225,Zane,Olsen,student,University of Sydney,Psychology,Bachelor,5,1,1,0,0,"English,Spanish",4,160,2,NULL,4.2
+226,Yuki,Malik,student,University of Adelaide,Finance,Master,8,1,0,0,1,"English,Spanish",8,73,45,NULL,3.7
+227,Zaid,Suzuki,student,University of Queensland,Finance,Bachelor,1,0,1,1,1,"English,Mandarin",12,118,29,NULL,4.1
+228,Arjun,Nguyen,student,UNSW,Finance,Master,7,0,1,0,0,"English,Hindi",8,12,18,NULL,3.8
+229,Zoya,Park,student,UNSW,Psychology,Master,4,0,0,0,1,"English,Japnese",12,147,46,NULL,5.0
+230,Ivan,Nguyen,student,UNSW,Artificial Intelligence,Master,9,1,0,1,1,"English,Indonesian",18,118,43,NULL,4.9
+231,Hamza,Chaudhary,student,University of Sydney,Computer Science,Bachelor,13,1,0,0,1,"English,Japnese",12,1,20,NULL,4.6
+232,Yuki,Rossi,student,UNSW,Mechanical Engineering,Master,15,0,0,0,1,"English,Mandarin",11,57,29,NULL,4.8
+233,Zane,Park,student,University of Melbourne,Business Analytics,Master,10,1,0,0,0,"English,Japnese",5,155,36,NULL,4.2
+234,Sumaiya,Tanaka,student,University of Melbourne,Finance,Master,15,1,0,0,0,"English,French",16,193,22,NULL,3.5
+235,Elena,Siddiqui,student,Monash University,Psychology,PhD,7,1,1,1,1,"English,Spanish",5,46,26,NULL,4.4
+236,Diego,Wei,student,Australian National University,Finance,PhD,10,0,0,0,0,"English,French",20,89,43,NULL,4.2
+237,Sumaiya,Kumar,student,University of Melbourne,Mechanical Engineering,PhD,9,1,0,1,0,"English,Japnese",7,169,33,NULL,4.9
+238,Zane,Moreau,student,University of Melbourne,Finance,Bachelor,5,1,0,0,0,English,1,59,42,NULL,4.1
+239,Amara,Nguyen,student,Monash University,Mechanical Engineering,Bachelor,8,1,1,0,0,"English,Spanish",2,40,24,NULL,4.6
+240,Omar,Khan,student,University of Melbourne,Psychology,Bachelor,5,1,1,1,0,"English,French",2,70,45,NULL,4.3
+241,Kenji,Silva,student,Australian National University,Computer Science,PhD,8,1,1,0,1,English,7,69,32,NULL,4.0
+242,Bilal,Dubois,student,University of Western Australia,Business Analytics,Bachelor,6,1,0,1,0,"English,Hindi",17,166,10,NULL,4.7
+243,Mei,Smirnov,student,University of Queensland,Artificial Intelligence,Master,2,1,0,1,1,"English,Indonesian",3,173,44,NULL,4.2
+244,Mei,Haddad,student,Australian National University,Business Analytics,Bachelor,12,1,0,0,0,"English,French",11,137,39,NULL,4.0
+245,Omar,Rahman,student,University of Sydney,Computer Science,PhD,3,1,1,1,1,"English,Hindi",7,15,6,NULL,4.4
+246,Arjun,Nguyen,student,University of Queensland,Business Analytics,PhD,5,0,1,1,0,"English,Hindi",16,4,36,NULL,3.5
+247,Mateo,Patil,student,University of Melbourne,Artificial Intelligence,Bachelor,1,1,1,1,1,"English,Indonesian",12,57,42,NULL,4.4
+248,Hiroshi,Müller,student,University of Melbourne,Psychology,PhD,4,0,0,1,0,"English,Hindi",18,46,11,NULL,4.8
+249,Sumaiya,Bakare,student,University of Melbourne,Data Science,Bachelor,7,1,1,0,0,"English,Hindi",6,15,32,NULL,4.1
+250,Abrar,Tanaka,student,University of Adelaide,Data Science,Master,10,0,1,0,0,"English,French",9,186,34,NULL,4.4
+251,Ji-won,Mansoor,student,Australian National University,Data Science,Master,5,1,0,1,0,"English,Hindi",16,157,25,NULL,3.9
+252,Yuki,Mansoor,student,University of Adelaide,Mechanical Engineering,Master,14,0,0,1,1,"English,Spanish",4,15,31,NULL,4.9
+253,Abrar,Kumar,student,UNSW,Business Analytics,Bachelor,9,1,1,1,1,"English,French",14,111,7,NULL,3.6
+254,Omar,Rossi,student,Monash University,Computer Science,PhD,12,0,1,0,1,"English,Indonesian",8,22,13,NULL,4.5
+255,Sarvesh,Nguyen,student,Australian National University,Psychology,Master,4,1,1,0,1,"English,Indonesian",15,132,28,NULL,3.7
+256,Sana,Chen,student,UNSW,Business Analytics,Bachelor,9,1,0,1,0,"English,Hindi",9,51,29,NULL,4.1
+257,Zaid,Tanaka,student,University of Adelaide,Psychology,Bachelor,15,0,1,0,1,"English,Hindi",2,2,20,NULL,4.2
+258,Fatima,Kumar,student,University of Adelaide,Artificial Intelligence,Bachelor,7,0,1,1,0,"English,Japnese",8,85,11,NULL,4.5
+259,Abrar,Wei,student,UNSW,Data Science,PhD,13,1,1,0,1,"English,Spanish",15,1,19,NULL,4.2
+260,Kenji,Rahman,student,University of Sydney,Computer Science,Bachelor,11,1,0,0,0,"English,Indonesian",17,83,45,NULL,3.9
+261,Clara,Wei,student,University of Western Australia,Mechanical Engineering,Bachelor,11,0,0,1,1,English,15,36,41,NULL,3.7
+262,Sofia,Silva,student,UNSW,Mechanical Engineering,PhD,10,0,1,0,1,"English,Japnese",18,132,23,NULL,3.6
+263,Saanvi,Silva,student,University of Melbourne,Business Analytics,PhD,6,0,0,1,1,"English,Mandarin",11,33,44,NULL,4.1
+264,Tanvir,Siddiqui,student,Australian National University,Finance,Master,14,0,1,0,1,"English,Mandarin",17,75,11,NULL,4.2
+265,Jueqing,Iyer,student,University of Melbourne,Mechanical Engineering,Master,1,1,1,1,1,"English,Spanish",13,29,28,NULL,4.0
+266,Hiroshi,Silva,student,University of Sydney,Computer Science,PhD,6,1,0,1,1,"English,Indonesian",4,180,41,NULL,4.8
+267,Kavya,Malik,student,Australian National University,Mechanical Engineering,PhD,5,1,1,0,0,"English,Hindi",7,128,13,NULL,3.7
+268,Tanvir,Patil,student,University of Adelaide,Business Analytics,Bachelor,7,0,0,1,1,"English,Japnese",16,71,43,NULL,3.5
+269,Elena,Wei,student,University of Western Australia,Finance,Bachelor,6,0,1,1,0,"English,Hindi",6,78,40,NULL,3.8
+270,Sarvesh,Hernandez,student,University of Melbourne,Business Analytics,Bachelor,15,1,0,1,1,English,8,102,44,NULL,4.1
+271,Lucas,Kim,student,University of Queensland,Artificial Intelligence,Master,2,1,0,0,0,English,9,169,33,NULL,3.7
+272,Aisha,Wei,student,University of Sydney,Finance,Bachelor,8,1,0,0,0,"English,Indonesian",8,184,9,NULL,4.0
+273,Mathis,Smirnov,student,University of Sydney,Computer Science,Master,2,1,0,1,1,"English,Indonesian",13,109,27,NULL,3.6
+274,Fatima,Gomez,student,UNSW,Data Science,PhD,7,1,1,1,0,"English,Mandarin",12,48,18,NULL,4.8
+275,Fatima,Sharma,student,University of Melbourne,Business Analytics,Bachelor,7,0,1,1,1,"English,Spanish",12,65,1,NULL,3.5
+276,Hiroshi,Wong,student,University of Western Australia,Artificial Intelligence,Master,11,0,1,1,0,"English,Indonesian",17,111,25,NULL,4.7
+277,Clara,Olsen,student,Monash University,Finance,PhD,15,0,0,1,1,English,12,59,8,NULL,5.0
+278,Zaid,Nguyen,student,University of Adelaide,Psychology,PhD,11,0,1,1,0,"English,French",11,34,14,NULL,4.2
+279,Kenji,Bakare,student,Monash University,Finance,Master,4,1,0,1,1,English,16,113,11,NULL,4.7
+280,Léa,Park,student,Monash University,Data Science,PhD,7,1,0,1,0,"English,Hindi",2,51,16,NULL,4.0
+281,Ananya,Wong,student,University of Western Australia,Finance,PhD,7,1,1,1,0,"English,Hindi",16,85,32,NULL,4.5
+282,Sumaiya,Sato,student,University of Melbourne,Data Science,Master,11,0,1,1,0,"English,Hindi",10,176,25,NULL,4.8
+283,Sana,Wong,student,University of Queensland,Business Analytics,Master,14,0,1,0,0,"English,Hindi",5,147,32,NULL,4.6
+284,Ananya,Hossain,student,University of Sydney,Data Science,Master,6,1,1,1,0,"English,Spanish",6,116,33,NULL,4.4
+285,Hamza,Garcia,student,University of Melbourne,Finance,Bachelor,1,1,1,1,1,"English,Japnese",11,75,1,NULL,3.5
+286,Zane,Dubois,student,University of Sydney,Finance,Bachelor,7,0,0,1,1,"English,French",3,196,21,NULL,4.5
+287,Ishaan,Khan,student,Monash University,Mechanical Engineering,Master,9,0,1,0,1,"English,Indonesian",17,83,6,NULL,4.4
+288,Hamza,Patil,student,University of Adelaide,Finance,PhD,3,0,0,0,1,"English,Hindi",15,29,44,NULL,4.3
+289,Nusrat,Moreau,student,University of Adelaide,Artificial Intelligence,Bachelor,12,1,1,1,1,"English,Japnese",1,79,28,NULL,3.8
+290,Lucas,Silva,student,University of Queensland,Computer Science,Bachelor,14,0,0,1,1,"English,Japnese",4,114,32,NULL,4.9
+291,Hamza,Mansoor,student,University of Melbourne,Business Analytics,Bachelor,7,0,0,1,0,"English,Indonesian",8,176,4,NULL,4.9
+292,Zoya,Hernandez,student,UNSW,Mechanical Engineering,PhD,12,1,0,1,0,English,3,179,44,NULL,4.6
+293,Fatima,Siddiqui,student,Australian National University,Artificial Intelligence,PhD,5,1,0,1,0,"English,Japnese",9,180,42,NULL,3.7
+294,Sana,Ahmed,student,Monash University,Artificial Intelligence,Master,15,1,0,1,0,"English,French",9,47,46,NULL,4.1
+295,Amira,Bakare,student,University of Sydney,Computer Science,Bachelor,5,0,1,1,1,"English,French",2,124,3,NULL,3.5
+296,Hans,Chatterjee,student,University of Queensland,Psychology,PhD,3,1,0,1,1,"English,Spanish",16,4,33,NULL,3.9
+297,Mei,Malik,student,University of Western Australia,Psychology,PhD,6,0,0,0,0,English,5,143,18,NULL,3.7
+298,Hans,Malik,student,Monash University,Computer Science,PhD,11,0,1,0,0,English,6,21,37,NULL,5.0
+299,Priya,Chen,student,Australian National University,Data Science,Bachelor,7,0,1,0,0,"English,Japnese",13,26,23,NULL,3.8
+300,Ji-won,Bakare,student,University of Sydney,Mechanical Engineering,Bachelor,8,1,1,0,0,"English,Spanish",15,104,12,NULL,4.2
+301,Arjun,Moreau,student,Australian National University,Artificial Intelligence,Master,14,0,1,1,0,"English,Hindi",5,12,17,NULL,3.8
+302,Mathis,Dubois,student,Monash University,Data Science,Master,6,0,0,0,1,"English,Mandarin",4,140,33,NULL,4.5
+303,Suresh,Bakare,student,University of Queensland,Psychology,Master,1,0,1,1,1,"English,Spanish",1,8,17,NULL,4.5
+304,Nina,Silva,student,Monash University,Mechanical Engineering,Bachelor,5,0,0,0,0,"English,Indonesian",14,69,7,NULL,4.6
+305,Léa,Al-Farsi,student,Monash University,Computer Science,Bachelor,2,0,1,1,0,"English,French",16,128,11,NULL,4.3
+306,Nusrat,Al-Farsi,student,University of Western Australia,Psychology,Bachelor,7,1,0,0,1,English,1,56,21,NULL,4.6
+307,Sumaiya,Lefebvre,student,UNSW,Business Analytics,Master,9,1,1,0,1,"English,French",2,177,40,NULL,4.0
+308,Zoya,Mansoor,student,Australian National University,Mechanical Engineering,PhD,4,1,0,1,0,English,1,71,10,NULL,4.8
+309,Ishaan,Patil,student,Monash University,Mechanical Engineering,Bachelor,9,1,1,0,0,"English,Hindi",4,87,32,NULL,4.5
+310,Sofia,Moreau,student,University of Adelaide,Finance,Bachelor,6,1,0,1,1,"English,Japnese",9,106,33,NULL,4.9
+311,Nina,Iyer,student,UNSW,Psychology,Bachelor,11,0,0,0,0,English,13,112,28,NULL,4.0
+312,Kenji,Wong,student,University of Adelaide,Finance,PhD,3,0,1,0,0,"English,Spanish",3,157,47,NULL,3.5
+313,Chloé,Nguyen,student,University of Western Australia,Finance,Bachelor,14,0,0,1,1,"English,Mandarin",16,190,33,NULL,4.7
+314,Sofia,Suzuki,student,University of Queensland,Data Science,Master,4,0,0,1,1,English,19,19,25,NULL,4.1
+315,Ananya,Malik,student,UNSW,Psychology,Bachelor,9,1,1,1,1,"English,Japnese",5,8,13,NULL,4.3
+316,Kenji,Müller,student,University of Adelaide,Data Science,Bachelor,3,1,1,0,1,"English,Spanish",3,100,39,NULL,4.5
+317,Elena,Al-Farsi,student,University of Western Australia,Mechanical Engineering,Master,6,1,1,1,1,"English,Mandarin",7,181,4,NULL,4.0
+318,Clara,Khan,student,University of Adelaide,Psychology,Bachelor,10,0,1,1,0,"English,Spanish",12,183,48,NULL,4.9
+319,Arjun,Ahmed,student,Monash University,Business Analytics,PhD,5,1,0,1,0,"English,Japnese",5,15,39,NULL,4.0
+320,Arjun,Sharma,student,University of Queensland,Mechanical Engineering,Bachelor,1,0,0,1,1,"English,Mandarin",3,100,24,NULL,4.8
+321,Léa,Lefebvre,student,University of Melbourne,Computer Science,PhD,10,0,0,1,0,"English,Spanish",11,75,42,NULL,4.2
+322,Zoya,Hossain,student,University of Sydney,Business Analytics,Bachelor,2,0,1,1,1,"English,Indonesian",18,190,33,NULL,3.9
+323,Sarvesh,Khan,student,University of Adelaide,Artificial Intelligence,PhD,15,1,0,0,0,"English,Japnese",10,89,6,NULL,4.8
+324,Arjun,Khan,student,University of Western Australia,Psychology,Master,7,1,0,0,0,"English,French",8,82,43,NULL,3.7
+325,Rohan,Siddiqui,student,University of Queensland,Artificial Intelligence,Master,10,0,0,1,1,"English,Japnese",13,14,18,NULL,4.0
+326,Ji-won,Al-Farsi,student,University of Adelaide,Psychology,Bachelor,10,0,0,0,0,"English,Hindi",10,60,17,NULL,4.5
+327,Fatima,Siddiqui,student,University of Melbourne,Finance,PhD,14,0,0,1,1,"English,French",5,46,14,NULL,3.5
+328,Hans,Patil,student,Monash University,Data Science,PhD,1,1,0,0,1,"English,Japnese",17,68,10,NULL,4.8
+329,Fatima,Wei,student,University of Western Australia,Artificial Intelligence,PhD,3,1,0,1,1,"English,Japnese",3,127,31,NULL,4.1
+330,Priya,Chen,student,University of Adelaide,Mechanical Engineering,Bachelor,8,1,1,1,0,"English,Indonesian",2,172,25,NULL,4.2
+331,Rohan,Sharma,student,University of Queensland,Mechanical Engineering,Master,14,1,0,0,0,"English,Spanish",3,181,41,NULL,3.7
+332,Hiroshi,Das,student,University of Queensland,Mechanical Engineering,Bachelor,10,1,0,0,1,"English,Hindi",20,85,32,NULL,3.8
+333,Sarvesh,Chen,student,University of Adelaide,Artificial Intelligence,PhD,14,0,1,0,1,"English,Hindi",13,50,15,NULL,4.9
+334,Mathis,Chaudhary,student,University of Adelaide,Data Science,PhD,8,0,1,0,1,"English,Spanish",12,161,29,NULL,4.1
+335,Ishaan,Iyer,student,Australian National University,Finance,PhD,5,1,0,0,1,"English,Spanish",8,94,3,NULL,4.9
+336,Amira,Olsen,student,UNSW,Data Science,Bachelor,11,1,1,1,0,"English,Mandarin",19,142,7,NULL,4.4
+337,Ananya,Smirnov,student,University of Sydney,Business Analytics,PhD,3,0,1,1,0,"English,French",18,66,14,NULL,4.6
+338,Priya,Al-Farsi,student,University of Western Australia,Computer Science,Master,12,1,1,1,1,English,2,125,5,NULL,4.9
+339,Priya,Sharma,student,University of Adelaide,Psychology,Master,10,0,0,0,0,English,20,108,48,NULL,4.9
+340,Julien,Bakare,student,University of Melbourne,Computer Science,PhD,4,1,0,1,0,"English,Japnese",6,41,27,NULL,3.7
+341,Hans,Kumar,student,Australian National University,Psychology,PhD,13,1,0,1,0,"English,French",3,121,30,NULL,4.7
+342,Yuki,Haddad,student,University of Sydney,Artificial Intelligence,PhD,7,1,0,0,0,"English,Mandarin",10,177,48,NULL,3.9
+343,Trang,Khan,student,Australian National University,Artificial Intelligence,Bachelor,9,1,0,1,1,"English,Indonesian",8,192,4,NULL,4.2
+344,Mathis,Hossain,student,University of Western Australia,Data Science,Master,15,1,1,0,0,"English,Hindi",1,38,28,NULL,3.6
+345,Chloé,Mansoor,student,UNSW,Psychology,PhD,5,1,1,0,0,"English,Mandarin",9,56,20,NULL,4.5
+346,Zoya,Chaudhary,student,Australian National University,Computer Science,PhD,15,0,0,0,0,"English,Indonesian",2,117,35,NULL,4.7
+347,Saanvi,Lefebvre,student,University of Sydney,Artificial Intelligence,Master,10,1,0,0,0,"English,French",3,158,35,NULL,4.3
+348,Mateo,Sato,student,Australian National University,Psychology,PhD,12,0,1,0,1,"English,Hindi",16,67,3,NULL,3.7
+349,Léa,Khan,student,University of Adelaide,Data Science,Bachelor,14,0,0,1,1,"English,Hindi",16,138,18,NULL,4.1
+350,Kavya,Das,student,University of Sydney,Finance,Bachelor,12,1,1,0,1,English,2,168,17,NULL,4.4
+351,Amira,Chaudhary,student,University of Western Australia,Computer Science,PhD,13,1,0,1,0,"English,Japnese",6,99,18,NULL,4.3
+352,Zaid,Das,student,UNSW,Business Analytics,Master,7,1,1,1,0,"English,Indonesian",9,55,21,NULL,4.4
+353,Kavya,Iqbal,student,University of Adelaide,Psychology,Bachelor,10,0,1,0,1,English,6,23,37,NULL,3.5
+354,Fatima,Müller,student,University of Melbourne,Artificial Intelligence,Master,6,0,0,1,0,"English,Mandarin",10,48,35,NULL,4.9
+355,Sumaiya,Lefebvre,student,University of Western Australia,Mechanical Engineering,Master,3,1,0,0,1,"English,Spanish",4,102,37,NULL,4.1
+356,Ananya,Nguyen,student,University of Adelaide,Business Analytics,PhD,8,0,0,1,0,"English,Spanish",5,34,38,NULL,4.8
+357,Saanvi,Chen,student,University of Melbourne,Artificial Intelligence,Bachelor,6,1,0,0,0,"English,French",11,104,41,NULL,4.3
+358,Zane,Tanaka,student,University of Adelaide,Business Analytics,PhD,8,1,0,0,0,"English,Indonesian",7,9,38,NULL,4.0
+359,Mathis,Park,student,University of Sydney,Data Science,Master,10,1,1,1,1,"English,Indonesian",11,121,3,NULL,4.7
+360,Zoya,Wei,student,University of Queensland,Psychology,PhD,3,1,0,0,0,"English,Japnese",3,170,25,NULL,3.5
+361,Jueqing,Gomez,student,University of Queensland,Data Science,PhD,11,1,0,0,1,"English,Spanish",8,19,40,NULL,5.0
+362,Hans,Khan,student,University of Queensland,Artificial Intelligence,Bachelor,5,1,0,1,1,"English,Mandarin",16,196,46,NULL,4.6
+363,Hamza,Olsen,student,Monash University,Mechanical Engineering,PhD,12,0,0,0,1,English,10,89,44,NULL,3.6
+364,Julien,Nguyen,student,University of Queensland,Data Science,Master,6,0,1,0,0,"English,Indonesian",5,136,42,NULL,4.6
+365,Chloé,Olsen,student,University of Melbourne,Computer Science,Bachelor,10,0,0,0,0,"English,Hindi",11,104,48,NULL,4.2
+366,Elena,Mansoor,student,University of Western Australia,Artificial Intelligence,Bachelor,11,0,1,1,1,"English,Spanish",3,36,40,NULL,4.9
+367,Sana,Tanaka,student,University of Melbourne,Data Science,PhD,12,0,0,1,0,"English,French",5,58,29,NULL,4.6
+368,Zane,Bakare,student,UNSW,Computer Science,Bachelor,12,1,0,1,1,"English,French",9,22,18,NULL,4.5
+369,Ivan,Das,student,University of Western Australia,Business Analytics,Master,2,1,0,0,1,"English,Spanish",8,153,46,NULL,4.0
+370,Mathis,Suzuki,student,University of Sydney,Computer Science,Bachelor,15,1,0,0,0,"English,Spanish",19,190,29,NULL,4.8
+371,Trang,Suzuki,student,Australian National University,Computer Science,Master,13,1,0,1,0,"English,Indonesian",1,111,12,NULL,4.5
+372,Ji-won,Müller,student,University of Sydney,Artificial Intelligence,Master,2,1,1,0,1,"English,Japnese",17,157,6,NULL,4.2
+373,Arjun,Siddiqui,student,Australian National University,Artificial Intelligence,Bachelor,9,0,1,0,0,English,9,116,7,NULL,3.5
+374,Hamza,Mansoor,student,Australian National University,Mechanical Engineering,PhD,4,1,0,0,1,"English,Spanish",2,177,47,NULL,4.7
+375,Clara,Kumar,student,Australian National University,Mechanical Engineering,PhD,10,0,0,1,1,"English,Spanish",20,113,1,NULL,4.6
+376,Mei,Smirnov,student,University of Queensland,Business Analytics,PhD,11,0,0,0,1,"English,Japnese",16,53,17,NULL,3.7
+377,Julien,Kim,student,UNSW,Artificial Intelligence,PhD,9,0,0,0,0,English,11,31,15,NULL,4.3
+378,Saanvi,Bakare,student,University of Sydney,Psychology,Master,2,0,1,0,1,"English,Hindi",18,66,31,NULL,4.6
+379,Ji-won,Rahman,student,University of Melbourne,Psychology,PhD,8,1,1,1,1,"English,Mandarin",1,22,6,NULL,3.7
+380,Aisha,Sharma,student,University of Adelaide,Data Science,PhD,1,1,0,0,1,"English,Spanish",15,61,31,NULL,4.0
+381,Nina,Silva,student,University of Melbourne,Finance,Master,4,0,1,0,1,English,10,141,48,NULL,3.8
+382,Sumaiya,Chen,student,University of Melbourne,Mechanical Engineering,Bachelor,10,0,1,1,1,"English,Japnese",7,131,1,NULL,4.2
+383,Trang,Chen,student,University of Sydney,Computer Science,Bachelor,7,0,1,0,1,"English,Mandarin",3,142,3,NULL,4.0
+384,Amira,Rossi,student,Australian National University,Data Science,Bachelor,13,1,1,0,0,English,5,196,1,NULL,4.2
+385,Rohan,Sato,student,Australian National University,Computer Science,Master,1,0,0,1,1,"English,French",12,107,11,NULL,3.8
+386,Chloé,Chatterjee,student,UNSW,Finance,PhD,7,1,1,1,1,"English,Hindi",1,159,31,NULL,4.1
+387,Rohan,Chatterjee,student,Monash University,Business Analytics,Bachelor,15,1,1,0,1,"English,Japnese",15,177,25,NULL,4.0
+388,Lucas,Kim,student,Australian National University,Psychology,Bachelor,4,1,0,1,0,"English,Spanish",6,86,38,NULL,4.1
+389,Julien,Kim,student,Monash University,Mechanical Engineering,Bachelor,6,1,1,0,1,"English,Mandarin",8,40,39,NULL,4.2
+390,Sumaiya,Olsen,student,University of Sydney,Artificial Intelligence,Master,6,0,1,0,1,"English,Mandarin",4,112,44,NULL,4.3
+391,Mathis,Lefebvre,student,University of Sydney,Artificial Intelligence,PhD,5,0,1,1,1,"English,Mandarin",13,182,43,NULL,4.5
+392,Amara,Gomez,student,University of Melbourne,Computer Science,Bachelor,15,1,1,1,1,"English,Indonesian",1,181,8,NULL,4.9
+393,Nusrat,Sharma,student,University of Adelaide,Psychology,Master,12,1,0,1,0,"English,Mandarin",2,24,11,NULL,4.7
+394,Mei,Suzuki,student,University of Western Australia,Finance,Bachelor,11,1,1,1,0,"English,Spanish",9,74,48,NULL,4.8
+395,Aisha,Kim,student,UNSW,Data Science,PhD,2,0,0,0,1,English,19,76,22,NULL,3.6
+396,Ananya,Garcia,student,UNSW,Computer Science,PhD,4,0,0,0,1,"English,Indonesian",15,45,46,NULL,4.2
+397,Julien,Gomez,student,University of Adelaide,Artificial Intelligence,PhD,1,0,0,0,1,"English,Spanish",16,173,31,NULL,3.7
+398,Lucas,Lefebvre,student,University of Adelaide,Artificial Intelligence,PhD,1,0,0,0,1,"English,Indonesian",1,30,25,NULL,4.7
+399,Hiroshi,Park,student,UNSW,Business Analytics,PhD,11,0,1,1,1,"English,Indonesian",3,104,12,NULL,4.1
+400,Julien,Chaudhary,student,University of Western Australia,Finance,Master,15,0,0,0,1,English,7,63,28,NULL,4.4
+401,Kavya,Sato,student,University of Western Australia,Data Science,PhD,13,1,0,0,0,"English,Japnese",13,45,34,NULL,3.7
+402,Arjun,Park,student,Monash University,Finance,Master,8,0,0,0,0,"English,Indonesian",10,114,16,NULL,4.3
+403,Hamza,Lefebvre,student,University of Adelaide,Business Analytics,Master,3,1,1,0,0,"English,Mandarin",11,161,6,NULL,3.9
+404,Mateo,Chen,student,Australian National University,Computer Science,Master,1,0,1,0,1,"English,Indonesian",2,6,27,NULL,4.3
+405,Sana,Al-Farsi,student,University of Adelaide,Mechanical Engineering,Bachelor,10,0,1,1,0,English,2,18,2,NULL,3.9
+406,Lucas,Hossain,student,University of Melbourne,Mechanical Engineering,PhD,5,1,0,0,1,"English,Spanish",20,8,48,NULL,3.6
+407,Zoya,Nguyen,student,UNSW,Artificial Intelligence,Bachelor,13,1,0,1,0,"English,Hindi",9,183,2,NULL,4.3
+408,Amira,Müller,student,University of Sydney,Mechanical Engineering,Master,12,1,0,1,0,"English,Indonesian",4,19,24,NULL,4.9
+409,Zaid,Chen,student,University of Western Australia,Artificial Intelligence,PhD,2,1,0,0,0,"English,Mandarin",4,124,40,NULL,4.4
+410,Li,Patil,student,University of Adelaide,Finance,Master,14,0,1,0,1,"English,Hindi",3,85,6,NULL,4.7
+411,Hamza,Das,student,University of Sydney,Computer Science,PhD,12,1,0,0,1,"English,Mandarin",15,60,44,NULL,4.3
+412,Amira,Rossi,student,UNSW,Artificial Intelligence,Master,10,1,1,1,0,"English,Japnese",6,166,22,NULL,4.5
+413,Omar,Malik,student,University of Melbourne,Computer Science,Master,5,0,0,0,0,"English,Japnese",7,150,14,NULL,3.7
+414,Mateo,Iyer,student,UNSW,Finance,Master,7,1,0,1,0,English,16,72,15,NULL,4.9
+415,Nina,Bakare,student,University of Queensland,Finance,Master,8,1,0,1,1,"English,Hindi",5,117,9,NULL,4.1
+416,Nusrat,Rossi,student,Monash University,Finance,Bachelor,7,1,0,0,1,"English,Hindi",17,46,17,NULL,3.5
+417,Lucas,Rahman,student,University of Melbourne,Computer Science,PhD,3,0,0,1,0,"English,Indonesian",15,130,44,NULL,4.8
+418,Nusrat,Smirnov,student,University of Western Australia,Artificial Intelligence,Bachelor,8,1,1,1,1,"English,Mandarin",11,184,21,NULL,3.8
+419,Fatima,Al-Farsi,student,University of Melbourne,Computer Science,Master,12,1,1,1,0,"English,Japnese",12,161,3,NULL,4.7
+420,Hans,Malik,student,UNSW,Mechanical Engineering,Bachelor,13,0,1,1,1,"English,Indonesian",18,66,30,NULL,3.7
+421,Lucas,Khan,student,UNSW,Artificial Intelligence,Master,12,0,1,0,0,"English,Japnese",10,89,17,NULL,4.5
+422,Diego,Rahman,student,Monash University,Data Science,PhD,6,0,0,1,1,"English,Mandarin",17,177,9,NULL,4.7
+423,Julien,Wei,student,University of Western Australia,Business Analytics,Bachelor,1,0,1,0,0,"English,Mandarin",6,125,17,NULL,3.5
+424,Ivan,Chaudhary,student,University of Queensland,Business Analytics,Bachelor,1,1,1,0,1,English,9,170,28,NULL,4.0
+425,Kavya,Olsen,student,University of Sydney,Mechanical Engineering,Bachelor,7,0,1,0,0,"English,French",5,143,34,NULL,4.4
+426,Zane,Iqbal,student,University of Western Australia,Finance,Master,2,0,1,0,1,"English,Hindi",15,129,28,NULL,4.2
+427,Léa,Ahmed,student,University of Western Australia,Business Analytics,PhD,10,1,0,0,0,"English,Japnese",11,61,25,NULL,4.7
+428,Ivan,Rossi,student,University of Melbourne,Mechanical Engineering,Bachelor,15,1,1,0,1,"English,Hindi",17,115,34,NULL,3.5
+429,Yuki,Malik,student,University of Queensland,Business Analytics,Bachelor,13,1,1,1,0,"English,Hindi",13,8,18,NULL,4.5
+430,Saanvi,Malik,student,Monash University,Psychology,PhD,7,1,0,0,0,"English,Mandarin",19,184,2,NULL,4.7
+431,Rohan,Garcia,student,UNSW,Computer Science,Master,7,0,0,1,0,"English,French",14,58,18,NULL,4.3
+432,Omar,Siddiqui,student,University of Queensland,Mechanical Engineering,PhD,5,1,0,0,1,"English,French",7,189,39,NULL,4.8
+433,Diego,Khan,student,University of Melbourne,Data Science,Master,12,1,1,1,0,"English,French",2,137,27,NULL,4.9
+434,Saanvi,Park,student,University of Queensland,Computer Science,Master,13,1,1,1,0,"English,Indonesian",4,122,20,NULL,4.3
+435,Tanvir,Lefebvre,student,University of Melbourne,Data Science,Bachelor,13,1,1,0,1,"English,French",10,194,2,NULL,4.1
+436,Zane,Al-Farsi,student,Monash University,Business Analytics,Bachelor,10,0,1,1,1,"English,Spanish",6,17,5,NULL,4.0
+437,Nusrat,Gomez,student,UNSW,Data Science,Master,14,1,1,1,1,"English,Hindi",3,152,44,NULL,4.6
+438,Sumaiya,Nguyen,student,UNSW,Mechanical Engineering,PhD,15,0,0,1,0,English,14,92,4,NULL,3.6
+439,Diego,Moreau,student,University of Western Australia,Psychology,Bachelor,5,1,1,0,1,"English,Hindi",18,52,36,NULL,4.2
+440,Li,Ahmed,student,Australian National University,Artificial Intelligence,Master,13,0,1,1,1,"English,Hindi",14,114,28,NULL,4.4
+441,Suresh,Silva,student,Australian National University,Mechanical Engineering,Master,5,0,1,0,1,"English,Japnese",15,106,46,NULL,5.0
+442,Amara,Tanaka,student,University of Western Australia,Computer Science,Master,9,1,1,1,0,"English,Japnese",2,46,8,NULL,4.5
+443,Mei,Khan,student,University of Sydney,Business Analytics,Master,11,1,1,0,1,"English,Hindi",18,5,5,NULL,4.6
+444,Diego,Smirnov,student,University of Western Australia,Data Science,Master,7,1,1,0,1,"English,Hindi",3,143,18,NULL,4.3
+445,Zoya,Al-Farsi,student,University of Sydney,Business Analytics,Bachelor,9,0,1,1,1,English,12,133,19,NULL,4.0
+446,Hiroshi,Park,student,UNSW,Artificial Intelligence,PhD,14,0,1,1,0,"English,Spanish",7,114,34,NULL,3.7
+447,Hiroshi,Rahman,student,University of Queensland,Data Science,Bachelor,1,1,0,0,1,"English,Mandarin",16,9,16,NULL,4.3
+448,Amira,Al-Farsi,student,University of Sydney,Psychology,Bachelor,13,1,0,0,0,English,14,177,8,NULL,4.2
+449,Nina,Tanaka,student,University of Western Australia,Computer Science,Master,12,0,1,1,0,"English,Hindi",9,67,9,NULL,4.6
+450,Yuki,Olsen,student,University of Western Australia,Finance,Master,7,1,1,1,0,"English,Mandarin",4,32,10,NULL,4.8
+451,Priya,Sharma,student,Monash University,Psychology,Bachelor,3,1,1,0,1,"English,Hindi",4,92,36,NULL,3.7
+452,Zoya,Iyer,student,Australian National University,Finance,PhD,4,1,0,0,0,"English,French",8,63,26,NULL,4.3
+453,Mathis,Ahmed,student,University of Adelaide,Computer Science,PhD,2,0,0,1,1,"English,Hindi",8,24,29,NULL,4.4
+454,Yuki,Suzuki,student,UNSW,Data Science,Bachelor,14,1,0,0,0,"English,Spanish",3,61,24,NULL,4.2
+455,Nina,Suzuki,student,University of Sydney,Computer Science,Bachelor,8,1,0,0,0,"English,Mandarin",20,149,8,NULL,4.1
+456,Hans,Rossi,student,University of Adelaide,Finance,Bachelor,14,0,0,0,0,English,16,191,25,NULL,4.5
+457,Clara,Siddiqui,student,University of Queensland,Finance,Bachelor,11,0,1,1,0,"English,Spanish",2,180,35,NULL,4.1
+458,Priya,Wei,student,University of Western Australia,Psychology,Master,4,1,1,0,1,"English,French",8,143,28,NULL,3.8
+459,Chloé,Al-Farsi,student,Monash University,Psychology,Master,2,0,0,1,1,"English,Hindi",1,150,37,NULL,4.9
+460,Kavya,Rossi,student,University of Adelaide,Psychology,Bachelor,1,0,0,1,0,"English,Mandarin",3,68,33,NULL,3.5
+461,Hiroshi,Garcia,student,University of Sydney,Mechanical Engineering,Master,4,1,1,1,0,"English,Japnese",6,159,44,NULL,4.6
+462,Jueqing,Chatterjee,student,University of Queensland,Mechanical Engineering,Master,2,0,0,0,1,"English,Hindi",16,31,29,NULL,4.7
+463,Sumaiya,Siddiqui,student,University of Sydney,Finance,PhD,9,0,1,0,1,"English,Hindi",7,131,14,NULL,4.9
+464,Ji-won,Chen,student,University of Queensland,Artificial Intelligence,Master,14,1,1,0,1,"English,Indonesian",7,117,4,NULL,4.7
+465,Sana,Silva,student,Monash University,Computer Science,PhD,1,0,0,1,0,"English,Spanish",1,50,3,NULL,3.9
+466,Saanvi,Sharma,student,University of Melbourne,Computer Science,PhD,3,1,0,0,1,"English,Japnese",20,55,20,NULL,4.3
+467,Jueqing,Lefebvre,student,University of Queensland,Data Science,PhD,5,1,0,1,1,"English,Mandarin",20,46,33,NULL,3.9
+468,Zane,Tanaka,student,University of Sydney,Data Science,Master,9,1,0,0,1,English,9,167,17,NULL,3.8
+469,Abrar,Patil,student,UNSW,Finance,Master,3,0,0,1,1,English,3,57,5,NULL,4.8
+470,Fatima,Gomez,student,University of Western Australia,Data Science,Bachelor,6,1,1,1,0,English,4,52,15,NULL,3.7
+471,Omar,Rossi,student,University of Sydney,Finance,PhD,15,1,0,1,1,"English,Indonesian",12,118,12,NULL,4.6
+472,Zoya,Das,student,University of Sydney,Artificial Intelligence,PhD,2,1,1,0,0,"English,Mandarin",9,50,36,NULL,4.0
+473,Zoya,Moreau,student,University of Sydney,Artificial Intelligence,Bachelor,6,1,0,1,1,"English,Indonesian",11,132,10,NULL,4.0
+474,Trang,Patil,student,UNSW,Psychology,Master,4,0,1,0,0,"English,Hindi",5,200,46,NULL,3.6
+475,Zoya,Suzuki,student,University of Western Australia,Artificial Intelligence,PhD,13,1,1,1,0,"English,Hindi",4,132,40,NULL,3.9
+476,Sana,Olsen,student,UNSW,Psychology,Bachelor,12,1,1,1,1,English,17,104,11,NULL,4.3
+477,Sumaiya,Hernandez,student,Monash University,Data Science,Master,10,1,1,1,1,"English,Mandarin",11,166,1,NULL,5.0
+478,Rohan,Mansoor,student,University of Queensland,Mechanical Engineering,Master,9,1,0,0,1,"English,French",18,31,28,NULL,5.0
+479,Amira,Mansoor,student,Australian National University,Artificial Intelligence,Master,2,1,1,0,1,"English,Mandarin",8,164,27,NULL,4.6
+480,Mathis,Chaudhary,student,Australian National University,Computer Science,Bachelor,6,0,1,0,0,"English,Japnese",11,190,31,NULL,3.7
+481,Omar,Ahmed,student,Australian National University,Mechanical Engineering,Master,5,0,1,0,1,"English,French",2,92,29,NULL,4.9
+482,Ivan,Silva,student,UNSW,Mechanical Engineering,Master,3,1,1,0,0,"English,Spanish",7,163,17,NULL,3.7
+483,Omar,Malik,student,UNSW,Finance,Master,2,1,1,1,1,"English,French",1,193,1,NULL,4.9
+484,Priya,Patil,student,University of Western Australia,Finance,PhD,3,1,1,1,1,"English,French",4,167,43,NULL,4.9
+485,Diego,Chatterjee,student,UNSW,Artificial Intelligence,PhD,1,1,0,0,0,"English,Indonesian",19,192,43,NULL,4.0
+486,Suresh,Lefebvre,student,University of Western Australia,Data Science,PhD,4,0,1,0,0,"English,Mandarin",18,14,16,NULL,4.3
+487,Trang,Olsen,student,University of Western Australia,Psychology,Master,5,1,1,0,0,"English,Indonesian",3,84,25,NULL,3.6
+488,Zane,Smirnov,student,University of Adelaide,Business Analytics,PhD,14,0,1,0,1,"English,Mandarin",12,18,45,NULL,4.6
+489,Priya,Park,student,University of Melbourne,Mechanical Engineering,Master,3,0,1,1,0,"English,Spanish",15,151,38,NULL,4.4
+490,Rohan,Tanaka,student,University of Adelaide,Artificial Intelligence,Master,13,1,0,0,1,English,17,141,27,NULL,4.3
+491,Diego,Das,student,UNSW,Artificial Intelligence,PhD,8,0,0,0,1,English,12,41,4,NULL,4.3
+492,Hamza,Olsen,student,University of Queensland,Artificial Intelligence,Master,14,1,1,0,1,"English,Indonesian",19,3,31,NULL,3.9
+493,Li,Malik,student,University of Western Australia,Data Science,Master,11,1,1,1,1,"English,Indonesian",14,101,39,NULL,4.2
+494,Amira,Das,student,University of Queensland,Psychology,Bachelor,14,1,0,0,1,"English,Hindi",11,38,42,NULL,4.2
+495,Léa,Chaudhary,student,University of Sydney,Data Science,PhD,3,0,1,1,1,English,20,158,10,NULL,4.9
+496,Hans,Chaudhary,student,University of Western Australia,Psychology,Bachelor,9,1,1,1,0,"English,Hindi",14,199,27,NULL,4.4
+497,Arjun,Siddiqui,student,University of Adelaide,Mechanical Engineering,Bachelor,14,0,0,0,0,"English,Indonesian",4,35,46,NULL,4.1
+498,Zoya,Kim,student,Australian National University,Data Science,Master,5,1,1,1,1,"English,Japnese",7,18,10,NULL,4.6
+499,Hamza,Ahmed,student,University of Western Australia,Mechanical Engineering,PhD,14,1,0,0,1,"English,French",7,46,47,NULL,4.3
+500,Sumaiya,Chaudhary,student,University of Adelaide,Computer Science,Bachelor,6,1,1,0,0,"English,Mandarin",13,86,32,NULL,4.5
+501,Jueqing,Müller,parent,University of Sydney,Psychology,Master,7,1,0,1,1,"English,Spanish",19,10,36,NULL,4.9
+502,Hamza,Garcia,parent,University of Melbourne,Psychology,PhD,15,1,0,1,0,"English,Indonesian",5,6,39,NULL,3.5
+503,Omar,Malik,parent,Monash University,Mechanical Engineering,Master,1,1,1,0,0,"English,Japnese",12,121,9,NULL,4.6
+504,Hamza,Wei,parent,University of Queensland,Data Science,Master,9,1,1,1,0,"English,Mandarin",15,124,41,NULL,3.6
+505,Mei,Park,parent,Monash University,Data Science,Master,2,1,0,0,1,"English,Indonesian",13,113,43,NULL,4.6
+506,Clara,Al-Farsi,parent,University of Sydney,Psychology,PhD,1,0,0,1,1,"English,Spanish",7,143,15,NULL,4.7
+507,Diego,Moreau,parent,University of Queensland,Mechanical Engineering,Bachelor,3,0,0,0,0,English,12,38,9,NULL,4.9
+508,Zane,Khan,parent,Australian National University,Business Analytics,PhD,4,0,1,0,0,"English,Hindi",14,62,39,NULL,5.0
+509,Mateo,Mansoor,parent,Australian National University,Psychology,PhD,2,0,1,0,1,"English,Mandarin",14,155,47,NULL,4.9
+510,Kenji,Chaudhary,parent,Monash University,Psychology,Bachelor,9,0,1,0,1,"English,Mandarin",18,81,6,NULL,3.6
+511,Mathis,Hernandez,parent,University of Queensland,Psychology,PhD,12,0,0,1,1,"English,French",3,11,1,NULL,4.8
+512,Suresh,Wong,parent,University of Adelaide,Computer Science,PhD,1,0,0,1,0,English,9,59,46,NULL,3.5
+513,Julien,Garcia,parent,University of Queensland,Finance,Bachelor,7,0,1,1,0,"English,Spanish",13,159,44,NULL,4.2
+514,Saanvi,Ahmed,parent,University of Western Australia,Artificial Intelligence,PhD,2,1,1,0,0,"English,Japnese",2,132,32,NULL,4.1
+515,Omar,Kim,parent,University of Western Australia,Data Science,Bachelor,11,0,0,1,0,"English,Hindi",17,77,37,NULL,4.9
+516,Amira,Chen,parent,University of Adelaide,Data Science,PhD,14,1,0,0,0,"English,Spanish",17,191,7,NULL,3.7
+517,Elena,Wei,parent,University of Melbourne,Artificial Intelligence,PhD,5,0,1,0,1,"English,Japnese",12,32,40,NULL,4.9
+518,Sana,Al-Farsi,parent,UNSW,Finance,Bachelor,1,0,1,0,0,"English,Japnese",1,159,33,NULL,4.6
+519,Hiroshi,Hossain,parent,Australian National University,Data Science,Bachelor,10,1,0,1,0,"English,French",15,142,41,NULL,3.6
+520,Julien,Kim,parent,University of Melbourne,Computer Science,PhD,9,0,0,0,1,"English,French",9,28,18,NULL,3.7
+521,Hiroshi,Bakare,parent,University of Queensland,Psychology,Bachelor,3,1,0,0,0,"English,Hindi",8,0,23,NULL,4.3
+522,Léa,Dubois,parent,Australian National University,Business Analytics,PhD,11,1,0,0,1,"English,Mandarin",17,169,17,NULL,5.0
+523,Sofia,Siddiqui,parent,Australian National University,Business Analytics,PhD,14,1,0,0,1,"English,Japnese",3,141,7,NULL,3.7
+524,Hans,Kim,parent,Monash University,Artificial Intelligence,Master,3,0,1,1,0,"English,Spanish",4,141,27,NULL,4.8
+525,Mathis,Müller,parent,University of Sydney,Artificial Intelligence,Bachelor,2,1,1,1,0,English,1,151,1,NULL,4.8
+526,Bilal,Siddiqui,parent,Australian National University,Business Analytics,Master,6,1,0,1,1,"English,Japnese",4,108,8,NULL,3.6
+527,Abrar,Kumar,parent,University of Sydney,Psychology,Master,10,1,0,0,1,"English,Indonesian",16,29,45,NULL,4.5
+528,Zaid,Müller,parent,University of Melbourne,Data Science,Bachelor,3,1,0,0,1,"English,French",18,193,30,NULL,4.8
+529,Saanvi,Kim,parent,University of Western Australia,Mechanical Engineering,Bachelor,7,0,0,1,1,"English,Mandarin",6,186,34,NULL,3.8
+530,Kavya,Lefebvre,parent,UNSW,Psychology,Bachelor,9,1,1,1,1,"English,Japnese",17,108,35,NULL,4.9
+531,Tanvir,Rossi,parent,University of Sydney,Business Analytics,Bachelor,15,1,1,0,1,"English,French",5,179,35,NULL,3.5
+532,Lucas,Park,parent,University of Western Australia,Psychology,Bachelor,9,0,0,1,0,"English,Spanish",10,99,37,NULL,4.6
+533,Sofia,Al-Farsi,parent,Australian National University,Artificial Intelligence,PhD,4,0,0,1,1,"English,Mandarin",7,101,29,NULL,3.7
+534,Léa,Iqbal,parent,University of Sydney,Mechanical Engineering,Bachelor,6,1,0,0,0,"English,Indonesian",15,16,18,NULL,4.5
+535,Li,Sato,parent,University of Queensland,Business Analytics,Bachelor,1,1,0,0,0,"English,Spanish",2,18,11,NULL,4.8
+536,Jueqing,Siddiqui,parent,University of Melbourne,Mechanical Engineering,Bachelor,15,1,0,1,0,"English,Japnese",4,80,42,NULL,4.1
+537,Clara,Siddiqui,parent,University of Sydney,Finance,PhD,1,0,1,0,1,"English,Hindi",15,29,4,NULL,4.2
+538,Mei,Iqbal,parent,Australian National University,Computer Science,PhD,9,1,1,1,0,English,18,44,7,NULL,3.7
+539,Abrar,Chatterjee,parent,University of Adelaide,Artificial Intelligence,PhD,7,0,1,0,0,"English,Spanish",2,45,3,NULL,3.7
+540,Ji-won,Nguyen,parent,UNSW,Computer Science,Bachelor,10,1,0,0,0,"English,Hindi",1,94,36,NULL,3.7
+541,Kenji,Chatterjee,parent,Australian National University,Computer Science,Master,1,0,1,1,0,"English,Japnese",18,174,36,NULL,3.6
+542,Omar,Iyer,parent,University of Sydney,Finance,PhD,12,0,1,1,1,"English,Japnese",7,49,37,NULL,4.5
+543,Hans,Tanaka,parent,University of Western Australia,Computer Science,Master,6,1,1,1,1,"English,Indonesian",9,15,11,NULL,4.4
+544,Bilal,Park,parent,University of Queensland,Artificial Intelligence,PhD,7,0,0,0,0,"English,French",18,13,28,NULL,4.2
+545,Diego,Olsen,parent,UNSW,Psychology,PhD,6,0,0,1,1,"English,French",13,195,6,NULL,4.1
+546,Amara,Olsen,parent,University of Western Australia,Artificial Intelligence,Master,9,0,1,0,1,"English,Indonesian",20,17,29,NULL,4.6
+547,Zoya,Wong,parent,University of Western Australia,Psychology,PhD,4,0,0,1,0,"English,Japnese",20,196,11,NULL,4.8
+548,Amira,Patil,parent,University of Adelaide,Mechanical Engineering,Bachelor,2,1,0,1,1,English,1,157,14,NULL,3.7
+549,Fatima,Nguyen,parent,University of Adelaide,Mechanical Engineering,PhD,11,1,0,0,0,"English,French",7,194,42,NULL,4.3
+550,Hiroshi,Kim,parent,UNSW,Computer Science,Master,9,1,0,0,1,English,4,59,16,NULL,4.4
+551,Zaid,Olsen,parent,Australian National University,Data Science,Bachelor,10,0,0,1,1,"English,Spanish",7,115,32,NULL,4.9
+552,Chloé,Rossi,parent,Monash University,Computer Science,PhD,7,0,0,1,0,"English,Hindi",17,33,34,NULL,4.4
+553,Kavya,Lefebvre,parent,UNSW,Finance,PhD,3,1,0,1,1,"English,Japnese",4,168,45,NULL,4.2
+554,Jueqing,Siddiqui,parent,UNSW,Psychology,Bachelor,15,1,1,1,0,"English,Mandarin",20,185,1,NULL,4.6
+555,Nina,Gomez,parent,UNSW,Business Analytics,Bachelor,15,0,1,1,1,"English,Indonesian",15,73,30,NULL,3.7
+556,Clara,Tanaka,parent,Australian National University,Data Science,Bachelor,10,0,1,0,0,"English,Indonesian",3,188,32,NULL,4.5
+557,Mathis,Chatterjee,parent,University of Adelaide,Computer Science,Bachelor,2,1,1,1,1,"English,Japnese",18,177,7,NULL,4.3
+558,Bilal,Khan,parent,University of Adelaide,Computer Science,Bachelor,2,1,1,0,1,English,15,159,14,NULL,4.4
+559,Hiroshi,Das,parent,University of Adelaide,Computer Science,PhD,2,1,0,0,0,"English,Japnese",19,119,20,NULL,4.6
+560,Aisha,Wei,parent,University of Adelaide,Data Science,Bachelor,2,1,0,0,0,"English,Japnese",2,158,12,NULL,4.4
+561,Li,Iqbal,parent,Monash University,Artificial Intelligence,Bachelor,12,0,1,0,1,"English,French",1,42,31,NULL,4.9
+562,Amara,Hossain,parent,UNSW,Psychology,Master,2,0,1,1,0,"English,Indonesian",20,117,10,NULL,3.6
+563,Zane,Hossain,parent,UNSW,Mechanical Engineering,PhD,5,0,0,1,0,English,3,60,32,NULL,4.8
+564,Fatima,Sato,parent,University of Queensland,Computer Science,PhD,9,0,0,0,1,English,15,183,48,NULL,4.2
+565,Ji-won,Rahman,parent,University of Adelaide,Computer Science,Master,13,1,1,0,1,"English,Japnese",17,153,24,NULL,4.0
+566,Chloé,Tanaka,parent,University of Sydney,Business Analytics,Bachelor,9,1,0,1,1,"English,Spanish",2,17,11,NULL,4.2
+567,Sofia,Tanaka,parent,University of Western Australia,Business Analytics,Bachelor,15,1,1,1,1,"English,Spanish",14,196,16,NULL,4.3
+568,Zoya,Das,parent,University of Western Australia,Business Analytics,PhD,15,1,0,0,1,"English,Hindi",2,92,23,NULL,4.8
+569,Mathis,Silva,parent,Monash University,Business Analytics,PhD,10,0,0,1,0,"English,French",3,78,13,NULL,3.8
+570,Nina,Sharma,parent,University of Adelaide,Finance,PhD,1,1,0,1,1,"English,Indonesian",9,95,22,NULL,4.2
+571,Zoya,Park,parent,University of Adelaide,Finance,Bachelor,12,1,1,0,1,"English,Mandarin",6,113,10,NULL,3.7
+572,Aisha,Chen,parent,University of Adelaide,Psychology,PhD,6,1,1,0,0,"English,Hindi",16,170,23,NULL,4.6
+573,Fatima,Al-Farsi,parent,Monash University,Computer Science,Master,2,0,1,1,0,"English,French",3,12,47,NULL,3.6
+574,Li,Smirnov,parent,University of Sydney,Computer Science,Master,1,0,0,0,1,"English,Indonesian",17,73,7,NULL,3.9
+575,Saanvi,Ahmed,parent,Monash University,Computer Science,Master,9,0,1,0,1,"English,Hindi",18,73,13,NULL,3.6
+576,Ananya,Das,parent,UNSW,Finance,Master,3,1,1,1,1,"English,Mandarin",15,199,38,NULL,3.9
+577,Lucas,Hossain,parent,Monash University,Psychology,Bachelor,2,0,0,0,1,"English,Mandarin",14,15,35,NULL,4.9
+578,Hans,Moreau,parent,University of Western Australia,Mechanical Engineering,Bachelor,2,0,1,1,1,"English,French",8,119,22,NULL,4.4
+579,Sana,Dubois,parent,Australian National University,Finance,PhD,4,1,0,0,1,"English,Indonesian",2,104,40,NULL,4.3
+580,Sarvesh,Hernandez,parent,University of Adelaide,Computer Science,Master,11,1,0,1,0,"English,Mandarin",9,16,22,NULL,3.9
+581,Amara,Dubois,parent,UNSW,Business Analytics,PhD,5,0,1,0,1,"English,Spanish",4,100,12,NULL,4.2
+582,Suresh,Dubois,parent,University of Queensland,Data Science,Master,12,1,1,1,1,"English,Hindi",8,98,43,NULL,4.7
+583,Saanvi,Khan,parent,Australian National University,Artificial Intelligence,Bachelor,14,0,0,1,1,"English,Japnese",10,98,17,NULL,5.0
+584,Zane,Suzuki,parent,University of Melbourne,Data Science,PhD,3,1,1,1,1,"English,Mandarin",16,194,42,NULL,3.7
+585,Jueqing,Hossain,parent,University of Melbourne,Computer Science,Master,5,0,1,0,1,"English,Hindi",9,38,2,NULL,3.6
+586,Ishaan,Al-Farsi,parent,Monash University,Psychology,Master,9,0,1,0,1,"English,Japnese",18,71,19,NULL,4.6
+587,Li,Dubois,parent,UNSW,Data Science,PhD,13,1,1,0,1,"English,Mandarin",5,84,35,NULL,4.2
+588,Yuki,Sharma,parent,Monash University,Psychology,Bachelor,3,1,0,1,0,"English,Mandarin",5,148,22,NULL,3.7
+589,Aisha,Das,parent,University of Adelaide,Data Science,PhD,5,0,0,0,0,"English,Indonesian",8,6,33,NULL,4.4
+590,Mateo,Iqbal,parent,UNSW,Finance,PhD,4,0,0,1,1,"English,Japnese",18,25,48,NULL,4.2
+591,Tanvir,Lefebvre,parent,University of Western Australia,Finance,PhD,8,0,1,1,0,"English,Indonesian",12,20,23,NULL,3.9
+592,Arjun,Bakare,parent,University of Melbourne,Finance,PhD,4,1,1,0,0,"English,Japnese",11,121,1,NULL,4.8
+593,Ananya,Silva,parent,Australian National University,Business Analytics,Bachelor,4,1,0,1,1,"English,Japnese",19,146,2,NULL,4.0
+594,Sofia,Suzuki,parent,University of Queensland,Computer Science,Master,9,1,1,1,1,"English,Mandarin",2,165,3,NULL,4.3
+595,Rohan,Al-Farsi,parent,University of Queensland,Psychology,Master,5,0,0,0,0,"English,Japnese",1,89,38,NULL,4.0
+596,Hans,Sharma,parent,University of Queensland,Data Science,PhD,2,0,0,1,1,"English,Hindi",17,25,17,NULL,4.8
+597,Yuki,Ahmed,parent,Monash University,Data Science,Bachelor,10,0,0,0,0,"English,French",13,67,10,NULL,5.0
+598,Amara,Smirnov,parent,University of Melbourne,Computer Science,Master,5,0,0,0,1,"English,Hindi",5,70,28,NULL,3.6
+599,Sana,Kumar,parent,University of Western Australia,Psychology,PhD,7,1,0,0,0,"English,Japnese",9,46,18,NULL,4.3
+600,Ishaan,Müller,parent,University of Melbourne,Finance,PhD,10,1,0,0,1,"English,Hindi",19,126,9,NULL,4.8
+601,Trang,Bakare,parent,Monash University,Finance,Bachelor,2,1,1,0,1,"English,Mandarin",20,134,4,NULL,3.7
+602,Mei,Mansoor,parent,University of Queensland,Finance,Master,3,0,0,1,1,English,19,16,20,NULL,4.7
+603,Ananya,Müller,parent,University of Western Australia,Computer Science,Master,15,1,0,1,0,"English,Indonesian",10,103,24,NULL,3.9
+604,Priya,Hernandez,parent,Australian National University,Psychology,Bachelor,8,1,1,0,0,"English,French",5,154,6,NULL,4.8
+605,Fatima,Iyer,parent,UNSW,Data Science,Master,11,0,0,0,0,"English,Mandarin",7,95,3,NULL,3.5
+606,Bilal,Garcia,parent,Monash University,Business Analytics,PhD,12,1,1,1,1,"English,Indonesian",20,21,41,NULL,4.7
+607,Zaid,Tanaka,parent,University of Queensland,Finance,PhD,8,0,1,1,1,"English,Hindi",5,105,6,NULL,4.8
+608,Elena,Bakare,parent,UNSW,Computer Science,Bachelor,6,0,0,0,0,"English,Indonesian",4,159,6,NULL,4.8
+609,Sofia,Lefebvre,parent,University of Sydney,Business Analytics,Master,14,1,1,0,1,"English,Mandarin",12,62,45,NULL,4.0
+610,Amara,Chatterjee,parent,University of Adelaide,Artificial Intelligence,PhD,8,1,1,0,0,"English,Indonesian",6,150,41,NULL,3.9
+611,Mateo,Moreau,parent,Australian National University,Finance,Master,9,1,0,1,0,"English,Mandarin",4,145,20,NULL,3.6
+612,Ananya,Wei,parent,University of Melbourne,Computer Science,Bachelor,5,1,1,1,1,"English,Indonesian",16,122,4,NULL,4.4
+613,Hamza,Iyer,parent,Australian National University,Mechanical Engineering,Bachelor,9,0,0,1,0,"English,Mandarin",6,160,2,NULL,4.2
+614,Arjun,Gomez,parent,UNSW,Business Analytics,Bachelor,2,0,0,1,0,English,20,94,18,NULL,4.3
+615,Amara,Hernandez,parent,Australian National University,Finance,Bachelor,4,1,0,1,1,"English,French",8,115,14,NULL,4.5
+616,Arjun,Siddiqui,parent,UNSW,Psychology,PhD,7,0,1,1,0,English,12,85,1,NULL,4.6
+617,Omar,Ahmed,parent,University of Queensland,Data Science,PhD,3,0,0,1,1,"English,Mandarin",14,147,7,NULL,4.1
+618,Ananya,Kim,parent,University of Adelaide,Computer Science,Bachelor,1,0,1,1,1,"English,Japnese",3,68,37,NULL,3.6
+619,Sumaiya,Siddiqui,parent,Monash University,Psychology,Master,5,1,0,0,1,"English,Mandarin",3,40,6,NULL,3.8
+620,Omar,Bakare,parent,University of Sydney,Business Analytics,Bachelor,15,1,1,1,0,"English,Mandarin",16,101,18,NULL,3.7
+621,Sumaiya,Haddad,parent,University of Melbourne,Data Science,Bachelor,4,1,0,1,1,"English,French",9,31,38,NULL,3.7
+622,Hiroshi,Park,parent,University of Queensland,Artificial Intelligence,Bachelor,5,1,1,1,0,"English,Japnese",7,55,27,NULL,3.8
+623,Sofia,Kumar,parent,University of Melbourne,Business Analytics,PhD,5,0,1,1,0,"English,Japnese",16,110,35,NULL,4.5
+624,Zaid,Mansoor,parent,University of Adelaide,Psychology,PhD,4,0,1,0,1,"English,Spanish",19,29,30,NULL,3.9
+625,Sofia,Kim,parent,University of Western Australia,Data Science,Bachelor,10,0,0,0,1,"English,Hindi",8,183,15,NULL,4.9
+626,Li,Wei,parent,University of Sydney,Finance,Master,5,0,0,0,0,"English,Japnese",14,25,14,NULL,3.6
+627,Léa,Lefebvre,parent,Monash University,Mechanical Engineering,Master,6,0,1,1,1,"English,Indonesian",9,120,14,NULL,4.5
+628,Omar,Sato,parent,University of Adelaide,Psychology,Master,7,1,0,1,1,"English,Spanish",2,55,46,NULL,4.7
+629,Tanvir,Dubois,parent,University of Queensland,Finance,Master,10,1,1,1,1,"English,Mandarin",6,199,45,NULL,3.8
+630,Jueqing,Al-Farsi,parent,University of Melbourne,Mechanical Engineering,PhD,13,1,0,1,0,"English,Japnese",19,143,34,NULL,4.3
+631,Omar,Patil,parent,Monash University,Mechanical Engineering,PhD,9,1,1,0,1,"English,Japnese",6,52,3,NULL,4.2
+632,Ishaan,Kim,parent,University of Western Australia,Data Science,Master,3,0,0,0,1,"English,Hindi",4,49,15,NULL,4.3
+633,Elena,Haddad,parent,Australian National University,Computer Science,Bachelor,3,1,0,0,1,"English,French",4,104,47,NULL,4.1
+634,Mateo,Al-Farsi,parent,Australian National University,Finance,Bachelor,7,1,1,0,1,"English,French",10,193,32,NULL,4.9
+635,Mathis,Dubois,parent,University of Melbourne,Computer Science,Bachelor,4,0,0,0,0,"English,Japnese",15,138,3,NULL,4.2
+636,Clara,Gomez,parent,UNSW,Artificial Intelligence,PhD,9,1,1,1,1,"English,Hindi",20,145,25,NULL,4.0
+637,Chloé,Garcia,parent,University of Queensland,Data Science,PhD,4,1,0,1,1,"English,Japnese",13,106,21,NULL,4.0
+638,Saanvi,Haddad,parent,University of Western Australia,Mechanical Engineering,PhD,5,0,0,1,0,"English,Indonesian",4,76,4,NULL,3.7
+639,Sana,Chatterjee,parent,UNSW,Data Science,Master,6,0,1,1,0,English,17,161,48,NULL,5.0
+640,Amira,Lefebvre,parent,University of Sydney,Computer Science,PhD,12,0,1,1,0,"English,French",17,28,3,NULL,4.4
+641,Arjun,Garcia,parent,University of Adelaide,Artificial Intelligence,Bachelor,13,0,1,1,0,English,15,81,9,NULL,4.3
+642,Sarvesh,Kumar,parent,UNSW,Data Science,Bachelor,9,0,1,0,1,"English,Indonesian",19,81,44,NULL,4.3
+643,Li,Kumar,parent,University of Melbourne,Business Analytics,Master,6,1,1,0,1,English,14,36,7,NULL,3.6
+644,Kenji,Bakare,parent,Monash University,Psychology,PhD,3,0,1,1,1,English,18,22,21,NULL,4.6
+645,Amira,Rahman,parent,University of Melbourne,Finance,PhD,12,1,0,1,1,"English,Indonesian",9,149,46,NULL,4.7
+646,Ji-won,Siddiqui,parent,University of Adelaide,Mechanical Engineering,PhD,2,1,0,0,1,English,8,16,38,NULL,3.8
+647,Sarvesh,Dubois,parent,University of Western Australia,Finance,Bachelor,12,1,0,0,0,"English,Indonesian",17,51,45,NULL,4.3
+648,Omar,Haddad,parent,UNSW,Computer Science,Master,14,1,0,1,1,"English,Hindi",12,147,1,NULL,4.2
+649,Sarvesh,Suzuki,parent,Monash University,Data Science,Bachelor,4,0,1,1,1,English,3,15,23,NULL,3.6
+650,Aisha,Sharma,parent,University of Melbourne,Mechanical Engineering,PhD,6,0,0,1,1,"English,Indonesian",14,95,39,NULL,3.6
+651,Arjun,Moreau,parent,University of Melbourne,Mechanical Engineering,PhD,1,1,1,1,0,"English,Mandarin",3,132,6,NULL,3.7
+652,Fatima,Park,parent,University of Adelaide,Finance,Master,4,0,1,0,0,"English,Japnese",5,92,8,NULL,4.2
+653,Léa,Park,parent,Monash University,Computer Science,Bachelor,12,1,0,0,1,"English,French",15,16,33,NULL,5.0
+654,Kavya,Smirnov,parent,Australian National University,Psychology,Master,11,0,1,0,0,"English,French",12,133,42,NULL,3.8
+655,Li,Silva,parent,University of Adelaide,Business Analytics,Bachelor,11,1,0,1,1,"English,Spanish",5,69,31,NULL,3.5
+656,Zane,Khan,parent,Australian National University,Computer Science,PhD,4,0,0,1,1,English,3,144,40,NULL,4.9
+657,Arjun,Tanaka,parent,Australian National University,Finance,Bachelor,1,1,0,1,1,English,12,149,18,NULL,3.7
+658,Mei,Rossi,parent,Monash University,Artificial Intelligence,Master,4,0,0,1,1,English,13,145,12,NULL,4.2
+659,Jueqing,Rossi,parent,University of Western Australia,Computer Science,Master,11,1,1,0,0,"English,Hindi",2,135,43,NULL,4.4
+660,Bilal,Olsen,parent,Monash University,Data Science,PhD,1,0,1,0,0,"English,Spanish",17,7,37,NULL,3.9
+661,Suresh,Das,parent,University of Melbourne,Computer Science,Master,13,0,0,1,0,"English,Indonesian",5,120,45,NULL,3.9
+662,Ananya,Das,parent,UNSW,Finance,Master,6,0,1,0,1,"English,Spanish",16,67,40,NULL,5.0
+663,Zoya,Tanaka,parent,University of Sydney,Computer Science,Master,4,1,1,1,1,"English,Spanish",20,166,26,NULL,4.4
+664,Ananya,Kumar,parent,UNSW,Business Analytics,Bachelor,13,0,0,1,1,"English,Indonesian",15,53,31,NULL,3.6
+665,Tanvir,Park,parent,University of Western Australia,Artificial Intelligence,PhD,15,0,1,0,0,"English,Indonesian",1,31,43,NULL,3.7
+666,Mateo,Chatterjee,parent,University of Sydney,Finance,PhD,8,0,0,0,0,"English,Spanish",12,27,22,NULL,4.3
+667,Suresh,Chatterjee,parent,Australian National University,Mechanical Engineering,PhD,10,0,1,0,1,"English,Hindi",5,185,26,NULL,3.6
+668,Sumaiya,Sharma,parent,University of Sydney,Business Analytics,Bachelor,8,0,0,1,1,English,20,156,11,NULL,3.6
+669,Chloé,Chatterjee,parent,University of Queensland,Psychology,Bachelor,7,1,1,1,0,"English,Hindi",5,143,34,NULL,4.1
+670,Nina,Rossi,parent,Monash University,Data Science,Bachelor,15,1,1,1,1,"English,French",18,89,5,NULL,4.8
+671,Aisha,Olsen,parent,University of Adelaide,Computer Science,PhD,6,1,1,0,1,English,6,72,19,NULL,4.6
+672,Amara,Smirnov,parent,University of Adelaide,Data Science,Master,14,0,1,0,0,"English,Japnese",19,159,6,NULL,4.9
+673,Ji-won,Garcia,parent,Monash University,Finance,PhD,1,0,1,1,0,"English,Japnese",11,21,43,NULL,4.4
+674,Hiroshi,Chaudhary,parent,University of Sydney,Artificial Intelligence,Master,3,0,1,0,1,"English,Indonesian",13,10,28,NULL,4.8
+675,Hans,Smirnov,parent,Australian National University,Computer Science,Master,14,1,1,1,0,"English,Japnese",18,185,45,NULL,3.7
+676,Tanvir,Mansoor,parent,University of Melbourne,Artificial Intelligence,Bachelor,2,0,0,0,0,"English,Spanish",17,93,3,NULL,4.3
+677,Zoya,Müller,parent,University of Melbourne,Business Analytics,PhD,8,1,0,1,0,"English,Spanish",8,183,18,NULL,3.6
+678,Zaid,Park,parent,University of Adelaide,Psychology,Master,12,0,0,0,1,"English,Indonesian",8,149,3,NULL,4.1
+679,Kenji,Iqbal,parent,University of Queensland,Artificial Intelligence,Bachelor,4,1,0,0,0,English,5,148,26,NULL,4.6
+680,Zoya,Haddad,parent,Australian National University,Psychology,Master,5,1,1,0,0,"English,Japnese",1,175,35,NULL,3.5
+681,Ji-won,Lefebvre,parent,University of Queensland,Mechanical Engineering,PhD,10,1,1,1,1,"English,French",16,106,18,NULL,4.2
+682,Sarvesh,Olsen,parent,Monash University,Data Science,PhD,7,1,1,0,0,"English,Spanish",20,128,7,NULL,4.0
+683,Sana,Garcia,parent,University of Melbourne,Mechanical Engineering,Master,3,0,0,0,0,"English,Indonesian",19,8,37,NULL,3.6
+684,Tanvir,Iqbal,parent,University of Western Australia,Psychology,PhD,2,1,0,0,0,English,16,47,45,NULL,4.7
+685,Léa,Al-Farsi,parent,Australian National University,Psychology,PhD,11,1,1,1,1,"English,Spanish",13,92,36,NULL,4.7
+686,Sumaiya,Wong,parent,University of Queensland,Psychology,Master,10,0,1,1,0,"English,Indonesian",18,190,31,NULL,5.0
+687,Lucas,Olsen,parent,Monash University,Mechanical Engineering,PhD,2,0,1,1,0,"English,Indonesian",8,77,31,NULL,3.5
+688,Mateo,Siddiqui,parent,University of Sydney,Business Analytics,Bachelor,10,0,1,1,0,"English,Mandarin",15,141,17,NULL,3.9
+689,Amira,Bakare,parent,University of Sydney,Finance,PhD,15,1,0,0,1,"English,Spanish",20,112,8,NULL,4.9
+690,Hiroshi,Iqbal,parent,University of Melbourne,Artificial Intelligence,PhD,1,0,1,1,0,"English,Hindi",2,3,15,NULL,4.7
+691,Li,Silva,parent,UNSW,Psychology,Master,15,0,1,0,0,"English,Indonesian",19,153,13,NULL,4.1
+692,Julien,Kim,parent,University of Western Australia,Artificial Intelligence,Bachelor,4,0,0,0,1,"English,Japnese",19,79,27,NULL,3.8
+693,Trang,Khan,parent,Australian National University,Computer Science,Master,6,0,0,1,1,"English,French",11,166,29,NULL,3.8
+694,Fatima,Khan,parent,University of Sydney,Computer Science,Bachelor,9,0,0,1,1,"English,French",1,40,21,NULL,4.3
+695,Saanvi,Olsen,parent,UNSW,Data Science,PhD,10,0,1,0,1,"English,Spanish",2,49,6,NULL,4.2
+696,Clara,Müller,parent,UNSW,Artificial Intelligence,Bachelor,1,0,0,0,1,"English,Spanish",20,190,3,NULL,4.5
+697,Hamza,Chatterjee,parent,Monash University,Finance,Bachelor,14,1,1,1,1,"English,Spanish",7,121,2,NULL,4.2
+698,Zaid,Sato,parent,University of Queensland,Psychology,PhD,5,0,1,1,0,"English,French",2,170,16,NULL,4.8
+699,Aisha,Mansoor,parent,University of Melbourne,Artificial Intelligence,Bachelor,11,0,1,1,0,"English,Japnese",13,173,13,NULL,4.0
+700,Sumaiya,Smirnov,parent,University of Queensland,Artificial Intelligence,PhD,8,0,1,0,0,"English,Hindi",4,106,41,NULL,4.1
+701,Hiroshi,Mansoor,professor,Australian National University,Artificial Intelligence,PhD,14,1,0,0,0,"English,Japnese",15,2,11,2007,3.6
+702,Rohan,Dubois,professor,University of Melbourne,Mechanical Engineering,PhD,8,0,0,0,0,"English,Japnese",16,97,4,2004,5.0
+703,Chloé,Mansoor,professor,Monash University,Psychology,Bachelor,2,0,1,1,0,"English,French",8,48,17,2012,3.8
+704,Ananya,Al-Farsi,professor,University of Adelaide,Data Science,Bachelor,1,1,0,0,0,"English,French",14,106,11,2016,4.3
+705,Mateo,Garcia,professor,Australian National University,Data Science,Master,14,1,1,0,0,"English,Indonesian",3,32,45,2015,3.9
+706,Omar,Chatterjee,professor,University of Western Australia,Finance,Master,6,0,0,1,0,"English,Mandarin",3,33,16,2018,4.6
+707,Hiroshi,Wei,professor,University of Sydney,Artificial Intelligence,PhD,1,0,0,0,0,"English,Mandarin",11,178,13,2006,3.5
+708,Yuki,Moreau,professor,University of Adelaide,Computer Science,PhD,12,0,1,0,1,"English,Hindi",13,78,29,1998,3.8
+709,Mei,Smirnov,professor,UNSW,Psychology,Bachelor,11,0,1,0,1,"English,Japnese",7,171,27,1997,4.3
+710,Amara,Wong,professor,Monash University,Artificial Intelligence,Bachelor,10,1,0,0,1,"English,Spanish",5,163,12,2014,4.8
+711,Julien,Wei,professor,University of Adelaide,Computer Science,Bachelor,6,0,1,0,0,"English,French",13,129,44,2007,3.6
+712,Amira,Gomez,professor,University of Western Australia,Psychology,PhD,3,0,1,0,1,"English,Indonesian",14,13,16,2010,4.0
+713,Ishaan,Hernandez,professor,University of Western Australia,Mechanical Engineering,Master,11,1,0,0,1,"English,Indonesian",11,57,15,2019,3.6
+714,Priya,Wong,professor,Australian National University,Computer Science,Bachelor,10,1,0,0,1,"English,Japnese",17,136,28,2000,3.6
+715,Sana,Patil,professor,University of Sydney,Data Science,PhD,11,1,0,0,1,"English,Indonesian",5,54,45,2015,3.5
+716,Trang,Haddad,professor,University of Queensland,Business Analytics,PhD,11,0,1,0,0,"English,Mandarin",1,198,18,1998,4.6
+717,Trang,Hernandez,professor,UNSW,Computer Science,Master,8,0,1,1,0,"English,Hindi",1,169,2,2020,4.5
+718,Hans,Ahmed,professor,University of Adelaide,Data Science,Bachelor,7,0,1,1,0,"English,French",3,125,18,2003,4.6
+719,Elena,Smirnov,professor,University of Western Australia,Artificial Intelligence,Master,6,0,1,1,0,"English,Hindi",5,7,36,2020,3.5
+720,Amira,Hernandez,professor,UNSW,Business Analytics,PhD,4,1,0,0,1,"English,Mandarin",17,173,47,2012,4.0
+721,Bilal,Haddad,professor,University of Sydney,Psychology,PhD,7,1,1,1,0,"English,French",2,88,7,2016,4.4
+722,Amira,Silva,professor,UNSW,Computer Science,Master,8,1,0,0,1,"English,Mandarin",16,194,12,2013,4.2
+723,Saanvi,Al-Farsi,professor,University of Queensland,Finance,Master,2,0,0,0,1,English,5,125,6,2015,5.0
+724,Sumaiya,Sato,professor,University of Queensland,Business Analytics,PhD,4,1,1,1,1,"English,Spanish",6,138,27,2017,4.1
+725,Ishaan,Al-Farsi,professor,Australian National University,Psychology,PhD,9,1,0,0,1,"English,French",2,97,5,1997,4.0
+726,Mathis,Haddad,professor,Monash University,Business Analytics,PhD,12,1,1,0,0,"English,French",16,131,1,2018,4.6
+727,Li,Haddad,professor,University of Queensland,Psychology,Master,1,1,0,1,1,"English,Spanish",11,26,41,2005,5.0
+728,Jueqing,Iyer,professor,Australian National University,Artificial Intelligence,PhD,7,0,0,1,1,"English,Indonesian",3,172,7,1997,5.0
+729,Sana,Tanaka,professor,University of Sydney,Artificial Intelligence,Master,10,1,1,0,0,"English,Hindi",7,13,31,2014,4.9
+730,Nina,Silva,professor,UNSW,Artificial Intelligence,Bachelor,3,0,0,0,0,"English,Mandarin",20,136,31,2017,4.3
+731,Ivan,Hernandez,professor,University of Melbourne,Psychology,Master,15,0,1,0,1,"English,French",18,33,9,1996,4.2
+732,Zoya,Garcia,professor,University of Queensland,Finance,PhD,5,1,1,1,0,"English,Mandarin",13,170,39,2017,4.4
+733,Yuki,Chatterjee,professor,University of Western Australia,Business Analytics,PhD,11,0,0,0,1,"English,Spanish",1,29,45,1995,4.3
+734,Sofia,Chatterjee,professor,University of Adelaide,Mechanical Engineering,PhD,11,1,1,1,0,"English,Japnese",9,122,12,1995,4.3
+735,Tanvir,Dubois,professor,University of Adelaide,Data Science,Master,9,0,1,1,0,English,15,21,6,1999,4.8
+736,Lucas,Chatterjee,professor,Australian National University,Data Science,Bachelor,9,0,0,1,1,"English,French",9,78,4,2005,3.6
+737,Nina,Mansoor,professor,UNSW,Data Science,Master,12,1,0,1,1,"English,Mandarin",20,27,18,2003,3.9
+738,Li,Hossain,professor,University of Adelaide,Business Analytics,PhD,5,1,0,1,1,"English,Indonesian",5,0,23,2004,4.2
+739,Kavya,Wei,professor,University of Melbourne,Artificial Intelligence,PhD,2,0,0,0,0,English,9,24,44,1997,4.1
+740,Amira,Haddad,professor,University of Sydney,Mechanical Engineering,PhD,15,1,1,0,0,"English,Japnese",9,19,26,2015,4.1
+741,Sarvesh,Al-Farsi,professor,Australian National University,Data Science,Master,6,0,0,1,1,"English,Hindi",20,15,48,2002,4.6
+742,Kavya,Das,professor,University of Melbourne,Artificial Intelligence,Master,10,1,1,1,1,"English,Indonesian",17,119,40,2009,3.7
+743,Li,Rossi,professor,University of Sydney,Finance,Master,1,1,0,1,0,"English,Mandarin",20,161,32,2002,3.5
+744,Mathis,Chen,professor,University of Adelaide,Data Science,Master,14,1,0,0,0,"English,Japnese",18,84,32,2007,4.6
+745,Kavya,Dubois,professor,University of Adelaide,Psychology,Master,11,1,0,1,0,"English,French",15,134,34,2020,3.8
+746,Mathis,Rossi,professor,University of Sydney,Artificial Intelligence,PhD,6,1,1,1,0,"English,Mandarin",9,77,23,2019,4.7
+747,Julien,Ahmed,professor,University of Adelaide,Finance,Bachelor,13,0,1,0,1,"English,Spanish",6,181,36,2006,3.6
+748,Sofia,Sharma,professor,University of Adelaide,Data Science,Master,9,1,0,0,1,"English,Spanish",14,177,6,2019,4.2
+749,Tanvir,Malik,professor,University of Adelaide,Computer Science,Master,4,0,0,0,0,"English,Indonesian",1,17,46,2014,4.9
+750,Sana,Gomez,professor,University of Queensland,Computer Science,PhD,12,1,1,0,0,"English,Spanish",8,41,46,2013,3.7
+751,Zoya,Kumar,professor,Australian National University,Psychology,PhD,1,0,1,0,0,"English,Indonesian",18,151,23,2008,4.7
+752,Bilal,Mansoor,professor,University of Sydney,Psychology,PhD,13,1,0,1,1,"English,Mandarin",10,189,34,2017,4.0
+753,Chloé,Wong,professor,University of Melbourne,Computer Science,PhD,3,1,0,0,0,English,12,95,4,2004,3.7
+754,Ishaan,Ahmed,professor,University of Sydney,Data Science,PhD,4,0,1,0,0,"English,Japnese",16,98,38,2007,4.8
+755,Chloé,Kumar,professor,University of Sydney,Artificial Intelligence,Master,13,0,0,1,0,"English,Spanish",15,130,9,2003,3.8
+756,Jueqing,Patil,professor,University of Adelaide,Mechanical Engineering,Master,1,1,1,1,0,"English,Hindi",11,9,30,2002,4.6
+757,Kavya,Chatterjee,professor,University of Queensland,Business Analytics,Master,5,0,0,0,0,"English,Spanish",5,78,13,1997,4.8
+758,Suresh,Sharma,professor,University of Adelaide,Psychology,Bachelor,10,1,1,1,0,English,19,59,3,2019,4.3
+759,Mathis,Das,professor,Monash University,Computer Science,Bachelor,14,1,0,0,0,English,18,96,13,1996,3.6
+760,Yuki,Iyer,professor,University of Melbourne,Mechanical Engineering,PhD,5,0,1,1,1,"English,Indonesian",6,171,1,2020,3.6
+761,Zoya,Ahmed,professor,Monash University,Psychology,Bachelor,11,1,1,1,1,"English,French",4,112,18,2020,4.3
+762,Mei,Al-Farsi,professor,University of Western Australia,Data Science,Master,4,1,0,1,1,"English,French",19,29,11,2007,3.6
+763,Ananya,Malik,professor,Australian National University,Computer Science,Master,14,1,0,0,0,"English,Japnese",3,180,13,2013,4.7
+764,Ivan,Wong,professor,UNSW,Mechanical Engineering,PhD,12,0,0,1,1,"English,Spanish",2,34,32,1996,4.7
+765,Kavya,Park,professor,Monash University,Computer Science,Bachelor,14,0,0,1,1,"English,French",7,133,10,1998,4.8
+766,Ji-won,Haddad,professor,University of Queensland,Mechanical Engineering,Master,1,0,1,1,1,"English,French",14,96,13,2002,4.5
+767,Suresh,Smirnov,professor,Monash University,Psychology,Master,15,1,0,0,0,"English,Hindi",3,139,20,2010,4.7
+768,Zaid,Iqbal,professor,University of Western Australia,Mechanical Engineering,PhD,6,1,1,1,0,"English,Japnese",5,27,46,2011,4.6
+769,Kenji,Hernandez,professor,University of Adelaide,Computer Science,Bachelor,15,1,1,1,1,"English,French",3,195,35,1999,3.9
+770,Mathis,Sato,professor,UNSW,Artificial Intelligence,Bachelor,3,1,0,1,0,"English,Spanish",19,120,31,2011,4.6
+771,Ji-won,Gomez,professor,Monash University,Business Analytics,PhD,3,0,0,0,0,"English,Mandarin",16,50,48,1997,3.9
+772,Saanvi,Olsen,professor,University of Queensland,Mechanical Engineering,Master,15,1,1,0,1,"English,Spanish",18,51,42,2017,3.9
+773,Mateo,Ahmed,professor,Monash University,Finance,PhD,8,1,0,1,1,English,8,83,14,2016,4.4
+774,Kenji,Dubois,professor,Australian National University,Data Science,Bachelor,6,0,0,0,0,"English,French",3,21,8,2008,4.2
+775,Ivan,Sharma,professor,University of Sydney,Data Science,Bachelor,10,0,0,1,1,"English,Mandarin",1,27,25,1996,3.8
+776,Amara,Nguyen,professor,Monash University,Finance,Bachelor,14,1,1,1,0,"English,Mandarin",14,10,37,1995,4.1
+777,Arjun,Hossain,professor,University of Western Australia,Psychology,PhD,14,0,0,1,0,"English,French",11,117,18,2013,4.4
+778,Lucas,Haddad,professor,University of Western Australia,Finance,PhD,1,0,0,1,1,"English,French",1,1,12,2013,4.1
+779,Ananya,Tanaka,professor,UNSW,Business Analytics,Bachelor,8,0,0,1,1,"English,Indonesian",13,141,45,2000,3.7
+780,Lucas,Iqbal,professor,Australian National University,Psychology,Master,1,0,1,1,1,English,9,69,38,1998,3.7
+781,Nina,Iqbal,professor,University of Queensland,Computer Science,Master,6,1,0,0,1,"English,Indonesian",1,145,26,1999,3.9
+782,Nusrat,Patil,professor,UNSW,Computer Science,Bachelor,4,1,0,0,1,English,16,29,4,2013,4.3
+783,Abrar,Sharma,professor,University of Melbourne,Computer Science,Master,12,0,1,0,0,English,7,169,45,1999,4.4
+784,Hans,Patil,professor,University of Queensland,Finance,Master,5,1,1,1,0,"English,French",4,73,29,2004,3.8
+785,Mathis,Tanaka,professor,University of Sydney,Mechanical Engineering,Master,3,1,1,0,0,"English,Hindi",14,131,34,1995,4.9
+786,Fatima,Sato,professor,Australian National University,Finance,PhD,6,1,0,1,1,"English,Mandarin",12,150,44,2020,4.4
+787,Fatima,Silva,professor,University of Adelaide,Business Analytics,PhD,8,0,1,1,0,"English,Japnese",13,124,37,2002,3.6
+788,Aisha,Suzuki,professor,University of Queensland,Data Science,PhD,2,0,1,1,1,"English,Spanish",14,163,12,2015,4.6
+789,Bilal,Smirnov,professor,Australian National University,Business Analytics,Bachelor,9,0,0,1,1,"English,Japnese",6,15,7,2014,4.1
+790,Hamza,Park,professor,UNSW,Artificial Intelligence,PhD,8,0,1,1,0,"English,French",14,163,21,2017,4.8
+791,Bilal,Bakare,professor,Monash University,Computer Science,Bachelor,5,1,1,1,1,"English,Japnese",20,54,20,2004,3.9
+792,Sumaiya,Malik,professor,University of Western Australia,Data Science,Bachelor,3,1,0,0,1,"English,Indonesian",7,91,48,2017,4.9
+793,Hiroshi,Park,professor,Australian National University,Data Science,PhD,5,1,1,1,1,"English,French",1,169,18,2020,4.4
+794,Trang,Wei,professor,University of Western Australia,Computer Science,Bachelor,12,1,1,0,1,"English,Mandarin",1,5,17,2001,4.7
+795,Léa,Chaudhary,professor,University of Western Australia,Finance,Bachelor,7,1,1,1,0,"English,Spanish",6,98,3,2007,4.2
+796,Chloé,Sato,professor,Monash University,Finance,PhD,2,0,1,0,0,English,17,130,12,2010,3.6
+797,Hiroshi,Rahman,professor,University of Adelaide,Business Analytics,Master,1,1,0,0,1,"English,Spanish",13,197,1,1999,4.0
+798,Hans,Bakare,professor,University of Sydney,Mechanical Engineering,PhD,11,1,1,1,0,"English,French",8,19,18,2000,4.1
+799,Li,Nguyen,professor,University of Melbourne,Business Analytics,Master,2,0,1,0,0,"English,Spanish",3,95,4,2012,3.9
+800,Aisha,Garcia,professor,University of Melbourne,Artificial Intelligence,Master,8,0,1,1,1,"English,Indonesian",8,59,22,2015,4.8
