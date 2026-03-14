@@ -7,24 +7,23 @@ from api.deps import get_current_user
 from db.session import get_db
 from schemas.recommendation_schema import (
     EvaluateResponse,
-    MentorRecommendationItem,
+    MentorRecommendationRow,
     RecommendRequest,
-    RecommendResponse,
+    _slug_from_name,
 )
 from services import recommender_service
 
 router = APIRouter(prefix="/mentors/recommendations", tags=["recommendations"])
 
 
-@router.post("", response_model=RecommendResponse)
+@router.post("", response_model=list[MentorRecommendationRow])
 def recommend_mentors(
     payload: RecommendRequest,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
-) -> RecommendResponse:
+) -> list[MentorRecommendationRow]:
     """
-    Recommend mentors. Both given → use only request_text. Only request_text → rank by text.
-    Only user_id → rank by user's mentee profile. Returns mentors with final_score as percentage (2 decimals).
+    Recommend mentors. Returns array of mentor objects with id, slug, final_score (percentage, 2 decimals).
     """
     try:
         mentors, _ = recommender_service.recommend(
@@ -35,14 +34,39 @@ def recommend_mentors(
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-    items = [
-        MentorRecommendationItem(
-            mentor=m["mentor"],
-            final_score=round((m.get("final_score") or 0) * 100, 2),
+
+    rows: list[MentorRecommendationRow] = []
+    for m in mentors:
+        mentor = m.get("mentor") or {}
+        final_score = round((m.get("final_score") or 0) * 100, 2)
+        mid = mentor.get("mentor_id") or mentor.get("id") or 0
+        slug = _slug_from_name(mentor.get("first_name"), mentor.get("last_name"))
+        rows.append(
+            MentorRecommendationRow(
+                first_name=mentor.get("first_name"),
+                last_name=mentor.get("last_name"),
+                mentor_type=mentor.get("mentor_type"),
+                university=mentor.get("university"),
+                field_of_study=mentor.get("field_of_study"),
+                degree_level=mentor.get("degree_level"),
+                years_in_country=mentor.get("years_in_country"),
+                visa_experience=mentor.get("visa_experience"),
+                housing_experience=mentor.get("housing_experience"),
+                cultural_adaptation_experience=mentor.get("cultural_adaptation_experience"),
+                career_guidance_experience=mentor.get("career_guidance_experience"),
+                languages_spoken=mentor.get("languages_spoken"),
+                bio=mentor.get("bio"),
+                availability_hours_per_week=mentor.get("availability_hours_per_week"),
+                sessions_completed=mentor.get("sessions_completed"),
+                response_time_hours=mentor.get("response_time_hours"),
+                graduation_year=mentor.get("graduation_year"),
+                mentor_rating=mentor.get("mentor_rating"),
+                id=mid,
+                slug=slug,
+                final_score=final_score,
+            )
         )
-        for m in mentors
-    ]
-    return RecommendResponse(mentors=items)
+    return rows
 
 
 @router.get("/evaluate", response_model=EvaluateResponse)
