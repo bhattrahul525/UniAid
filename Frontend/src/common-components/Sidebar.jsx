@@ -24,7 +24,7 @@ const itemStyle = {
     background: "rgba(46,204,113,0.12)"
   }
 }
-function Sidebar({ open, onClose }) {
+function Sidebar({ open, onClose, variant = "temporary" }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ function Sidebar({ open, onClose }) {
   return (
     <Drawer
       anchor="left"
-      variant="temporary"
+      variant={variant}
       open={open}
       onClose={onClose}
       sx={{

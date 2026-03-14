@@ -121,23 +121,27 @@ const randomBios = [
 ];
 
 export default function MentorshipPage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [prompt, setPrompt] = useState("");
   const navigate = useNavigate();
-  const userId = useSelector((state) => state.auth.user?.id);
+  const userId = useSelector((state) => state.auth.user?.user_id);
   const { data: mentors = [], isLoading, isError } = useMentors();
   const [mode, setMode] = useState("all");
   const recommendationParams =
     mode === "profile"
       ? { userId, topK: 8 }
       : mode === "prompt"
-        ? { userId, topK: 10, requestText: searchTerm }
+        ? {
+            userId,
+            numberOfQuery: 10,
+            prompt
+          }
         : null;
 
-  const { data: recommendedMentorsData } =
-    useMentorRecommendations(recommendationParams);
-  const recommendedMentors = Array.isArray(recommendedMentorsData)
-    ? recommendedMentorsData
-    : recommendedMentorsData?.mentors ?? [];
+  const {
+  data: recommendedMentors,
+  isLoading: isRecommendationsLoading,
+  isError: isRecommendationsError
+} = useMentorRecommendations(recommendationParams);
 
   const enrichedMentors = useMemo(() => {
     return mentors.map((mentor, index) => {
@@ -181,21 +185,20 @@ export default function MentorshipPage() {
   const displayMentors =
     mode === "all" ? enrichedMentors : enrichedRecommendedMentors;
 
-  if (isLoading) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Typography sx={{ textAlign: "center", mt: 10 }}>
-        Failed to load mentors
-      </Typography>
-    );
-  }
+    if (isLoading || isRecommendationsLoading) {
+  return (
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+      <CircularProgress />
+    </Box>
+  );
+}
+if (isError || isRecommendationsError) {
+  return (
+    <Typography sx={{ textAlign: "center", mt: 10 }}>
+      Something went wrong while loading mentors.
+    </Typography>
+  );
+}
 
   return (
     <Box
@@ -218,24 +221,16 @@ export default function MentorshipPage() {
         <Box mb={3} display="flex" gap={2}>
           <TextField
             fullWidth
-            placeholder="Describe the mentor you need (example: Data Science mentor from Australia with visa experience)"
-            value={searchTerm}
+            placeholder="Describe the mentor you need (example: Professor in Computer Science at Monash)"
+            value={prompt}
             onChange={(e) => {
-              const value = e.target.value;
-              setSearchTerm(value);
-
-              if (value.length > 3) {
-                setMode("prompt");
-              } else {
-                setMode("all");
-              }
+              setPrompt(e.target.value);
             }}
             variant="outlined"
             sx={{
-              background: "#ffffff",
-              borderRadius: "40px",
-
               "& .MuiOutlinedInput-root": {
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,0.06)",
                 borderRadius: "40px",
                 transition: "all 0.25s ease",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
@@ -276,7 +271,11 @@ export default function MentorshipPage() {
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box
-              onClick={() => navigate("/profile")}
+              onClick={() => {
+                if (prompt.trim().length > 0) {
+                  setMode("prompt");
+                }
+              }}
               sx={{
                 px: 3,
                 height: "56px",
@@ -382,7 +381,11 @@ export default function MentorshipPage() {
                         mentor_rating={mentor.mentor_rating}
                         profileImage={mentor.profileImage}
                         bio={mentor.bio}
-                        aiRecommendation="-"
+                        aiRecommendation={
+                          mentor.final_score
+                            ? mentor.final_score.toFixed(2)
+                            : "-"
+                        }
                         onClick={() =>
                           navigate(`/mentor/${mentor.id}`, { state: mentor })
                         }
@@ -392,7 +395,7 @@ export default function MentorshipPage() {
                 ) : (
                   <Grid item xs={12}>
                     <Typography color="text.secondary">
-                      No mentors found for "{searchTerm}".
+                      No mentors found.
                     </Typography>
                   </Grid>
                 )}

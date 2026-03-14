@@ -1,37 +1,22 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
 import ChatPage from "./pages/ChatPage";
+import CityPage from "./pages/City";
+import DashboardPage from "./pages/DashboardPage";
 import ForumPage from "./pages/ForumPage";
 import GlobePage from "./pages/Globe";
 import Landing from "./pages/Landing";
 import LoginPage from "./pages/LoginPage";
+import MentorDetails from "./pages/MentorDetails";
 import MentorshipPage from "./pages/MentoringPage";
 import Profile from "./pages/ProfilePage";
 import RegistrationPage from "./pages/RegistrationPage";
 import RootLayout from "./pages/RootLayout";
+import SessionsGridPage from "./pages/SessionPage";
 import ProtectedRoute from "./routes/ProtectedRouter";
 import PublicRoute from "./routes/PublicRoute";
-import CityPage from "./pages/City";
-import MentorDetails from "./pages/MentorDetails";
-import SessionsGridPage from "./pages/SessionPage";
-import { setAuth } from "./slices/authSlice";
-import { useDispatch } from "react-redux";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      dispatch(
-        setAuth({
-          token,
-          isAuthenticated: true
-        })
-      );
-    }
-  }, [dispatch]);
-
+ 
   return (
     <Routes>
       {/* PUBLIC ROUTES */}
@@ -72,6 +57,7 @@ function App() {
           </ProtectedRoute>
         }
       >
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/mentorship" element={<MentorshipPage />} />
         <Route path="/mentor/:slug" element={<MentorDetails />} />

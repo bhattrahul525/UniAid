@@ -9,15 +9,18 @@ const routeTitles = {
   "/chat": "Student Chat",
   "/city-info": "City Exploration",
   "/profile": "Your Profile Details",
-  "/sessions": "Session Directory"
+  "/sessions": "Session Directory",
+  "/dashboard": "Your Dashboard"
 };
 
 const routeSubtitles = {
   "/sessions": "Manage your schedule and discover new workshops. All times are in AEST.",
-  "/profile": "Tell us about yourself so mentors can help you better."
+  "/profile": "Tell us about yourself so mentors can help you better.",
+  "/dashboard": "Your personalized space to explore mentors, sessions, and student resources.",
 };
 
 const headerBackgrounds = {
+  "/dashboard": "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b",
   "/forum": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
   "/chat": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
   "/city-info": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad",
