@@ -125,15 +125,23 @@ export default function MentorshipPage() {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.auth.user?.id);
   const { data: mentors = [], isLoading, isError } = useMentors();
-  const [showRecommendations, setShowRecommendations] = useState(false);
-  const { data: recommendedMentors } = useMentorRecommendations(
-    showRecommendations
+  const [mode, setMode] = useState("all");
+  const recommendationParams =
+    mode === "profile"
       ? {
-          userId: userId,
+          userId,
           numberOfQuery: 8
         }
-      : null
-  );
+      : mode === "prompt"
+        ? {
+            userId,
+            numberOfQuery: 10,
+            prompt: searchTerm
+          }
+        : null;
+
+  const { data: recommendedMentors } =
+    useMentorRecommendations(recommendationParams);
 
   const enrichedMentors = useMemo(() => {
     return mentors.map((mentor, index) => {
@@ -170,9 +178,8 @@ export default function MentorshipPage() {
     }));
   }, [recommendedMentors]);
 
-  const displayMentors = showRecommendations
-    ? enrichedRecommendedMentors
-    : enrichedMentors;
+  const displayMentors =
+    mode === "all" ? enrichedMentors : enrichedRecommendedMentors;
 
   if (isLoading) {
     return (
@@ -213,7 +220,16 @@ export default function MentorshipPage() {
             fullWidth
             placeholder="Describe the mentor you need (example: Data Science mentor from Australia with visa experience)"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchTerm(value);
+
+              if (value.length > 3) {
+                setMode("prompt");
+              } else {
+                setMode("all");
+              }
+            }}
             variant="outlined"
             sx={{
               background: "#ffffff",
@@ -295,7 +311,7 @@ export default function MentorshipPage() {
 
         <Box mb={4} sx={{ display: "flex", justifyContent: "center" }}>
           <Box
-            onClick={() => setShowRecommendations(true)}
+            onClick={() => setMode("profile")}
             sx={{
               display: "inline-flex",
               alignItems: "center",
