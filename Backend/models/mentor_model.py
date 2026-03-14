@@ -15,7 +15,11 @@ class Mentor(Base):
 
     __tablename__ = "mentors"
 
+<<<<<<< Updated upstream
     mentor_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+=======
+    id = Column("id", Integer, primary_key=True, index=True, autoincrement=True)
+>>>>>>> Stashed changes
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
     mentor_type = Column(String(50), nullable=False, index=True)  # student, parent, professor, etc.

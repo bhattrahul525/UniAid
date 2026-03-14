@@ -1,4 +1,4 @@
-mentor_id,first_name,last_name,mentor_type,university,field_of_study,degree_level,years_in_country,visa_experience,housing_experience,cultural_adaptation_experience,career_guidance_experience,languages_spoken,availability_hours_per_week,sessions_completed,response_time_hours,graduation_year,mentor_rating
+id,first_name,last_name,mentor_type,university,field_of_study,degree_level,years_in_country,visa_experience,housing_experience,cultural_adaptation_experience,career_guidance_experience,languages_spoken,availability_hours_per_week,sessions_completed,response_time_hours,graduation_year,mentor_rating
 1,Sumaiya,Kim,student,Monash University,Data Science,Bachelor,14,0,0,0,0,"English,French",15,105,46,NULL,4.6
 2,Ji-won,Sato,student,UNSW,Mechanical Engineering,Master,8,0,1,0,0,"English,Japnese",12,184,6,NULL,4.0
 3,Tanvir,Suzuki,student,University of Western Australia,Mechanical Engineering,Master,10,0,0,0,1,"English,Indonesian",6,172,21,NULL,4.6
