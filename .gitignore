@@ -82,6 +82,9 @@ yarn-error.log*
 .npm
 .yarn-integrity
 
+# Large media (host elsewhere or use LFS)
+Frontend/public/hero-video.mp4
+
 # Backend / ML artifacts (generated; run recommender.py build & train_ltr.py to recreate)
 Backend/ML/models/*.joblib
 Backend/ML/models/*.npy
