@@ -26,6 +26,7 @@ class MenteeService:
             degree_level=payload.degree_level,
             budget_range=payload.budget_range,
             preferred_language=payload.preferred_language,
+            bio=payload.bio,
         )
         db.add(mentee)
         db.commit()

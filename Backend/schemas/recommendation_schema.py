@@ -61,10 +61,12 @@ class MentorRecommendationItem(BaseModel):
     university: Optional[str] = None
     field_of_study: Optional[str] = None
     degree_level: Optional[str] = None
+    mentoring_topics: Optional[str] = None
     languages_spoken: Optional[str] = None
     availability_hours_per_week: Optional[int] = None
     sessions_completed: Optional[int] = None
     response_time_hours: Optional[int] = None
+    bio: Optional[str] = None
     mentor_rating: Optional[float] = None
     similarity: Optional[float] = None
     quality_score: Optional[float] = None
