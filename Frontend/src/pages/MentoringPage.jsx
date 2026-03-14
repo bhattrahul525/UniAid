@@ -135,7 +135,9 @@ export default function MentorshipPage() {
 
   const { data: recommendedMentorsData } =
     useMentorRecommendations(recommendationParams);
-  const recommendedMentors = recommendedMentorsData?.mentors ?? [];
+  const recommendedMentors = Array.isArray(recommendedMentorsData)
+    ? recommendedMentorsData
+    : recommendedMentorsData?.mentors ?? [];
 
   const enrichedMentors = useMemo(() => {
     return mentors.map((mentor, index) => {

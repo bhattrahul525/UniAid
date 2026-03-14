@@ -11,7 +11,13 @@ _REQ_CAREER = ("career", "job", "employment")
 # Field-of-study: phrases that imply user wants CS/tech
 _REQ_FIELD_CS = (
     "computer science", "computing", "data science", "software", "programming",
-    " cs ", "cs ", " it ", "information technology",
+    " cs ", "cs ", " it ", "information technology", "tech",
+)
+# Language names we detect in request text (lowercase); mentor languages_spoken can be "English;Mandarin" etc.
+_LANGUAGE_KEYWORDS = (
+    "mandarin", "chinese", "english", "spanish", "french", "hindi", "arabic",
+    "italian", "german", "japanese", "korean", "vietnamese", "thai", "indonesian",
+    "malay", "portuguese", "russian", "bengali", "tamil", "telugu", "turkish",
 )
 
 # Resolve paths: Backend/services -> Backend -> UniAid
@@ -130,6 +136,29 @@ def _mentor_to_recommendation_item(mentor: Any, scores: dict[str, Any]) -> dict[
     }
 
 
+def _detect_requested_languages(request_text: Optional[str]) -> list[str]:
+    """Detect which languages are mentioned in request text (e.g. 'speak Mandarin', 'English and Spanish')."""
+    if not request_text or not request_text.strip():
+        return []
+    t = request_text.lower().strip()
+    return [lang for lang in _LANGUAGE_KEYWORDS if lang in t]
+
+
+def _mentor_speaks_any(mentor: dict[str, Any], languages: list[str]) -> bool:
+    """True if mentor's languages_spoken contains any of the requested languages (case-insensitive)."""
+    if not languages:
+        return True
+    spoken = (mentor.get("languages_spoken") or "").strip()
+    if not spoken:
+        return False
+    parts = [p.strip().lower() for p in spoken.replace(";", ",").split(",") if p.strip()]
+    for req in languages:
+        for part in parts:
+            if req in part or part in req:
+                return True
+    return False
+
+
 def _detect_requirements(request_text: str) -> list[str]:
     """Detect which explicit requirements are mentioned in request text. Returns list of requirement keys."""
     if not request_text or not request_text.strip():
@@ -167,12 +196,25 @@ def _mentor_satisfies_requirement(mentor: dict[str, Any], req: str) -> bool:
     return False
 
 
-def _requirement_match_score(mentor: dict[str, Any], requirements: list[str]) -> float:
-    """Return fraction of requirements satisfied by mentor (0 to 1). If no requirements, return 1."""
-    if not requirements:
-        return 1.0
+def _requirement_match_score(
+    mentor: dict[str, Any],
+    requirements: list[str],
+    request_text: Optional[str] = None,
+) -> float:
+    """Return fraction of requirements satisfied by mentor (0 to 1). If no requirements, return 1.
+    When request_text mentions languages, language counts as 2 requirement units so that
+    mentors who speak the requested language rank clearly above those who don't.
+    """
+    total = len(requirements)
     satisfied = sum(1 for r in requirements if _mentor_satisfies_requirement(mentor, r))
-    return satisfied / len(requirements)
+    requested_languages = _detect_requested_languages(request_text or "") if request_text else []
+    if requested_languages:
+        total += 2
+        if _mentor_speaks_any(mentor, requested_languages):
+            satisfied += 2
+    if total == 0:
+        return 1.0
+    return satisfied / total
 
 
 def _rerank_by_requirements(
@@ -196,7 +238,7 @@ def _rerank_by_requirements(
         mentor = item.get("mentor") or {}
         sim = float(item.get("similarity") or 0)
         qual = float(item.get("quality_score") or 0)
-        req_score = _requirement_match_score(mentor, requirements)
+        req_score = _requirement_match_score(mentor, requirements, request_text)
         item["requirement_match"] = req_score
         # Recompute final_score so requirement match has weight
         item["final_score"] = w_similarity * sim + w_quality * qual + w_requirement * req_score

@@ -96,6 +96,49 @@ class MentorRecommendationItem(BaseModel):
         return round(float(v), 2)
 
 
+def _slug_from_name(first_name: Optional[str], last_name: Optional[str]) -> str:
+    """URL-friendly slug: first_name-last_name lowercased, hyphenated."""
+    first = (first_name or "").strip()
+    last = (last_name or "").strip()
+    parts = [p for p in [first, last] if p]
+    if not parts:
+        return "mentor"
+    raw = "-".join(parts).lower()
+    return "".join(c if c.isalnum() or c == "-" else "-" for c in raw).strip("-") or "mentor"
+
+
+class MentorRecommendationRow(BaseModel):
+    """Flat mentor + id, slug, final_score for array response."""
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    mentor_type: Optional[str] = None
+    university: Optional[str] = None
+    field_of_study: Optional[str] = None
+    degree_level: Optional[str] = None
+    years_in_country: Optional[int] = None
+    visa_experience: Optional[int] = None
+    housing_experience: Optional[int] = None
+    cultural_adaptation_experience: Optional[int] = None
+    career_guidance_experience: Optional[int] = None
+    languages_spoken: Optional[str] = None
+    bio: Optional[str] = None
+    availability_hours_per_week: Optional[int] = None
+    sessions_completed: Optional[int] = None
+    response_time_hours: Optional[int] = None
+    graduation_year: Optional[int] = None
+    mentor_rating: Optional[float] = None
+    id: int = Field(..., description="Mentor primary key")
+    slug: str = Field(..., description="URL-friendly identifier")
+    final_score: float = Field(..., description="Match score as percentage (0–100), 2 decimal places")
+
+    model_config = {"extra": "ignore"}
+
+    @field_validator("final_score", mode="before")
+    @classmethod
+    def round_final_score(cls, v: float) -> float:
+        return round(float(v), 2)
+
+
 class RecommendResponse(BaseModel):
     """Response: ranked list of recommended mentors with match percentage."""
     mentors: list[MentorRecommendationItem] = Field(..., description="Ranked list of recommended mentors")
