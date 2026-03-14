@@ -22,7 +22,7 @@ def create_mentee(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ) -> MenteeRead:
-    """Create a new mentee (user_type, home_country, preferred_destination_country, field_of_study, degree_level, budget_range, preferred_language)."""
+    """Create a new mentee (user_type, home_country, university, field_of_study, degree_level, budget_range, preferred_language)."""
     mentee = MenteeService.create(db, payload)
     return MenteeService.to_read(mentee)
 

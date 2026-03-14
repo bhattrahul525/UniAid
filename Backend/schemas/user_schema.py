@@ -104,7 +104,7 @@ class MenteeBase(BaseModel):
 
     user_type: Optional[str] = Field(None, description="e.g. student, parent")
     home_country: Optional[str] = None
-    preferred_destination_country: Optional[str] = None
+    university: Optional[str] = None
     field_of_study: Optional[str] = None
     degree_level: Optional[str] = None
     budget_range: Optional[str] = None
@@ -136,7 +136,7 @@ class MenteeUpdate(BaseModel):
 
     user_type: Optional[str] = None
     home_country: Optional[str] = None
-    preferred_destination_country: Optional[str] = None
+    university: Optional[str] = None
     field_of_study: Optional[str] = None
     degree_level: Optional[str] = None
     budget_range: Optional[str] = None
