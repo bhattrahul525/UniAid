@@ -68,6 +68,7 @@ class MentorRead(MentorBase):
 
     model_config = ConfigDict(from_attributes=True)
     id: int = Field(..., description="Primary key of the mentors table")
+    slug: str = Field(..., description="URL-friendly identifier: first_name-last_name (normalized)")
 
 
 class MentorBulkUploadResponse(BaseModel):

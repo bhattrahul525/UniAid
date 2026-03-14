@@ -18,6 +18,12 @@ class Mentor(Base):
     id = Column("id", Integer, primary_key=True, index=True, autoincrement=True)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
+    slug = Column(
+        String(255),
+        nullable=False,
+        index=True,
+        doc="URL-friendly identifier: first_name-last_name (normalized).",
+    )
     mentor_type = Column(String(50), nullable=False, index=True)  # student, parent, professor, etc.
     university = Column(String(200), nullable=True, index=True)
     field_of_study = Column(String(200), nullable=True, index=True)
