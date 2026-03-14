@@ -172,6 +172,39 @@ curl -X PUT "http://127.0.0.1:8000/mentees/1" \
 
 # Delete mentee
 curl -X DELETE "http://127.0.0.1:8000/mentees/1"
+
+#SESSION API CURLs
+
+# Create session
+curl -X POST "http://127.0.0.1:8000/sessions" ^
+  -H "Content-Type: application/json" ^
+  -d "{
+    \"title\": \"Exploration\",
+    \"description\": \"Ask anything about city exploration\",
+    \"mentor_id\": 3,
+    \"session_type\": \"public\",
+    \"scheduled_at\": \"2026-03-14T19:30:00Z\",
+    \"user_ids\": [1, 2]
+  }"
+
+  # List sessions
+  curl -X GET "http://127.0.0.1:8000/sessions"
+
+  # Get session by ID
+  curl -X GET "http://127.0.0.1:8000/sessions/1"
+
+  # Update session
+  curl -X PUT "http://127.0.0.1:8000/sessions/1" ^
+  -H "Content-Type: application/json" ^
+  -d "{
+    \"title\": \"Updated title\",
+    \"session_type\": \"private\",
+    \"scheduled_at\": \"2026-03-15T18:30:00Z\",
+    \"user_ids\": [2, 3]
+  }"
+
+  # Delete session
+  curl -X DELETE "http://127.0.0.1:8000/sessions/1"
 ```
 
 ---
