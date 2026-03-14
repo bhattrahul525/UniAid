@@ -35,3 +35,4 @@ class Mentor(Base):
     mentor_rating = Column(Float, nullable=True)
 
     users = relationship("User", back_populates="mentor", foreign_keys="User.mentor_id")
+    sessions = relationship("Session", back_populates="mentor", foreign_keys="Session.mentor_id")
