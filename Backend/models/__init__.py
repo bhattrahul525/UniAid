@@ -1,8 +1,8 @@
 """SQLAlchemy ORM models."""
 
-from .user_details_model import UserDetails
-from .user_model import User
-from .mentor_model import Mentor
 from .interaction_model import Interaction
+from .mentee_model import Mentee
+from .mentor_model import Mentor
+from .user_model import User
 
-__all__ = ["User", "UserDetails", "Mentor", "Interaction"]
+__all__ = ["User", "Mentee", "Mentor", "Interaction"]

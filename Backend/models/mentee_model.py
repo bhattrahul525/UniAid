@@ -1,4 +1,4 @@
-"""UserDetails SQLAlchemy model – profile/preferences for a user."""
+"""Mentee SQLAlchemy model – profile/preferences for a user."""
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
@@ -6,14 +6,14 @@ from sqlalchemy.orm import relationship
 from db.database import Base
 
 
-class UserDetails(Base):
+class Mentee(Base):
     """
-    Profile and preference details for a user (linked from users.user_details_id).
+    Mentee profile (linked from users.mentee_id).
     """
 
-    __tablename__ = "user_details"
+    __tablename__ = "mentee"
 
-    user_details_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    mentee_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_type = Column(String(50), nullable=True, index=True)  # e.g. student, parent
     home_country = Column(String(100), nullable=True)
     preferred_destination_country = Column(String(100), nullable=True, index=True)
@@ -22,4 +22,4 @@ class UserDetails(Base):
     budget_range = Column(String(50), nullable=True)
     preferred_language = Column(String(50), nullable=True, index=True)
 
-    user = relationship("User", back_populates="user_details", uselist=False)
+    user = relationship("User", back_populates="mentee", uselist=False)
