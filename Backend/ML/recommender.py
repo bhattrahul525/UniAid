@@ -15,18 +15,21 @@ from sklearn.neighbors import NearestNeighbors
 class RecommenderPaths:
     data_dir: Path
     models_dir: Path
+    mentors_csv_name: str = "mentors.csv"
+    users_csv_name: str = "users.csv"
+    interactions_csv_name: str = "interactions.csv"
 
     @property
     def mentors_csv(self) -> Path:
-        return self.data_dir / "mentors.csv"
+        return self.data_dir / self.mentors_csv_name
 
     @property
     def users_csv(self) -> Path:
-        return self.data_dir / "users.csv"
+        return self.data_dir / self.users_csv_name
 
     @property
     def interactions_csv(self) -> Path:
-        return self.data_dir / "interactions.csv"
+        return self.data_dir / self.interactions_csv_name
 
     @property
     def mentor_df_joblib(self) -> Path:
@@ -153,6 +156,16 @@ def _minmax_0_1(series: pd.Series) -> pd.Series:
     return (s - mn) / (mx - mn)
 
 
+def _normalize_interactions_user_id(interactions_df: pd.DataFrame) -> pd.DataFrame:
+    """If interactions use mentee_id instead of user_id, add user_id for recommender logic."""
+    if interactions_df.empty:
+        return interactions_df
+    if "user_id" not in interactions_df.columns and "mentee_id" in interactions_df.columns:
+        interactions_df = interactions_df.copy()
+        interactions_df["user_id"] = interactions_df["mentee_id"]
+    return interactions_df
+
+
 def compute_mentor_quality(interactions_df: pd.DataFrame, mentors_df: pd.DataFrame) -> pd.DataFrame:
     """
     Build a per-mentor quality table from interactions.csv.
@@ -231,6 +244,7 @@ class MentorRecommender:
         mentors_df = self._normalize_mentors_df(mentors_df)
         users_df = pd.read_csv(self.paths.users_csv)
         interactions_df = pd.read_csv(self.paths.interactions_csv)
+        interactions_df = _normalize_interactions_user_id(interactions_df)
         return mentors_df, users_df, interactions_df
 
     def _load_model(self) -> SentenceTransformer:
@@ -277,6 +291,7 @@ class MentorRecommender:
         else:
             # Recompute quickly if missing
             interactions_df = pd.read_csv(self.paths.interactions_csv)
+            interactions_df = _normalize_interactions_user_id(interactions_df)
             self._mentor_quality_df = compute_mentor_quality(interactions_df, self._mentors_df)
 
     def _load_users_df(self) -> pd.DataFrame:
@@ -287,6 +302,7 @@ class MentorRecommender:
     def _get_user_past_mentor_ids(self, user_id: int) -> set[int]:
         """Return set of mentor_ids this user has interacted with (from interactions.csv)."""
         interactions_df = pd.read_csv(self.paths.interactions_csv)
+        interactions_df = _normalize_interactions_user_id(interactions_df)
         if interactions_df.empty or "user_id" not in interactions_df.columns or "mentor_id" not in interactions_df.columns:
             return set()
         subset = interactions_df.loc[interactions_df["user_id"] == user_id, "mentor_id"]
@@ -426,6 +442,7 @@ class MentorRecommender:
         self._load_index_artifacts()
         self._load_users_df()
         interactions_df = pd.read_csv(self.paths.interactions_csv)
+        interactions_df = _normalize_interactions_user_id(interactions_df)
         if interactions_df.empty:
             return {"hit_rate_at_k": 0.0, "mrr": 0.0, "n_eval": 0, "top_k": top_k}
 
@@ -459,9 +476,15 @@ class MentorRecommender:
 if __name__ == "__main__":
     import sys
 
-    # Default paths: data in UniAid/Data, models in UniAid/Backend/ML/models
+    # Default paths: data in UniAid/Dataset, models in UniAid/Backend/ML/models
     _base = Path(__file__).resolve().parent  # UniAid/Backend/ML
-    _paths = RecommenderPaths(data_dir=_base.parent.parent / "Data", models_dir=_base / "models")
+    _paths = RecommenderPaths(
+        data_dir=_base.parent.parent / "Dataset",
+        models_dir=_base / "models",
+        mentors_csv_name="mentors_dataset.csv",
+        users_csv_name="mentees_dataset.csv",
+        interactions_csv_name="interactions_dataset.csv",
+    )
 
     if len(sys.argv) >= 2 and sys.argv[1] == "build":
         rec = MentorRecommender(paths=_paths)
@@ -469,5 +492,5 @@ if __name__ == "__main__":
         print("Index built. Artifacts saved under models/")
     else:
         print("Usage: python recommender.py build")
-        print("  Then start the API: uvicorn api:app --reload --port 8000")
+        print("  Then start the API: uvicorn main:app --reload --port 8000 (from Backend)")
 
