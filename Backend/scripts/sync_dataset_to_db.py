@@ -144,7 +144,7 @@ def main():
                 updated_mentees += 1
             me.user_type = _str(row.get("user_type"), 50) or "student"
             me.home_country = _str(row.get("home_country"), 100)
-            me.preferred_destination_country = _str(row.get("target_university"), 100)
+            me.university = _str(row.get("target_university"), 100)
             me.field_of_study = _str(row.get("field_of_study"), 200)
             me.degree_level = _str(row.get("degree_level"), 50)
             me.budget_range = _str(row.get("budget_range_aud"), 50)

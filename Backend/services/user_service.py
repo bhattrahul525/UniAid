@@ -76,7 +76,7 @@ class UserService:
                 mentee = Mentee(
                     user_type=payload.mentee.user_type,
                     home_country=payload.mentee.home_country,
-                    preferred_destination_country=payload.mentee.preferred_destination_country,
+                    university=payload.mentee.university,
                     field_of_study=payload.mentee.field_of_study,
                     degree_level=payload.mentee.degree_level,
                     budget_range=payload.mentee.budget_range,
@@ -91,7 +91,7 @@ class UserService:
                 if mentee:
                     mentee.user_type = payload.mentee.user_type
                     mentee.home_country = payload.mentee.home_country
-                    mentee.preferred_destination_country = payload.mentee.preferred_destination_country
+                    mentee.university = payload.mentee.university
                     mentee.field_of_study = payload.mentee.field_of_study
                     mentee.degree_level = payload.mentee.degree_level
                     mentee.budget_range = payload.mentee.budget_range
