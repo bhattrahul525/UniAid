@@ -1,6 +1,7 @@
 """Session API routes."""
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
 from api.deps import get_current_user
