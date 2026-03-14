@@ -71,27 +71,33 @@ Then restart the server so tables are created again.
 
 ## Recommendation API (mentee_id + payload, accuracy)
 
-Recommendations use `Data/users.csv`, `Data/mentors.csv`, and `Data/interactions.csv` (and optional ML index in `Backend/ML/models/`).
+Recommendations use **Dataset/** (`mentors_dataset.csv`, `mentees_dataset.csv`, `interactions_dataset.csv`) and ML index in `Backend/ML/models/`. **The API returns mentor data from the DB** when available (same ids as in the Dataset); otherwise it falls back to ML/CSV data.
 
 - **POST /recommendations** – Recommend mentors:
-  - **mentee_id**: load mentee from DB and build a profile (users.csv shape) for the model.
-  - **user_profile**: optional payload with same fields as users.csv (for testing without DB).
+  - **mentee_id**: load mentee from DB and build a profile for the model.
+  - **user_profile**: optional payload (for testing without DB).
   - **request_text**: optional free-text (e.g. "help with visa").
-  - Returns ranked mentors with `similarity`, `quality_score`, `final_score`.
+  - Returns ranked mentors from the **DB** (when ids exist) with `similarity`, `quality_score`, `final_score`.
 
 - **GET /recommendations/evaluate** – Offline accuracy for testing:
   - Uses a sample of (user_id, mentor_id) from interactions and checks if the actual mentor is in top_k.
   - Query params: `sample_size` (default 200), `top_k` (default 5), `seed` (default 42).
   - Returns `hit_rate_at_k` and `mrr` (mean reciprocal rank).
 
-**Build ML index once** (from `Backend/ML`):
+**Train / rebuild the model** (from Backend, using Dataset):
+
+```bash
+cd Backend
+python scripts/train_recommender.py
+```
+
+Or from `Backend/ML`:
 
 ```bash
 cd Backend/ML
 python recommender.py build
 ```
 
-**Swagger url**
-http://127.0.0.1:8000/docs
+Restart the API after training so it loads the new index.
 
-Then run the main backend; the first recommendation call will load the index.
+**Swagger url:** http://127.0.0.1:8000/docs

@@ -23,16 +23,17 @@ def recommend_mentors(
     current_user=Depends(get_current_user),
 ) -> RecommendResponse:
     """
-    Recommend mentors for a mentee.
+    Recommend mentors for a mentee or from free-text.
     - **mentee_id**: load mentee from DB and build profile (users.csv shape) for the model.
     - **user_profile**: optional payload matching users.csv; use for testing without DB.
-    - **request_text**: free-text request (e.g. "help with visa").
+    - **request_text**: free-text request (e.g. "help with visa" or ideal mentor description).
     Returns ranked mentors with similarity and quality scores.
     """
-    if payload.mentee_id is None and payload.user_profile is None:
+    # Allow recommendation purely from free-text description when no profile is available.
+    if payload.mentee_id is None and payload.user_profile is None and not payload.request_text:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Provide at least one of: mentee_id, user_profile",
+            detail="Provide at least one of: mentee_id, user_profile, request_text",
         )
     user_profile_dict = None
     if payload.user_profile is not None:

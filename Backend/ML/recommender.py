@@ -15,18 +15,21 @@ from sklearn.neighbors import NearestNeighbors
 class RecommenderPaths:
     data_dir: Path
     models_dir: Path
+    mentors_csv_name: str = "mentors.csv"
+    users_csv_name: str = "users.csv"
+    interactions_csv_name: str = "interactions.csv"
 
     @property
     def mentors_csv(self) -> Path:
-        return self.data_dir / "mentors.csv"
+        return self.data_dir / self.mentors_csv_name
 
     @property
     def users_csv(self) -> Path:
-        return self.data_dir / "users.csv"
+        return self.data_dir / self.users_csv_name
 
     @property
     def interactions_csv(self) -> Path:
-        return self.data_dir / "interactions.csv"
+        return self.data_dir / self.interactions_csv_name
 
     @property
     def mentor_df_joblib(self) -> Path:
@@ -69,11 +72,8 @@ def _flag_label(name: str, value: Any) -> Optional[str]:
 def mentor_to_text(row: pd.Series) -> str:
     """
     Convert a mentor row into a text document for semantic embedding.
-    Matches mentors.csv columns:
-    mentor_id, first_name, last_name, mentor_type, university, field_of_study, degree_level,
-    years_in_country, visa_experience, housing_experience, cultural_adaptation_experience,
-    career_guidance_experience, languages_spoken, availability_hours_per_week, sessions_completed,
-    response_time_hours, graduation_year, mentor_rating
+    Works with both the original mentors.csv and the richer mentors_dataset.csv
+    that include mentoring_topics and bio.
     """
     help_tags = [
         _flag_label("visa", row.get("visa_experience")),
@@ -89,12 +89,14 @@ def mentor_to_text(row: pd.Series) -> str:
         f"field of study: {_safe_str(row.get('field_of_study'))}",
         f"degree level: {_safe_str(row.get('degree_level'))}",
         f"years in country: {_safe_str(row.get('years_in_country'))}",
+        f"mentoring topics: {_safe_str(row.get('mentoring_topics'))}",
         f"languages: {_safe_str(row.get('languages_spoken'))}",
         f"can help with: {', '.join(help_tags)}" if help_tags else "",
         f"sessions completed: {_safe_str(row.get('sessions_completed'))}",
         f"response time hours: {_safe_str(row.get('response_time_hours'))}",
         f"mentor rating: {_safe_str(row.get('mentor_rating'))}",
         f"graduation year: {_safe_str(row.get('graduation_year'))}",
+        f"bio: {_safe_str(row.get('bio'))}",
     ]
     return ". ".join([p for p in parts if p])
 
@@ -152,6 +154,16 @@ def _minmax_0_1(series: pd.Series) -> pd.Series:
     if mx - mn < 1e-9:
         return pd.Series(np.zeros(len(s)), index=s.index, dtype=float)
     return (s - mn) / (mx - mn)
+
+
+def _normalize_interactions_user_id(interactions_df: pd.DataFrame) -> pd.DataFrame:
+    """If interactions use mentee_id instead of user_id, add user_id for recommender logic."""
+    if interactions_df.empty:
+        return interactions_df
+    if "user_id" not in interactions_df.columns and "mentee_id" in interactions_df.columns:
+        interactions_df = interactions_df.copy()
+        interactions_df["user_id"] = interactions_df["mentee_id"]
+    return interactions_df
 
 
 def compute_mentor_quality(interactions_df: pd.DataFrame, mentors_df: pd.DataFrame) -> pd.DataFrame:
@@ -232,6 +244,7 @@ class MentorRecommender:
         mentors_df = self._normalize_mentors_df(mentors_df)
         users_df = pd.read_csv(self.paths.users_csv)
         interactions_df = pd.read_csv(self.paths.interactions_csv)
+        interactions_df = _normalize_interactions_user_id(interactions_df)
         return mentors_df, users_df, interactions_df
 
     def _load_model(self) -> SentenceTransformer:
@@ -278,6 +291,7 @@ class MentorRecommender:
         else:
             # Recompute quickly if missing
             interactions_df = pd.read_csv(self.paths.interactions_csv)
+            interactions_df = _normalize_interactions_user_id(interactions_df)
             self._mentor_quality_df = compute_mentor_quality(interactions_df, self._mentors_df)
 
     def _load_users_df(self) -> pd.DataFrame:
@@ -288,6 +302,7 @@ class MentorRecommender:
     def _get_user_past_mentor_ids(self, user_id: int) -> set[int]:
         """Return set of mentor_ids this user has interacted with (from interactions.csv)."""
         interactions_df = pd.read_csv(self.paths.interactions_csv)
+        interactions_df = _normalize_interactions_user_id(interactions_df)
         if interactions_df.empty or "user_id" not in interactions_df.columns or "mentor_id" not in interactions_df.columns:
             return set()
         subset = interactions_df.loc[interactions_df["user_id"] == user_id, "mentor_id"]
@@ -388,10 +403,12 @@ class MentorRecommender:
             "university",
             "field_of_study",
             "degree_level",
+            "mentoring_topics",
             "languages_spoken",
             "availability_hours_per_week",
             "sessions_completed",
             "response_time_hours",
+            "bio",
             "mentor_rating",
             "similarity",
             "quality_score",
@@ -425,6 +442,7 @@ class MentorRecommender:
         self._load_index_artifacts()
         self._load_users_df()
         interactions_df = pd.read_csv(self.paths.interactions_csv)
+        interactions_df = _normalize_interactions_user_id(interactions_df)
         if interactions_df.empty:
             return {"hit_rate_at_k": 0.0, "mrr": 0.0, "n_eval": 0, "top_k": top_k}
 
@@ -458,9 +476,15 @@ class MentorRecommender:
 if __name__ == "__main__":
     import sys
 
-    # Default paths: data in UniAid/Data, models in UniAid/Backend/ML/models
+    # Default paths: data in UniAid/Dataset, models in UniAid/Backend/ML/models
     _base = Path(__file__).resolve().parent  # UniAid/Backend/ML
-    _paths = RecommenderPaths(data_dir=_base.parent.parent / "Data", models_dir=_base / "models")
+    _paths = RecommenderPaths(
+        data_dir=_base.parent.parent / "Dataset",
+        models_dir=_base / "models",
+        mentors_csv_name="mentors_dataset.csv",
+        users_csv_name="mentees_dataset.csv",
+        interactions_csv_name="interactions_dataset.csv",
+    )
 
     if len(sys.argv) >= 2 and sys.argv[1] == "build":
         rec = MentorRecommender(paths=_paths)
@@ -468,5 +492,5 @@ if __name__ == "__main__":
         print("Index built. Artifacts saved under models/")
     else:
         print("Usage: python recommender.py build")
-        print("  Then start the API: uvicorn api:app --reload --port 8000")
+        print("  Then start the API: uvicorn main:app --reload --port 8000 (from Backend)")
 

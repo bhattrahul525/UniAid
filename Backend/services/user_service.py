@@ -66,6 +66,8 @@ class UserService:
                     mentor.response_time_hours = m.response_time_hours
                     mentor.graduation_year = m.graduation_year
                     mentor.mentor_rating = m.mentor_rating
+                    if m.bio is not None:
+                        mentor.bio = m.bio
                 db.commit()
                 db.refresh(user)
         else:
@@ -79,6 +81,7 @@ class UserService:
                     degree_level=payload.mentee.degree_level,
                     budget_range=payload.mentee.budget_range,
                     preferred_language=payload.mentee.preferred_language,
+                    bio=payload.mentee.bio,
                 )
                 db.add(mentee)
                 db.flush()
@@ -93,6 +96,8 @@ class UserService:
                     mentee.degree_level = payload.mentee.degree_level
                     mentee.budget_range = payload.mentee.budget_range
                     mentee.preferred_language = payload.mentee.preferred_language
+                    if payload.mentee.bio is not None:
+                        mentee.bio = payload.mentee.bio
             db.commit()
             db.refresh(user)
         return user

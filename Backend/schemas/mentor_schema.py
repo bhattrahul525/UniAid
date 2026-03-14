@@ -26,6 +26,7 @@ class MentorBase(BaseModel):
     cultural_adaptation_experience: Optional[int] = Field(None, ge=0, le=1)
     career_guidance_experience: Optional[int] = Field(None, ge=0, le=1)
     languages_spoken: Optional[str] = None
+    bio: Optional[str] = Field(None, description="Short mentor bio / description")
     availability_hours_per_week: Optional[int] = None
     sessions_completed: Optional[int] = Field(None, ge=0)
     response_time_hours: Optional[int] = None
@@ -54,6 +55,7 @@ class MentorUpdate(BaseModel):
     cultural_adaptation_experience: Optional[int] = Field(None, ge=0, le=1)
     career_guidance_experience: Optional[int] = Field(None, ge=0, le=1)
     languages_spoken: Optional[str] = None
+    bio: Optional[str] = Field(None, description="Short mentor bio / description")
     availability_hours_per_week: Optional[int] = None
     sessions_completed: Optional[int] = Field(None, ge=0)
     response_time_hours: Optional[int] = None
