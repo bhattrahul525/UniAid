@@ -1,10 +1,18 @@
 import { useMemo, useState } from "react";
-import { Container, Grid, Typography, TextField, InputAdornment, Box } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Box
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MentorCard from "../common-components/MentorCard";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
-import { useMentors } from "../hooks/useMentors";
+import { useMentors, useMentorRecommendations } from "../hooks/useMentors";
+import { useSelector } from "react-redux";
 
 const randomImages = [
   "https://i.pravatar.cc/300?img=1",
@@ -115,14 +123,27 @@ const randomBios = [
 export default function MentorshipPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const userId = useSelector((state) => state.auth.user?.id);
   const { data: mentors = [], isLoading, isError } = useMentors();
+  const [mode, setMode] = useState("all");
+  const recommendationParams =
+    mode === "profile"
+      ? { userId, topK: 8 }
+      : mode === "prompt"
+        ? { userId, topK: 10, requestText: searchTerm }
+        : null;
+
+  const { data: recommendedMentorsData } =
+    useMentorRecommendations(recommendationParams);
+  const recommendedMentors = recommendedMentorsData?.mentors ?? [];
 
   const enrichedMentors = useMemo(() => {
     return mentors.map((mentor, index) => {
       let profileImage = null;
       let bio = null;
 
-      profileImage = randomImages[Math.floor(Math.random() * randomImages.length)];
+      profileImage =
+        randomImages[Math.floor(Math.random() * randomImages.length)];
 
       bio = randomBios[Math.floor(Math.random() * randomBios.length)];
 
@@ -136,6 +157,28 @@ export default function MentorshipPage() {
     });
   }, [mentors]);
 
+  const enrichedRecommendedMentors = useMemo(() => {
+    if (!recommendedMentors || recommendedMentors.length === 0) return [];
+
+    return recommendedMentors.map((item) => {
+      const mentor = item.mentor || item;
+      return {
+        ...mentor,
+        id: mentor.mentor_id ?? mentor.id,
+        firstName: mentor.first_name || mentor.firstName,
+        lastName: mentor.last_name || mentor.lastName,
+        profileImage:
+          mentor.profileImage ||
+          randomImages[Math.floor(Math.random() * randomImages.length)],
+        bio:
+          mentor.bio || randomBios[Math.floor(Math.random() * randomBios.length)]
+      };
+    });
+  }, [recommendedMentors]);
+
+  const displayMentors =
+    mode === "all" ? enrichedMentors : enrichedRecommendedMentors;
+
   if (isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
@@ -145,7 +188,11 @@ export default function MentorshipPage() {
   }
 
   if (isError) {
-    return <Typography sx={{ textAlign: "center", mt: 10 }}>Failed to load mentors</Typography>;
+    return (
+      <Typography sx={{ textAlign: "center", mt: 10 }}>
+        Failed to load mentors
+      </Typography>
+    );
   }
 
   return (
@@ -164,14 +211,23 @@ export default function MentorshipPage() {
           pb: 2
         }}
       >
-        {/* SEARCH BAR */}
+        {/* SEARCH + CUSTOMIZE */}
 
-        <Box mb={4}>
+        <Box mb={3} display="flex" gap={2}>
           <TextField
             fullWidth
-            placeholder="Search by name, role, or university"
+            placeholder="Describe the mentor you need (example: Data Science mentor from Australia with visa experience)"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchTerm(value);
+
+              if (value.length > 3) {
+                setMode("prompt");
+              } else {
+                setMode("all");
+              }
+            }}
             variant="outlined"
             sx={{
               background: "#ffffff",
@@ -213,6 +269,65 @@ export default function MentorshipPage() {
               )
             }}
           />
+
+          {/* CUSTOMIZE BUTTON */}
+
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              onClick={() => navigate("/profile")}
+              sx={{
+                px: 3,
+                height: "56px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "40px",
+                fontWeight: 600,
+                color: "white",
+                cursor: "pointer",
+                background: "linear-gradient(135deg,#2e7d32,#4caf50)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                transition: "all 0.2s ease",
+
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
+                }
+              }}
+            >
+              Customize
+            </Box>
+          </Box>
+        </Box>
+
+        {/* AI RECOMMENDATION BUTTON */}
+
+        <Box mb={4} sx={{ display: "flex", justifyContent: "center" }}>
+          <Box
+            onClick={() => setMode("profile")}
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              px: 4,
+              py: 1.6,
+              borderRadius: "40px",
+              fontWeight: 600,
+              fontSize: "14px",
+              color: "white",
+              cursor: "pointer",
+              background: "linear-gradient(135deg,#1b5e20,#43a047)",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
+              transition: "all 0.25s ease",
+
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 22px rgba(0,0,0,0.25)"
+              }
+            }}
+          >
+            🤖 Find My Best Mentor Match
+          </Box>
         </Box>
       </Container>
 
@@ -254,8 +369,8 @@ export default function MentorshipPage() {
                   width: "100%"
                 }}
               >
-                {enrichedMentors.length > 0 ? (
-                  enrichedMentors.map((mentor) => (
+                {displayMentors.length > 0 ? (
+                  displayMentors.map((mentor) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={mentor.id}>
                       <MentorCard
                         firstName={mentor.firstName}
@@ -266,7 +381,9 @@ export default function MentorshipPage() {
                         profileImage={mentor.profileImage}
                         bio={mentor.bio}
                         aiRecommendation="-"
-                        onClick={() => navigate(`/mentor/${mentor.id}`, { state: mentor })}
+                        onClick={() =>
+                          navigate(`/mentor/${mentor.id}`, { state: mentor })
+                        }
                       />
                     </Grid>
                   ))

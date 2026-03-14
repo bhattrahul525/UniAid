@@ -69,6 +69,39 @@ class UserRead(BaseModel):
 class ProfileType(str, Enum):
     """Whether the user profile is a mentor or mentee."""
 
+
+class ProfileType(str, Enum):
+    """Whether the user profile is a mentor or mentee."""
+
+    mentor = "mentor"
+    mentee = "mentee"
+
+
+class UserProfilePayload(BaseModel):
+    """Unified payload for POST /user/profile: user_type (mentor|mentee) + respective data."""
+
+    user_id: int = Field(..., description="ID of the user to attach this profile to")
+    user_type: ProfileType = Field(..., description="Whether to create a mentor or mentee profile")
+    mentor: Optional["MentorCreate"] = Field(None, description="Mentor data; required when user_type=mentor")
+    mentee: Optional["MenteeProfileData"] = Field(None, description="Mentee data; required when user_type=mentee")
+
+    @model_validator(mode="after")
+    def require_profile_data_matches_user_type(self) -> "UserProfilePayload":
+        if self.user_type == ProfileType.mentor:
+            if self.mentor is None:
+                raise ValueError("mentor data is required when user_type is mentor")
+            if self.mentee is not None:
+                raise ValueError("mentee must be null when user_type is mentor")
+        else:
+            if self.mentee is None:
+                raise ValueError("mentee data is required when user_type is mentee")
+            if self.mentor is not None:
+                raise ValueError("mentor must be null when user_type is mentee")
+        return self
+
+
+# ----- Mentee (profile) -----
+
     mentor = "mentor"
     mentee = "mentee"
 
@@ -112,6 +145,14 @@ class MenteeBase(BaseModel):
     bio: Optional[str] = Field(None, description="Short mentee bio / description")
 
 
+class MenteeCreate(MenteeBase):
+    """Schema for creating/updating mentee profile."""
+
+    user_type: str = Field(..., description="e.g. student, parent")
+
+
+class MenteeProfileData(MenteeBase):
+    """Mentee data for unified profile payload (POST /user/profile when user_type=mentee)."""
 class MenteeCreate(MenteeBase):
     """Schema for creating/updating mentee profile."""
 

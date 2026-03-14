@@ -17,6 +17,7 @@ from api.routes_users import router as users_router
 from db.database import Base, check_db_connection, engine
 from db.sync_schema import sync_schema
 from models import Mentee, Mentor, Session, User  # noqa: F401 - register models with Base
+from fastapi.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +71,19 @@ app.include_router(sessions_router)
 app.include_router(mentors_router)
 app.include_router(mentees_router)
 app.include_router(recommendations_router)
+
+
+# -----------------------------------------------------------------------------
+# CORS
+# -----------------------------------------------------------------------------
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # -----------------------------------------------------------------------------
