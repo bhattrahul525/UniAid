@@ -61,8 +61,8 @@ class SessionRead(BaseModel):
     title: str
     description: Optional[str] = None
     mentor_id: int
-    mentor_first_name: Optional[str] = Field(None, description="From user table (user linked to this mentor)")
-    mentor_last_name: Optional[str] = Field(None, description="From user table (user linked to this mentor)")
+    mentor_first_name: Optional[str] = Field(None, description="From linked user or mentors table")
+    mentor_last_name: Optional[str] = Field(None, description="From linked user or mentors table")
     session_type: SessionTypeEnum
     scheduled_at: Optional[datetime] = Field(None, description="Date and time of the session (ISO 8601)")
     users_count: int = Field(..., description="Number of users subscribed to this session")

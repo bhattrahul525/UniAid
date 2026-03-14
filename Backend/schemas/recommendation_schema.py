@@ -52,8 +52,8 @@ class RecommendRequest(BaseModel):
     w_quality: float = Field(default=0.15, ge=0.0, le=1.0)
 
 
-class MentorRecommendationItem(BaseModel):
-    """One recommended mentor with scores (matches recommender output)."""
+class MentorData(BaseModel):
+    """Full mentor profile (nested in recommendation response)."""
     mentor_id: int
     first_name: Optional[str] = None
     last_name: Optional[str] = None
@@ -61,16 +61,32 @@ class MentorRecommendationItem(BaseModel):
     university: Optional[str] = None
     field_of_study: Optional[str] = None
     degree_level: Optional[str] = None
+    years_in_country: Optional[int] = None
+    visa_experience: Optional[int] = None
+    housing_experience: Optional[int] = None
+    cultural_adaptation_experience: Optional[int] = None
+    career_guidance_experience: Optional[int] = None
     languages_spoken: Optional[str] = None
+    bio: Optional[str] = None
     availability_hours_per_week: Optional[int] = None
     sessions_completed: Optional[int] = None
     response_time_hours: Optional[int] = None
+    graduation_year: Optional[int] = None
     mentor_rating: Optional[float] = None
-    similarity: Optional[float] = None
-    quality_score: Optional[float] = None
-    final_score: Optional[float] = None
-    interaction_count: Optional[int] = None
-    success_rate: Optional[float] = None
+    mentoring_topics: Optional[str] = None
+
+    model_config = {"extra": "ignore"}
+
+
+class MentorRecommendationItem(BaseModel):
+    """One recommendation: mentor data nested, recommendation scores at top level."""
+    mentor: MentorData = Field(..., description="Full mentor profile")
+    similarity: Optional[float] = Field(None, description="Semantic match score")
+    quality_score: Optional[float] = Field(None, description="Quality from past interactions")
+    final_score: Optional[float] = Field(None, description="Combined ranking score")
+    requirement_match: Optional[float] = Field(None, description="Fraction of stated requirements satisfied (0–1) when request_text is used")
+    interaction_count: Optional[int] = Field(None, description="Number of past sessions")
+    success_rate: Optional[float] = Field(None, description="Session success rate")
 
 
 class RecommendResponse(BaseModel):
