@@ -10,7 +10,7 @@ class Mentor(Base):
     """
     Mentor: current student, alumni, parent, or professor.
     Columns aligned with mentors.csv for seed/import.
-    Users table links via users.mentor_id (FK) when a user is a mentor.
+    Users table links via users.mentor_id (FK to mentors.id) when a user is a mentor.
     """
 
     __tablename__ = "mentors"
