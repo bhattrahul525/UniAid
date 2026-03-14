@@ -138,29 +138,19 @@ export default function MentorshipPage() {
         : null;
 
   const {
-  data: recommendedMentors,
-  isLoading: isRecommendationsLoading,
-  isError: isRecommendationsError
-} = useMentorRecommendations(recommendationParams);
+    data: recommendedMentors,
+    isLoading: isRecommendationsLoading,
+    isError: isRecommendationsError
+  } = useMentorRecommendations(recommendationParams);
 
   const enrichedMentors = useMemo(() => {
-    return mentors.map((mentor, index) => {
-      let profileImage = null;
-      let bio = null;
-
-      profileImage =
-        randomImages[Math.floor(Math.random() * randomImages.length)];
-
-      bio = randomBios[Math.floor(Math.random() * randomBios.length)];
-
-      return {
-        ...mentor,
-        firstName: mentor.first_name,
-        lastName: mentor.last_name,
-        profileImage,
-        bio
-      };
-    });
+    return mentors.slice(0, 50).map((mentor, index) => ({
+      ...mentor,
+      firstName: mentor.first_name,
+      lastName: mentor.last_name,
+      profileImage: randomImages[index % randomImages.length],
+      bio: randomBios[index % randomBios.length]
+    }));
   }, [mentors]);
 
   const enrichedRecommendedMentors = useMemo(() => {
@@ -185,20 +175,20 @@ export default function MentorshipPage() {
   const displayMentors =
     mode === "all" ? enrichedMentors : enrichedRecommendedMentors;
 
-    if (isLoading || isRecommendationsLoading) {
-  return (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
-      <CircularProgress />
-    </Box>
-  );
-}
-if (isError || isRecommendationsError) {
-  return (
-    <Typography sx={{ textAlign: "center", mt: 10 }}>
-      Something went wrong while loading mentors.
-    </Typography>
-  );
-}
+  if (isLoading || isRecommendationsLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+  if (isError || isRecommendationsError) {
+    return (
+      <Typography sx={{ textAlign: "center", mt: 10 }}>
+        Something went wrong while loading mentors.
+      </Typography>
+    );
+  }
 
   return (
     <Box
@@ -218,14 +208,14 @@ if (isError || isRecommendationsError) {
       >
         {/* SEARCH + CUSTOMIZE */}
 
-        <Box mb={3} display="flex" gap={2}>
+        <Box mb={4} display="flex" gap={2} alignItems="center">
+          {/* SEARCH INPUT */}
+
           <TextField
             fullWidth
             placeholder="Describe the mentor you need (example: Professor in Computer Science at Monash)"
             value={prompt}
-            onChange={(e) => {
-              setPrompt(e.target.value);
-            }}
+            onChange={(e) => setPrompt(e.target.value)}
             variant="outlined"
             sx={{
               "& .MuiOutlinedInput-root": {
@@ -269,67 +259,74 @@ if (isError || isRecommendationsError) {
 
           {/* CUSTOMIZE BUTTON */}
 
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box
-              onClick={() => {
-                if (prompt.trim().length > 0) {
-                  setMode("prompt");
-                }
-              }}
-              sx={{
-                px: 3,
-                height: "56px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "40px",
-                fontWeight: 600,
-                color: "white",
-                cursor: "pointer",
-                background: "linear-gradient(135deg,#2e7d32,#4caf50)",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
-                transition: "all 0.2s ease",
+          <Box
+            onClick={() => {
+              if (prompt.trim().length > 0) setMode("prompt");
+            }}
+            sx={{
+              px: 3,
+              height: "56px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "40px",
+              fontWeight: 600,
+              color: "white",
+              cursor: "pointer",
+              background: "linear-gradient(135deg,#2e7d32,#4caf50)",
+              boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+              transition: "all 0.2s ease",
+              whiteSpace: "nowrap",
 
-                "&:hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
-                }
-              }}
-            >
-              Customize
-            </Box>
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
+              }
+            }}
+          >
+            Customize
           </Box>
-        </Box>
 
-        {/* AI RECOMMENDATION BUTTON */}
+          {/* AI MATCH BUTTON */}
 
-        <Box mb={4} sx={{ display: "flex", justifyContent: "center" }}>
           <Box
             onClick={() => setMode("profile")}
             sx={{
-              display: "inline-flex",
+              px: 3,
+              height: "56px",
+              display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              px: 4,
-              py: 1.6,
               borderRadius: "40px",
               fontWeight: 600,
               fontSize: "14px",
               color: "white",
               cursor: "pointer",
               background: "linear-gradient(135deg,#1b5e20,#43a047)",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
-              transition: "all 0.25s ease",
+              boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+              transition: "all 0.2s ease",
+              whiteSpace: "nowrap",
 
               "&:hover": {
                 transform: "translateY(-2px)",
-                boxShadow: "0 8px 22px rgba(0,0,0,0.25)"
+                boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
               }
             }}
           >
             🤖 Find My Best Mentor Match
           </Box>
         </Box>
+        {mode === "prompt" && (
+          <Typography sx={{ mb: 2, fontWeight: 600 }}>
+            🤖 AI matched mentors for: "{prompt}"
+          </Typography>
+        )}
+
+        {mode === "profile" && (
+          <Typography sx={{ mb: 2, fontWeight: 600 }}>
+            🤖 Best mentors based on your profile
+          </Typography>
+        )}
       </Container>
 
       {/* SCROLL AREA */}
@@ -342,66 +339,41 @@ if (isError || isRecommendationsError) {
           pb: 4
         }}
       >
-        <Container maxWidth="lg">
-          <Box
-            sx={{
-              flex: 1,
-              overflowY: "auto",
-              px: 3,
-              pb: "25px",
-              display: "flex",
-              flexDirection: "column"
-            }}
-          >
-            <Container
-              maxWidth="lg"
-              sx={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column"
-              }}
-            >
-              <Grid
-                container
-                spacing={4}
-                sx={{
-                  flexGrow: 1,
-                  m: 0,
-                  width: "100%"
-                }}
-              >
-                {displayMentors.length > 0 ? (
-                  displayMentors.map((mentor) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={mentor.id}>
-                      <MentorCard
-                        firstName={mentor.firstName}
-                        lastName={mentor.lastName}
-                        mentor_type={mentor.mentor_type}
-                        university={mentor.university}
-                        mentor_rating={mentor.mentor_rating}
-                        profileImage={mentor.profileImage}
-                        bio={mentor.bio}
-                        aiRecommendation={
-                          mentor.final_score
-                            ? mentor.final_score.toFixed(2)
-                            : "-"
-                        }
-                        onClick={() =>
-                          navigate(`/mentor/${mentor.id}`, { state: mentor })
-                        }
-                      />
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item xs={12}>
-                    <Typography color="text.secondary">
-                      No mentors found.
-                    </Typography>
-                  </Grid>
-                )}
-              </Grid>
-            </Container>
-          </Box>
+        <Container
+          maxWidth="lg"
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column"
+          }}
+        >
+          {displayMentors.length > 0 ? (
+            <Grid container spacing={3}>
+              {displayMentors.map((mentor) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={mentor.id}>
+                  <MentorCard
+                    firstName={mentor.firstName}
+                    lastName={mentor.lastName}
+                    mentor_type={mentor.mentor_type}
+                    university={mentor.university}
+                    mentor_rating={mentor.mentor_rating}
+                    profileImage={mentor.profileImage}
+                    bio={mentor.bio}
+                    aiRecommendation={
+                      mentor.final_score ? mentor.final_score.toFixed(2) : "-"
+                    }
+                    onClick={() =>
+                      navigate(`/mentor/${mentor.id}`, { state: mentor })
+                    }
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography color="text.secondary" sx={{ mt: 4 }}>
+              No mentors found.
+            </Typography>
+          )}
         </Container>
       </Box>
     </Box>
