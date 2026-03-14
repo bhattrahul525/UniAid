@@ -9,10 +9,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserSignup(BaseModel):
-    """Schema for registration (POST /users/register): first_name, last_name, email, password; optional mentor_id or mentee_id."""
-
-    first_name: str = Field(..., min_length=1)
-    last_name: str = Field(..., min_length=1)
+    """Schema for registration (POST /user/register): email, password; optional mentor_id or mentee_id."""
     email: EmailStr
     password: str = Field(..., min_length=8)
     mentor_id: Optional[int] = Field(None, description="Set if this user is a mentor (FK to mentors)")
@@ -27,12 +24,12 @@ class UserLogin(BaseModel):
 
 
 class UserResponse(BaseModel):
-    """User response for login and registration."""
+    """User response for login and registration (first_name, last_name not required)."""
 
     model_config = ConfigDict(from_attributes=True)
     user_id: int
-    first_name: str
-    last_name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: str
     mentor_id: Optional[int] = None
     mentee_id: Optional[int] = None
@@ -50,8 +47,8 @@ class UserRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
     user_id: int
-    first_name: str
-    last_name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: str
     mentor_id: Optional[int] = None
     mentee_id: Optional[int] = None

@@ -2,5 +2,8 @@
 -- Run with: psql "postgresql://user:password@localhost:5432/uniaid" -f scripts/reset_tables.sql
 -- Then restart the backend server.
 
+DROP TABLE IF EXISTS session_users;
+DROP TABLE IF EXISTS sessions;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS mentee;
+DROP TABLE IF EXISTS mentors;
