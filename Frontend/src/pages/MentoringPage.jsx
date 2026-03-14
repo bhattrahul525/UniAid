@@ -11,7 +11,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import MentorCard from "../common-components/MentorCard";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
-import { useMentors } from "../hooks/useMentors";
+import { useMentors, useMentorRecommendations } from "../hooks/useMentors";
+import { useSelector } from "react-redux";
 
 const randomImages = [
   "https://i.pravatar.cc/300?img=1",
@@ -122,7 +123,17 @@ const randomBios = [
 export default function MentorshipPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const userId = useSelector((state) => state.auth.user?.id);
   const { data: mentors = [], isLoading, isError } = useMentors();
+  const [showRecommendations, setShowRecommendations] = useState(false);
+  const { data: recommendedMentors } = useMentorRecommendations(
+    showRecommendations
+      ? {
+          userId: userId,
+          numberOfQuery: 8
+        }
+      : null
+  );
 
   const enrichedMentors = useMemo(() => {
     return mentors.map((mentor, index) => {
@@ -143,6 +154,25 @@ export default function MentorshipPage() {
       };
     });
   }, [mentors]);
+
+  const enrichedRecommendedMentors = useMemo(() => {
+    if (!recommendedMentors) return [];
+
+    return recommendedMentors.map((mentor) => ({
+      ...mentor,
+      firstName: mentor.first_name || mentor.firstName,
+      lastName: mentor.last_name || mentor.lastName,
+      profileImage:
+        mentor.profileImage ||
+        randomImages[Math.floor(Math.random() * randomImages.length)],
+      bio:
+        mentor.bio || randomBios[Math.floor(Math.random() * randomBios.length)]
+    }));
+  }, [recommendedMentors]);
+
+  const displayMentors = showRecommendations
+    ? enrichedRecommendedMentors
+    : enrichedMentors;
 
   if (isLoading) {
     return (
@@ -265,7 +295,7 @@ export default function MentorshipPage() {
 
         <Box mb={4} sx={{ display: "flex", justifyContent: "center" }}>
           <Box
-            onClick={() => navigate("/mentors/recommendations")}
+            onClick={() => setShowRecommendations(true)}
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -330,8 +360,8 @@ export default function MentorshipPage() {
                   width: "100%"
                 }}
               >
-                {enrichedMentors.length > 0 ? (
-                  enrichedMentors.map((mentor) => (
+                {displayMentors.length > 0 ? (
+                  displayMentors.map((mentor) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={mentor.id}>
                       <MentorCard
                         firstName={mentor.firstName}
