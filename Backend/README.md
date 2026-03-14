@@ -4,7 +4,7 @@ Steps to run the backend after cloning the repo.
 
 ## Data model (relevant tables)
 
-- **users** – `first_name`, `last_name`, `email`, `password` (stored hashed), and optionally `mentor_id` (FK to `mentors.mentor_id`) if the user is a mentor, or `mentee_id` if the user is a mentee.
+- **users** – `email`, `password` (stored hashed), and optionally `mentor_id` (FK to `mentors.id`) or `mentee_id` if the user is a mentee.
 - **mentors** – Mentor profile (student, parent, professor, etc.). Referenced by `users.mentor_id` when a user account is linked to a mentor.
 
 ## 1. Go to the Backend directory
@@ -53,7 +53,7 @@ API: **http://127.0.0.1:8000** — Docs: **http://127.0.0.1:8000/docs**
 
 ## Resetting the database
 
-If you see errors like `column users.user_id does not exist`, the database tables don’t match the app schema. Drop and recreate them:
+If you get **500 Internal Server Error** in Postman or errors like `column users.first_name does not exist`, the database tables don’t match the app schema. Drop and recreate them:
 
 **Option A – with psql:**
 
