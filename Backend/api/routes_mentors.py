@@ -1,11 +1,16 @@
 """Mentor API routes."""
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 from sqlalchemy.orm import Session
 
 from api.deps import get_current_user
 from db.session import get_db
-from schemas.mentor_schema import MentorBulkUploadResponse, MentorCreate, MentorRead, MentorUpdate
+from models.mentee_model import Mentee
+from models.mentor_model import Mentor
+from models.session_model import Session as SessionModel
+from models.user_model import User
+from schemas.mentor_schema import MentorBulkUploadResponse, MentorCreate, MentorListResponse, MentorRead, MentorUpdate
+from schemas.pagination_schema import EntityCounts, PaginationMeta
 from services.mentor_service import MentorService
 
 router = APIRouter(prefix="/mentors", tags=["mentors"])
@@ -49,14 +54,43 @@ def bulk_upload_mentors(
     return MentorBulkUploadResponse(created=created, errors=errors)
 
 
-@router.get("", response_model=list[MentorRead])
+@router.get("", response_model=MentorListResponse)
 def list_mentors(
+    page: int = Query(0, ge=0, description="Page index (0-based)"),
+    size: int = Query(10, gt=0, le=100, description="Page size (items per page)"),
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
-) -> list[MentorRead]:
-    """List all mentors."""
-    mentors = MentorService.get_all(db)
-    return [MentorService.to_read(m) for m in mentors]
+) -> MentorListResponse:
+    """List mentors with pagination and global counts."""
+    base_query = db.query(Mentor)
+    total_items = base_query.count()
+    mentors = (
+        base_query.order_by(Mentor.id)
+        .offset(page * size)
+        .limit(size)
+        .all()
+    )
+    items = [MentorService.to_read(m) for m in mentors]
+
+    # Global counts
+    total_users = db.query(User).count()
+    total_mentors = total_items
+    total_mentees = db.query(Mentee).count()
+    total_sessions = db.query(SessionModel).count()
+
+    pagination = PaginationMeta(
+        page=page,
+        size=size,
+        total_items=total_items,
+        total_pages=(total_items + size - 1) // size if total_items else 0,
+    )
+    counts = EntityCounts(
+        total_users=total_users,
+        total_mentors=total_mentors,
+        total_mentees=total_mentees,
+        total_sessions=total_sessions,
+    )
+    return MentorListResponse(items=items, pagination=pagination, counts=counts)
 
 
 @router.get("/{mentor_id}", response_model=MentorRead)

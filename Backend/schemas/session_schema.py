@@ -6,6 +6,8 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from schemas.pagination_schema import EntityCounts, PaginationMeta
+
 
 class SessionTypeEnum(str, Enum):
     """Session visibility (enum: public or private)."""
@@ -74,3 +76,11 @@ class SessionRead(BaseModel):
         if hasattr(v, "value"):
             return SessionTypeEnum(v.value)
         return SessionTypeEnum(v)
+
+
+class SessionListResponse(BaseModel):
+    """Paginated list of sessions with global counts."""
+
+    items: list[SessionRead]
+    pagination: PaginationMeta
+    counts: EntityCounts
