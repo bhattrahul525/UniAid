@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
-import { Container, Grid, Typography, TextField, InputAdornment, Box } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Box
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MentorCard from "../common-components/MentorCard";
 import { useNavigate } from "react-router-dom";
@@ -122,7 +129,8 @@ export default function MentorshipPage() {
       let profileImage = null;
       let bio = null;
 
-      profileImage = randomImages[Math.floor(Math.random() * randomImages.length)];
+      profileImage =
+        randomImages[Math.floor(Math.random() * randomImages.length)];
 
       bio = randomBios[Math.floor(Math.random() * randomBios.length)];
 
@@ -145,7 +153,11 @@ export default function MentorshipPage() {
   }
 
   if (isError) {
-    return <Typography sx={{ textAlign: "center", mt: 10 }}>Failed to load mentors</Typography>;
+    return (
+      <Typography sx={{ textAlign: "center", mt: 10 }}>
+        Failed to load mentors
+      </Typography>
+    );
   }
 
   return (
@@ -164,12 +176,12 @@ export default function MentorshipPage() {
           pb: 2
         }}
       >
-        {/* SEARCH BAR */}
+        {/* SEARCH + CUSTOMIZE */}
 
-        <Box mb={4}>
+        <Box mb={3} display="flex" gap={2}>
           <TextField
             fullWidth
-            placeholder="Search by name, role, or university"
+            placeholder="Describe the mentor you need (example: Data Science mentor from Australia with visa experience)"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             variant="outlined"
@@ -213,6 +225,70 @@ export default function MentorshipPage() {
               )
             }}
           />
+
+          {/* CUSTOMIZE BUTTON */}
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            <Box
+              onClick={() => navigate("/profile")}
+              sx={{
+                px: 3,
+                height: "56px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "40px",
+                fontWeight: 600,
+                color: "white",
+                cursor: "pointer",
+                background: "linear-gradient(135deg,#2e7d32,#4caf50)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                transition: "all 0.2s ease",
+
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
+                }
+              }}
+            >
+              Customize
+            </Box>
+          </Box>
+        </Box>
+
+        {/* AI RECOMMENDATION BUTTON */}
+
+        <Box mb={4} sx={{ display: "flex", justifyContent: "center" }}>
+          <Box
+            onClick={() => navigate("/mentors/recommendations")}
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              px: 4,
+              py: 1.6,
+              borderRadius: "40px",
+              fontWeight: 600,
+              fontSize: "14px",
+              color: "white",
+              cursor: "pointer",
+              background: "linear-gradient(135deg,#1b5e20,#43a047)",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
+              transition: "all 0.25s ease",
+
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 22px rgba(0,0,0,0.25)"
+              }
+            }}
+          >
+            🤖 Find My Best Mentor Match
+          </Box>
         </Box>
       </Container>
 
@@ -266,7 +342,9 @@ export default function MentorshipPage() {
                         profileImage={mentor.profileImage}
                         bio={mentor.bio}
                         aiRecommendation="-"
-                        onClick={() => navigate(`/mentor/${mentor.id}`, { state: mentor })}
+                        onClick={() =>
+                          navigate(`/mentor/${mentor.id}`, { state: mentor })
+                        }
                       />
                     </Grid>
                   ))
