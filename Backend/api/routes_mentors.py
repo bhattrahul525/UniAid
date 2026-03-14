@@ -1,10 +1,10 @@
 """Mentor API routes."""
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from db.session import get_db
-from schemas.mentor_schema import MentorCreate, MentorRead, MentorUpdate
+from schemas.mentor_schema import MentorBulkUploadResponse, MentorCreate, MentorRead, MentorUpdate
 from services.mentor_service import MentorService
 
 router = APIRouter(prefix="/mentors", tags=["mentors"])
@@ -21,6 +21,22 @@ def register_mentor(payload: MentorCreate, db: Session = Depends(get_db)) -> Men
 def create_mentor(payload: MentorCreate, db: Session = Depends(get_db)) -> MentorRead:
     """Alias for POST /mentors/register: create a new mentor."""
     return register_mentor(payload, db)
+
+
+@router.post("/bulk-upload", response_model=MentorBulkUploadResponse)
+def bulk_upload_mentors(
+    file: UploadFile = File(..., description="CSV file (e.g. mentors.csv with header: id, first_name, last_name, ...)"),
+    db: Session = Depends(get_db),
+) -> MentorBulkUploadResponse:
+    """Upload a CSV of mentors. CSV must match mentors.csv format."""
+    if not file.filename or not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File must be a CSV (.csv)",
+        )
+    content = file.file.read()
+    created, errors = MentorService.bulk_create_from_csv(db, content)
+    return MentorBulkUploadResponse(created=created, errors=errors)
 
 
 @router.get("", response_model=list[MentorRead])
