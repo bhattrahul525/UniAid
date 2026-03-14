@@ -1,6 +1,6 @@
 """Pydantic schemas for Mentor – aligned with mentors.csv.
 
-Users table links to mentors via users.mentor_id (FK to mentors.mentor_id)
+Users table links to mentors via users.mentor_id (FK to mentors.id)
 when a user account is for a mentor; users.mentee_id is set when the user is a mentee.
 """
 
@@ -63,4 +63,4 @@ class MentorRead(MentorBase):
     """Schema for mentor in responses."""
 
     model_config = ConfigDict(from_attributes=True)
-    mentor_id: int
+    id: int

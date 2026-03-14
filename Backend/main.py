@@ -7,11 +7,10 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from api.routes_mentors import router as mentors_router
 from api.routes_users import router as users_router
 from db.database import Base, check_db_connection, engine
 from db.sync_schema import sync_schema
-from models import Interaction, Mentee, Mentor, User  # noqa: F401 - register models with Base
+from models import Mentee, User  # noqa: F401 - register models with Base
 
 
 @asynccontextmanager
@@ -33,13 +32,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="UniAid API",
-    description="UniAid API.",
+    description="UniAid API – user registration, login, and mentee profile.",
     version="1.0.0",
     lifespan=lifespan,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
 )
 
 app.include_router(users_router)
-app.include_router(mentors_router)
 
 
 @app.get("/")
