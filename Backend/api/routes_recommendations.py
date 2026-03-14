@@ -1,4 +1,4 @@
-"""Recommendation API – by mentee_id or user_profile payload (users.csv / mentors.csv aligned)."""
+"""Recommendation API – request_text and/or user_id; response: mentor + final_score as percentage."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -23,40 +23,26 @@ def recommend_mentors(
     current_user=Depends(get_current_user),
 ) -> RecommendResponse:
     """
-    Recommend mentors for a mentee or from free-text.
-    - **mentee_id**: load mentee from DB and build profile (users.csv shape) for the model.
-    - **user_profile**: optional payload matching users.csv; use for testing without DB.
-    - **request_text**: free-text request (e.g. "help with visa" or ideal mentor description).
-    Returns ranked mentors with similarity and quality scores.
+    Recommend mentors. Both given → use only request_text. Only request_text → rank by text.
+    Only user_id → rank by user's mentee profile. Returns mentors with final_score as percentage (2 decimals).
     """
-    # Allow recommendation purely from free-text description when no profile is available.
-    if payload.mentee_id is None and payload.user_profile is None and not payload.request_text:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Provide at least one of: mentee_id, user_profile, request_text",
-        )
-    user_profile_dict = None
-    if payload.user_profile is not None:
-        user_profile_dict = payload.user_profile.to_recommender_profile()
     try:
-        mentors, profile_used = recommender_service.recommend(
-            mentee_id=payload.mentee_id,
-            user_profile=user_profile_dict or None,
-            request_text=payload.request_text,
+        mentors, _ = recommender_service.recommend(
+            user_id=payload.user_id,
+            request_text=(payload.request_text or "").strip(),
             top_k=payload.top_k,
-            candidate_pool=payload.candidate_pool,
-            w_similarity=payload.w_similarity,
-            w_quality=payload.w_quality,
             db_session=db,
         )
     except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
-    items = [MentorRecommendationItem(**m) for m in mentors]
-    return RecommendResponse(
-        mentors=items,
-        profile_used=profile_used,
-        accuracy=None,
-    )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+    items = [
+        MentorRecommendationItem(
+            mentor=m["mentor"],
+            final_score=round((m.get("final_score") or 0) * 100, 2),
+        )
+        for m in mentors
+    ]
+    return RecommendResponse(mentors=items)
 
 
 @router.get("/evaluate", response_model=EvaluateResponse)

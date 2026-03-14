@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator, field_validator
 
 
 # ----- User profile payload (users.csv shape) for testing -----
@@ -39,17 +39,23 @@ class UserProfilePayload(BaseModel):
 # ----- Request/Response -----
 
 class RecommendRequest(BaseModel):
-    """Request: recommend by mentee_id (DB) and/or user_profile (users.csv shape) for testing."""
-    mentee_id: Optional[int] = Field(None, description="If set, load mentee from DB and build profile")
-    user_profile: Optional[UserProfilePayload] = Field(
-        None,
-        description="Optional profile (users.csv shape). Overrides mentee_id profile if provided.",
-    )
-    request_text: Optional[str] = Field(None, description="Free-text request from user")
-    top_k: int = Field(default=5, ge=1, le=20)
-    candidate_pool: int = Field(default=80, ge=10, le=500)
-    w_similarity: float = Field(default=0.85, ge=0.0, le=1.0)
-    w_quality: float = Field(default=0.15, ge=0.0, le=1.0)
+    """
+    Request: recommend mentors. Provide at least one of request_text or user_id.
+    - Both given: use only request_text (user profile ignored).
+    - Only request_text: rank by free-text.
+    - Only user_id: rank by user's mentee profile from DB.
+    """
+    request_text: Optional[str] = Field(None, description="Free-text request (e.g. mentor from Monash University)")
+    top_k: int = Field(default=5, ge=1, le=20, description="Number of mentors to return")
+    user_id: Optional[int] = Field(None, description="User ID; used only when request_text is not provided")
+
+    @model_validator(mode="after")
+    def require_request_text_or_user_id(self) -> "RecommendRequest":
+        has_text = self.request_text is not None and str(self.request_text).strip() != ""
+        has_user = self.user_id is not None
+        if not has_text and not has_user:
+            raise ValueError("Provide at least one of: request_text, user_id")
+        return self
 
 
 class MentorData(BaseModel):
@@ -79,21 +85,20 @@ class MentorData(BaseModel):
 
 
 class MentorRecommendationItem(BaseModel):
-    """One recommendation: mentor data nested, recommendation scores at top level."""
+    """One recommendation: mentor data and match score as percentage only."""
     mentor: MentorData = Field(..., description="Full mentor profile")
-    similarity: Optional[float] = Field(None, description="Semantic match score")
-    quality_score: Optional[float] = Field(None, description="Quality from past interactions")
-    final_score: Optional[float] = Field(None, description="Combined ranking score")
-    requirement_match: Optional[float] = Field(None, description="Fraction of stated requirements satisfied (0–1) when request_text is used")
-    interaction_count: Optional[int] = Field(None, description="Number of past sessions")
-    success_rate: Optional[float] = Field(None, description="Session success rate")
+    final_score: float = Field(..., description="Match score as percentage (0–100), 2 decimal places")
+
+    @field_validator("final_score", mode="before")
+    @classmethod
+    def round_final_score(cls, v: float) -> float:
+        """Ensure final_score is always a float with exactly 2 decimal places."""
+        return round(float(v), 2)
 
 
 class RecommendResponse(BaseModel):
-    """Response: ranked mentors and (when available) evaluation metrics."""
+    """Response: ranked list of recommended mentors with match percentage."""
     mentors: list[MentorRecommendationItem] = Field(..., description="Ranked list of recommended mentors")
-    profile_used: Optional[dict[str, Any]] = Field(None, description="Profile sent to model (for debugging)")
-    accuracy: Optional[dict[str, Any]] = Field(None, description="Optional eval metrics if requested")
 
 
 class EvaluateResponse(BaseModel):

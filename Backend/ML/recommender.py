@@ -326,13 +326,12 @@ class MentorRecommender:
         w_similarity: float = 0.65,
         w_quality: float = 0.15,
         w_past_interaction: float = 0.35,
+        candidate_university: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         """
         Returns a ranked list of mentors with scores.
-
+        - If candidate_university is set, only mentors from that university are considered (search within subset).
         - Uses semantic similarity (cosine) between (user profile + request) and mentors.
-        - Applies quality_score from interactions and a boost for mentors the user has interacted with,
-          so that past-good matches can appear in top_k (improves hit_rate in evaluation and UX).
         """
         self._load_index_artifacts()
         assert self._mentors_df is not None
@@ -354,24 +353,48 @@ class MentorRecommender:
         model = self._load_model()
         q_emb = model.encode([query_text], normalize_embeddings=True)
 
-        pool = max(top_k, min(candidate_pool, len(self._mentors_df)))
-        distances, indices = self._nn.kneighbors(q_emb, n_neighbors=pool)
-        idxs = indices[0]
-        dists = distances[0]
-        sim = 1.0 - dists
-
-        candidates = self._mentors_df.iloc[idxs].copy()
-        candidates["similarity"] = sim
+        if candidate_university and "university" in self._mentors_df.columns:
+            # Filter mentors to this university first, then run recommendation on the filtered list only.
+            u_lower = candidate_university.strip().lower()
+            uni_series = self._mentors_df["university"].fillna("").astype(str).str.strip().str.lower()
+            uni_mask = uni_series == u_lower
+            university_indices = np.where(uni_mask)[0]
+            if len(university_indices) == 0:
+                return []
+            subset_embeddings = self._mentor_embeddings[university_indices]
+            n_take = min(top_k, len(university_indices))
+            nn_subset = NearestNeighbors(metric="cosine")
+            nn_subset.fit(subset_embeddings)
+            dists, local_idx = nn_subset.kneighbors(q_emb, n_neighbors=n_take)
+            dists = dists[0]
+            local_idx = local_idx[0]
+            idxs = university_indices[local_idx]
+            sim = 1.0 - dists
+            candidates = self._mentors_df.iloc[idxs].copy()
+            candidates["similarity"] = sim
+        else:
+            pool = max(top_k, min(candidate_pool, len(self._mentors_df)))
+            distances, indices = self._nn.kneighbors(q_emb, n_neighbors=pool)
+            idxs = indices[0]
+            dists = distances[0]
+            sim = 1.0 - dists
+            candidates = self._mentors_df.iloc[idxs].copy()
+            candidates["similarity"] = sim
 
         # Include mentors the user has interacted with if not already in semantic pool
         if past_mentor_ids:
             in_pool = set(candidates["mentor_id"].astype(int))
+            u_lower = candidate_university.strip().lower() if candidate_university else None
             for mid in past_mentor_ids:
                 if mid in in_pool:
                     continue
                 row = self._mentors_df[self._mentors_df["mentor_id"] == mid]
                 if row.empty:
                     continue
+                if u_lower and "university" in row.columns:
+                    row_uni = (row["university"].iloc[0] or "").strip().lower()
+                    if row_uni != u_lower:
+                        continue
                 extra = row.copy()
                 extra["similarity"] = 0.0
                 candidates = pd.concat([candidates, extra], ignore_index=True)

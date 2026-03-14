@@ -21,7 +21,7 @@ class MenteeService:
         mentee = Mentee(
             user_type=payload.user_type,
             home_country=payload.home_country,
-            preferred_destination_country=payload.preferred_destination_country,
+            university=payload.university,
             field_of_study=payload.field_of_study,
             degree_level=payload.degree_level,
             budget_range=payload.budget_range,
