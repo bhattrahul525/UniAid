@@ -63,9 +63,6 @@ class MentorRead(MentorBase):
     """Schema for mentor in responses. Primary key is `id` (matches mentors table and mentors.csv)."""
 
     model_config = ConfigDict(from_attributes=True)
-<<<<<<< Updated upstream
-    mentor_id: int
-=======
     id: int = Field(..., description="Primary key of the mentors table")
 
 
@@ -74,4 +71,3 @@ class MentorBulkUploadResponse(BaseModel):
 
     created: int = Field(..., description="Number of mentors created")
     errors: list[str] = Field(default_factory=list, description="Error messages for failed rows")
->>>>>>> Stashed changes

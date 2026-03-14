@@ -21,7 +21,7 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     mentor_id = Column(
         Integer,
-        ForeignKey("mentors.mentor_id", ondelete="SET NULL"),
+        ForeignKey("mentors.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
