@@ -7,21 +7,24 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from api.routes_mentors import router as mentors_router
 from api.routes_users import router as users_router
 from db.database import Base, check_db_connection, engine
-from models import Interaction, Mentor, User, UserDetails  # noqa: F401 - register models with Base
+from db.sync_schema import sync_schema
+from models import Mentee, User  # noqa: F401 - register models with Base
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Create DB tables on startup. Log and continue if DB is unavailable."""
+    """Create DB tables on startup, then sync new columns from models to DB."""
     import logging
+    log = logging.getLogger("uvicorn.error")
     try:
         Base.metadata.create_all(bind=engine)
+        sync_schema(engine, Base.metadata)
     except Exception as e:
-        logging.getLogger("uvicorn.error").warning(
-            "Database not available at startup: %s. Set DATABASE_URL in .env and ensure Postgres is running.", e
+        log.warning(
+            "Database not available at startup: %s. Set DATABASE_URL in .env and ensure Postgres is running.",
+            e,
         )
     yield
     # shutdown: nothing to do
@@ -29,13 +32,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="UniAid API",
-    description="Connects international students and parents with mentors for studying abroad.",
+    description="UniAid API.",
     version="1.0.0",
     lifespan=lifespan,
 )
 
 app.include_router(users_router)
-app.include_router(mentors_router)
 
 
 @app.get("/")

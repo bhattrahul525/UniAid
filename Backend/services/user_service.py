@@ -4,7 +4,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session, joinedload
 
-from models.user_details_model import UserDetails
+from models.mentee_model import Mentee
 from models.user_model import User
 from schemas.user_schema import UserCreate, UserRead, UserSignup
 from utils.password import hash_password, verify_password
@@ -15,12 +15,10 @@ class UserService:
 
     @staticmethod
     def signup(db: Session, payload: UserSignup) -> User:
-        """Create a new user (login only: first_name, last_name, email, password)."""
+        """Create a new user (email, password only)."""
         if UserService.get_by_email(db, payload.email) is not None:
             raise ValueError("A user with this email already exists")
         user = User(
-            first_name=payload.first_name,
-            last_name=payload.last_name,
             email=payload.email,
             hashed_password=hash_password(payload.password),
         )
@@ -31,13 +29,13 @@ class UserService:
 
     @staticmethod
     def register(db: Session, payload: UserCreate) -> User:
-        """Create user details for an existing user and link via user_details_id."""
+        """Create mentee profile for an existing user and link via mentee_id."""
         user = UserService.get_by_id(db, payload.user_id)
         if not user:
             raise ValueError("User not found")
-        if user.user_details_id is not None:
-            raise ValueError("User already has profile details")
-        details = UserDetails(
+        if user.mentee_id is not None:
+            raise ValueError("User already has a mentee profile")
+        mentee = Mentee(
             user_type=payload.user_type,
             home_country=payload.home_country,
             preferred_destination_country=payload.preferred_destination_country,
@@ -46,12 +44,12 @@ class UserService:
             budget_range=payload.budget_range,
             preferred_language=payload.preferred_language,
         )
-        db.add(details)
-        db.flush()  # get details.user_details_id
-        user.user_details_id = details.user_details_id
+        db.add(mentee)
+        db.flush()
+        user.mentee_id = mentee.mentee_id
         db.commit()
         db.refresh(user)
-        db.refresh(details)
+        db.refresh(mentee)
         return user
 
     @staticmethod
@@ -61,10 +59,10 @@ class UserService:
 
     @staticmethod
     def get_by_id_with_details(db: Session, user_id: int) -> Optional[User]:
-        """Return user by user_id with user_details eager-loaded, or None."""
+        """Return user by user_id with mentee eager-loaded, or None."""
         return (
             db.query(User)
-            .options(joinedload(User.user_details))
+            .options(joinedload(User.mentee))
             .filter(User.user_id == user_id)
             .first()
         )
@@ -76,12 +74,12 @@ class UserService:
 
     @staticmethod
     def to_read(user: User) -> UserRead:
-        """Map User model to UserRead schema (includes user_details if loaded)."""
+        """Map User model to UserRead schema (includes mentee if loaded)."""
         return UserRead.model_validate(user)
 
     @staticmethod
     def to_response(user: User) -> "UserResponse":
-        """Map User to UserResponse (no user_details)."""
+        """Map User to UserResponse."""
         from schemas.user_schema import UserResponse
         return UserResponse.model_validate(user)
 
