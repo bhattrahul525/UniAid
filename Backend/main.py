@@ -9,6 +9,11 @@ from typing import Any
 
 from fastapi import FastAPI
 
+from api.routes_sessions import router as sessions_router
+from api.routes_users import router as users_router
+from db.database import Base, check_db_connection, engine
+from db.sync_schema import sync_schema
+from models import Mentee, Mentor, Session, User  # noqa: F401 - register models with Base
 from api.routes_mentors import router as mentors_router
 from api.routes_recommendations import router as recommendations_router
 from api.routes_users import router as users_router
@@ -64,6 +69,7 @@ app = FastAPI(
 )
 
 app.include_router(users_router)
+app.include_router(sessions_router)
 app.include_router(mentors_router)
 app.include_router(mentees_router)
 
