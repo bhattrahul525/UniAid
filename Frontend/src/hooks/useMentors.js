@@ -10,6 +10,7 @@ export const useMentors = () => {
 };
 
 export const useMentorRecommendations = (params) => {
+  console.log("Fetching mentor recommendations with params:", params)
   return useQuery({
     queryKey: ["mentor-recommendations", params],
     queryFn: () => getMentorsAIRecommendations(params),

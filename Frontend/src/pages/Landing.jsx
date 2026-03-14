@@ -1,8 +1,14 @@
-import { Box, Container, Typography, Button, Card, CardContent } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Card,
+  CardContent
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useRef } from "react";
+import { useEffect , useRef, useState} from "react";
 import { motion } from "framer-motion";
 
 const features = [
@@ -32,7 +38,17 @@ export default function Landing() {
   const navigate = useNavigate();
   const videoRef = useRef(null);
   const auth = useSelector((state) => state.auth);
+  const [scrolled, setScrolled] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > window.innerHeight / 1.2);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   useEffect(() => {
     if (auth?.token) {
       navigate("/mentorship");
@@ -46,7 +62,8 @@ export default function Landing() {
       if (!video) return;
 
       const scrollTop = window.scrollY;
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
 
       const scrollFraction = scrollTop / scrollHeight;
 
@@ -71,6 +88,64 @@ export default function Landing() {
           background: "black"
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            display: "flex",
+            gap: 2,
+            px: 3,
+            py: 2,
+            mt: 3,
+            zIndex: 5,
+            borderRadius: "40px",
+
+            backdropFilter: scrolled ? "none" : "blur(10px)",
+            hidden: !scrolled,
+
+            transition: "all 0.4s ease"
+          }}
+        >
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={() => navigate("/login")}
+            sx={{
+              width: 200,
+              height: 56,
+              color: "white",
+              borderColor: "white",
+              borderRadius: 3,
+              fontSize: 16,
+              fontWeight: 600,
+              "&:hover": {
+                background: "white",
+                color: "black",
+                borderColor: "white"
+              }
+            }}
+          >
+            Login
+          </Button>
+
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => navigate("/register")}
+            sx={{
+              width: 200,
+              height: 56,
+              borderRadius: 3,
+              fontSize: 16,
+              fontWeight: 600,
+              background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
+              boxShadow: "0 8px 20px rgba(79,70,229,0.6)"
+            }}
+          >
+            Join UniAid
+          </Button>
+        </Box>
         <video
           ref={videoRef}
           src="/hero-video.mp4"
@@ -87,7 +162,8 @@ export default function Landing() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            zIndex: -1
+            zIndex: -1,
+            pointerEvents: "none"
           }}
         />
 
@@ -111,8 +187,8 @@ export default function Landing() {
             </Typography>
 
             <Typography variant="h6" sx={{ mb: 4 }}>
-              Helping new international students connect with mentors, avoid scams, and explore
-              their new city.
+              Helping new international students connect with mentors, avoid
+              scams, and explore their new city.
             </Typography>
           </motion.div>
         </Container>
@@ -182,7 +258,7 @@ export default function Landing() {
         }}
       >
         <Container
-          maxWidth="sm"
+          maxWidth="md"
           sx={{
             textAlign: "center",
             position: "relative",
@@ -202,85 +278,24 @@ export default function Landing() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Typography
-              variant="h4"
-              gutterBottom
-              sx={{
-                fontWeight: 700,
-                textShadow: "0px 4px 20px rgba(0,0,0,0.7)"
-              }}
-            >
-              Start Your Journey Today
+            <Typography variant="h4" sx={{ mb: 2, fontWeight: 600 }}>
+              About UniAid
             </Typography>
 
             <Typography
+              variant="body1"
               sx={{
-                mb: 4,
-                color: "rgba(255,255,255,0.85)",
-                fontSize: 18
+                fontSize: 18,
+                lineHeight: 1.6,
+                color: "rgba(255,255,255,0.9)"
               }}
             >
-              Join UniAid or login to your existing account to connect with mentors, ask questions,
-              and navigate university life with confidence.
+              UniAid is a platform designed to support international students
+              before and after arriving at university. Students can connect with
+              experienced mentors, discover essential city information, learn
+              about common scams, and access helpful resources to confidently
+              start their academic journey abroad.
             </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                gap: 3,
-                flexWrap: "wrap"
-              }}
-            >
-              {/* REGISTER BUTTON */}
-
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => navigate("/register")}
-                sx={{
-                  px: 5,
-                  py: 1.5,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  borderRadius: 3,
-                  background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
-                  boxShadow: "0 10px 30px rgba(79,70,229,0.6)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    transform: "translateY(-3px)",
-                    boxShadow: "0 15px 40px rgba(79,70,229,0.8)"
-                  }
-                }}
-              >
-                Join UniAid
-              </Button>
-
-              {/* LOGIN BUTTON */}
-
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={() => navigate("/login")}
-                sx={{
-                  px: 5,
-                  py: 1.5,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  borderRadius: 3,
-                  color: "white",
-                  borderColor: "white",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    background: "white",
-                    color: "black",
-                    borderColor: "white"
-                  }
-                }}
-              >
-                Login
-              </Button>
-            </Box>
           </motion.div>
         </Container>
       </Box>

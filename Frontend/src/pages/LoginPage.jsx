@@ -1,4 +1,11 @@
-import { Container, Typography, Paper, TextField, Button, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  Box
+} from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +31,9 @@ export default function LoginPage() {
   const { mutate: login, isPending, error } = useLogin();
 
   return (
-    <Box sx={{ backgroundColor: "background.default", minHeight: "100vh", pt: 12 }}>
+    <Box
+      sx={{ backgroundColor: "background.default", minHeight: "100vh", pt: 12 }}
+    >
       <Container maxWidth="sm">
         <Box textAlign="center" mb={7}>
           <Typography variant="h2">Welcome Back to UniAid!</Typography>
@@ -49,17 +58,21 @@ export default function LoginPage() {
             onSubmit={(values) => {
               login(values, {
                 onSuccess: (data) => {
-                  // store token
-                  dispatch(
-                    setAuth({
-                      token: data.token,
-                      user: data.user
-                    })
-                  );
-                  localStorage.setItem("token", data.token);
-                  console.log("Login successful, token stored:", data.token);
-                  // redirect
-                  navigate("/mentorship");
+                  const authData = {
+                    token: data.token,
+                    user: data.user,
+                    isAuthenticated: true
+                  };
+
+                  // Redux
+                  dispatch(setAuth(authData));
+
+                  // LocalStorage
+                  localStorage.setItem("auth", JSON.stringify(authData));
+
+                  console.log("Login successful:", authData);
+
+                  navigate("/dashboard");
                 }
               });
             }}
@@ -90,7 +103,12 @@ export default function LoginPage() {
 
                   {/* LOGIN BUTTON */}
                   <Box textAlign="center" mt={2}>
-                    <Button type="submit" size="large" variant="contained" disabled={isPending}>
+                    <Button
+                      type="submit"
+                      size="large"
+                      variant="contained"
+                      disabled={isPending}
+                    >
                       {isPending ? "Logging in..." : "Login"}
                     </Button>
                   </Box>

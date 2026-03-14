@@ -5,11 +5,14 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const storedAuth = localStorage.getItem("auth");
+  const token = storedAuth ? JSON.parse(storedAuth).token : null;
 
   if (token) {
-    config.headers.Authorization = `${token}`;
+    config.headers.Authorization = token;
   }
+
+  config.headers["Ngrok-Skip-Browser-Warning"] = "true";
 
   return config;
 });
