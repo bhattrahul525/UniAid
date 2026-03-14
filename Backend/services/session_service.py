@@ -26,6 +26,7 @@ class SessionService:
             description=payload.description,
             mentor_id=payload.mentor_id,
             session_type=SessionType(payload.session_type.value),
+            scheduled_at=payload.scheduled_at,
         )
         db.add(session)
         db.flush()
@@ -70,7 +71,7 @@ class SessionService:
         for key, value in data.items():
             if key == "session_type" and value is not None:
                 setattr(session, key, SessionType(value.value))
-            elif key != "user_ids":
+            elif key not in ("user_ids",):
                 setattr(session, key, value)
         if user_ids is not None:
             session.users = SessionService._users_from_user_ids(db, user_ids)
@@ -115,6 +116,7 @@ class SessionService:
             "mentor_first_name": mentor_user.first_name if mentor_user else None,
             "mentor_last_name": mentor_user.last_name if mentor_user else None,
             "session_type": session.session_type,
+            "scheduled_at": session.scheduled_at,
             "users": users_data,
         }
         return SessionRead.model_validate(data)
