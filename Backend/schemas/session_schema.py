@@ -6,25 +6,12 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from .user_schema import MenteeRead
-
 
 class SessionTypeEnum(str, Enum):
     """Session visibility (enum: public or private)."""
 
     public = "public"
     private = "private"
-
-
-class UserInSessionRead(BaseModel):
-    """User in session response: user fields plus nested mentee data."""
-
-    model_config = ConfigDict(from_attributes=True)
-    user_id: int
-    email: str
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    mentee: Optional[MenteeRead] = None
 
 
 class SessionBase(BaseModel):
@@ -65,7 +52,7 @@ class SessionUpdate(BaseModel):
 
 
 class SessionRead(BaseModel):
-    """Schema for session in responses (includes list of users with nested mentee, and mentor name from user table)."""
+    """Schema for session in responses (includes mentor name and a count of subscribed users)."""
 
     model_config = ConfigDict(from_attributes=True)
     id: int
@@ -76,7 +63,7 @@ class SessionRead(BaseModel):
     mentor_last_name: Optional[str] = Field(None, description="From user table (user linked to this mentor)")
     session_type: SessionTypeEnum
     scheduled_at: Optional[datetime] = Field(None, description="Date and time of the session (ISO 8601)")
-    users: list[UserInSessionRead] = Field(default_factory=list)
+    users_count: int = Field(..., description="Number of users subscribed to this session")
 
     @field_validator("session_type", mode="before")
     @classmethod
