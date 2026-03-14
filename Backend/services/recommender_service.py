@@ -20,7 +20,60 @@ _DATA_DIR = _BACKEND_ROOT.parent / "Dataset"  # Dataset/ (mentors_dataset, mente
 _ML_DIR = _BACKEND_ROOT / "ML"
 _MODELS_DIR = _ML_DIR / "models"
 
+# Known universities (for matching from request_text or user profile)
+_KNOWN_UNIVERSITIES = (
+    "Monash University", "University of Melbourne", "University of Sydney", "University of Queensland",
+    "University of Western Australia", "University of Adelaide", "Australian National University",
+    "Queensland University of Technology", "Deakin University", "University of Technology Sydney",
+    "RMIT University", "University of New South Wales", "Macquarie University", "Swinburne University",
+    "La Trobe University", "University of Wollongong", "Griffith University", "Curtin University",
+    "University of Newcastle", "Flinders University", "James Cook University", "University of Tasmania",
+)
+
 _recommender_instance: Optional[Any] = None
+
+
+def _normalize_university(name: Optional[str]) -> Optional[str]:
+    """Return trimmed, non-empty university name or None."""
+    if not name or not str(name).strip():
+        return None
+    return str(name).strip()
+
+
+def _extract_university(user_profile: Optional[dict[str, Any]], request_text: str) -> Optional[str]:
+    """
+    Get university filter: from request_text if non-empty (priority), else from user profile (target_university).
+    Used to filter mentors to that university.
+    """
+    text = (request_text or "").strip().lower()
+    if text:
+        for uni in _KNOWN_UNIVERSITIES:
+            if uni.lower() in text:
+                return _normalize_university(uni)
+    if user_profile:
+        target = user_profile.get("target_university")
+        if target:
+            return _normalize_university(target)
+    return None
+
+
+def _filter_results_by_university(
+    results: list[dict[str, Any]], university_filter: Optional[str]
+) -> list[dict[str, Any]]:
+    """Keep only results whose mentor is from the given university (case-insensitive)."""
+    if not university_filter or not results:
+        return results
+    u_lower = university_filter.strip().lower()
+    out = []
+    for item in results:
+        mentor = item.get("mentor")
+        if not isinstance(mentor, dict):
+            uni = getattr(mentor, "university", None) if mentor else None
+        else:
+            uni = mentor.get("university")
+        if uni and str(uni).strip().lower() == u_lower:
+            out.append(item)
+    return out
 
 
 def _get_ml_recommender():
@@ -198,7 +251,7 @@ def mentee_to_user_profile(mentee: Any, user: Any) -> dict[str, Any]:
         "user_type": getattr(mentee, "user_type", None),
         "home_country": getattr(mentee, "home_country", None),
         "preferred_city_type": None,
-        "target_university": getattr(mentee, "preferred_destination_country", None),
+        "target_university": getattr(mentee, "university", None),
         "field_of_study": getattr(mentee, "field_of_study", None),
         "degree_level": getattr(mentee, "degree_level", None),
         "intended_start_year": None,
@@ -218,52 +271,60 @@ def mentee_to_user_profile(mentee: Any, user: Any) -> dict[str, Any]:
 
 def recommend(
     *,
-    mentee_id: Optional[int] = None,
-    user_profile: Optional[dict[str, Any]] = None,
-    request_text: Optional[str] = None,
+    user_id: Optional[int] = None,
+    request_text: str = "",
     top_k: int = 5,
-    candidate_pool: int = 80,
-    w_similarity: float = 0.85,
-    w_quality: float = 0.15,
     db_session: Optional[Any] = None,
 ) -> tuple[list[dict[str, Any]], Optional[dict[str, Any]]]:
     """
-    Get ranked mentor recommendations.
-    Either pass mentee_id (and db_session to load mentee) or user_profile (users.csv shape).
-    Returns (list of mentor dicts, profile_used for debugging).
+    Get ranked mentor recommendations. At least one of user_id or request_text (non-empty) required.
+    - Both given: use only request_text (user profile ignored).
+    - Only request_text: rank by free-text; if university in text, filter mentors by that university.
+    - Only user_id: rank by user's mentee profile; filter by user's target university if set.
+    Returns (list of mentor dicts with mentor + final_score, profile_used).
     """
+    req_text = (request_text or "").strip()
+    if user_id is None and not req_text:
+        raise ValueError("Provide at least one of: request_text, user_id")
+
+    user_profile: Optional[dict[str, Any]] = None
     profile_used: Optional[dict[str, Any]] = None
-    if user_profile is not None:
-        profile_used = user_profile
-    elif mentee_id is not None and db_session is not None:
+    # When request_text is given (including when both request_text and user_id are sent): ignore user_id.
+    # All recommendation is done from request_text only. Load user profile only when request_text is empty.
+    if not req_text and user_id is not None and db_session is not None:
         from models.user_model import User
         from sqlalchemy.orm import joinedload
         user = (
             db_session.query(User)
             .options(joinedload(User.mentee))
-            .filter(User.mentee_id == mentee_id)
+            .filter(User.user_id == user_id)
             .first()
         )
         if user is None:
-            raise ValueError(f"mentee_id {mentee_id} not found (no user with this mentee_id)")
-        if user.mentee is None:
-            raise ValueError(f"User for mentee_id {mentee_id} has no mentee profile")
-        profile_used = mentee_to_user_profile(user.mentee, user)
-        user_profile = profile_used
+            raise ValueError(f"user_id {user_id} not found")
+        if user.mentee is not None:
+            profile_used = mentee_to_user_profile(user.mentee, user)
+            user_profile = profile_used
+
+    # If request_text mentions a university (e.g. "Monash University"), filter mentors to that university
+    # and run the recommendation model on the filtered list only.
+    university_filter = _extract_university(user_profile, req_text)
 
     rec = _get_ml_recommender()
     try:
         ml_results = rec.recommend(
-            user_id=None,
+            user_id=user_id if not req_text else None,
             user_profile=user_profile,
-            request_text=request_text,
+            request_text=req_text or None,
             top_k=top_k,
-            candidate_pool=candidate_pool,
-            w_similarity=w_similarity,
-            w_quality=w_quality,
+            candidate_pool=80,
+            w_similarity=0.85,
+            w_quality=0.15,
+            candidate_university=university_filter,
         )
     except Exception:
         ml_results = []
+    # When user asked for a specific university, do not fall back to unfiltered results.
 
     # Return mentors from DB when possible; use ML only for ranking, then fetch full mentor from DB.
     if db_session is not None and ml_results:
@@ -286,6 +347,10 @@ def recommend(
             .filter(Mentor.id.in_(ordered_mentor_ids))
             .all()
         )
+        # When university was requested, only include mentors from that university (DB may differ from ML data).
+        if university_filter:
+            u_lower = university_filter.strip().lower()
+            db_mentors = [m for m in db_mentors if (getattr(m, "university", None) or "").strip().lower() == u_lower]
         db_by_id = {m.id: m for m in db_mentors}
         results = []
         for mid in ordered_mentor_ids:
@@ -298,26 +363,30 @@ def recommend(
         # so the API still returns recommendations; once DB is seeded from same source as ML, we return DB.
         if not results:
             results = [_ml_result_to_recommendation_item(r) for r in ml_results]
-        results = _rerank_by_requirements(results, request_text)
+        results = _rerank_by_requirements(results, req_text)
+        results = _filter_results_by_university(results, university_filter)
         return results, profile_used
 
     # When ML returns no results but we have DB: return mentors from DB (no ranking).
     if db_session is not None and not ml_results:
         from models.mentor_model import Mentor
 
-        db_mentors = (
-            db_session.query(Mentor)
-            .order_by(Mentor.id)
-            .limit(top_k)
-            .all()
-        )
+        limit = (top_k * 3) if university_filter else top_k
+        db_mentors = db_session.query(Mentor).order_by(Mentor.id).limit(limit).all()
+        if university_filter:
+            u_lower = university_filter.strip().lower()
+            db_mentors = [m for m in db_mentors if (getattr(m, "university", None) or "").strip().lower() == u_lower][:top_k]
+        else:
+            db_mentors = db_mentors[:top_k]
         empty_scores: dict[str, Any] = {}
         results = [_mentor_to_recommendation_item(m, empty_scores) for m in db_mentors]
-        results = _rerank_by_requirements(results, request_text)
+        results = _rerank_by_requirements(results, req_text)
+        results = _filter_results_by_university(results, university_filter)
         return results, profile_used
 
     results = [_ml_result_to_recommendation_item(r) for r in ml_results]
-    results = _rerank_by_requirements(results, request_text)
+    results = _rerank_by_requirements(results, req_text)
+    results = _filter_results_by_university(results, university_filter)
     return results, profile_used
 
 
