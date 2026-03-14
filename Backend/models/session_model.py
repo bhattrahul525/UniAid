@@ -2,7 +2,7 @@
 
 import enum
 
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
 from db.database import Base
@@ -44,6 +44,11 @@ class Session(Base):
         Enum(SessionType, name="session_type_enum", create_constraint=True, native_enum=True),
         nullable=False,
         default=SessionType.public,
+        index=True,
+    )
+    scheduled_at = Column(
+        DateTime(timezone=True),
+        nullable=True,
         index=True,
     )
 
