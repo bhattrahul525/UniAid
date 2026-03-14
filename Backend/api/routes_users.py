@@ -15,12 +15,12 @@ from schemas.user_schema import (
 from services.user_service import UserService
 from utils.jwt import create_access_token
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/user", tags=["user"])
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register(payload: UserSignup, db: Session = Depends(get_db)) -> UserResponse:
-    """Register a new user. Rejects if email already exists."""
+    """Register a new user (email, password). Rejects if email already exists."""
     try:
         user = UserService.signup(db, payload)
         return UserService.to_response(user)
@@ -35,7 +35,7 @@ def register(payload: UserSignup, db: Session = Depends(get_db)) -> UserResponse
 
 @router.post("/login", response_model=LoginResponse)
 def login(payload: UserLogin, db: Session = Depends(get_db)) -> LoginResponse:
-    """Login with email and password. Returns bearer token and user (no user_details)."""
+    """Login existing user. Returns bearer token and user."""
     user = UserService.login(db, payload.email, payload.password)
     if not user:
         raise HTTPException(
@@ -44,21 +44,14 @@ def login(payload: UserLogin, db: Session = Depends(get_db)) -> LoginResponse:
         )
     access_token = create_access_token(user_id=user.user_id, email=user.email)
     return LoginResponse(
-        access_token=access_token,
-        token_type="bearer",
+        token=f"Bearer {access_token}",
         user=UserService.to_response(user),
     )
 
 
-@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-def create_user(payload: UserSignup, db: Session = Depends(get_db)) -> UserResponse:
-    """Alias for POST /users/register: register a new user."""
-    return register(payload, db)
-
-
 @router.post("/profile", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def add_profile(payload: UserCreate, db: Session = Depends(get_db)) -> UserRead:
-    """Add profile (user_details) to an existing user. Body must include user_id."""
+    """Add mentee profile to an existing user. Body must include user_id."""
     try:
         user = UserService.register(db, payload)
         user = UserService.get_by_id_with_details(db, user.user_id)
@@ -69,7 +62,7 @@ def add_profile(payload: UserCreate, db: Session = Depends(get_db)) -> UserRead:
 
 @router.get("/{user_id}", response_model=UserRead)
 def get_user(user_id: int, db: Session = Depends(get_db)) -> UserRead:
-    """Get a user by ID (includes user_details if set)."""
+    """Get a user by ID (includes mentee profile if set)."""
     user = UserService.get_by_id_with_details(db, user_id)
     if not user:
         raise HTTPException(
