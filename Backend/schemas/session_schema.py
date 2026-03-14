@@ -46,6 +46,13 @@ class SessionCreate(SessionBase):
     user_ids: list[int] = Field(default_factory=list, description="List of user_id to link to the session")
 
 
+class SessionUserAdd(BaseModel):
+    """Payload for linking a user to a session (row in session_users)."""
+
+    session_id: int = Field(..., description="Session ID to link the user to")
+    user_id: int = Field(..., description="User ID to link to the session")
+
+
 class SessionUpdate(BaseModel):
     """Schema for partial update. All fields optional."""
 

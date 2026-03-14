@@ -80,6 +80,22 @@ class SessionService:
         return session
 
     @staticmethod
+    def add_user(db: Session, session_id: int, user_id: int) -> SessionModel | None:
+        """Add a user to a session (idempotent). Return session or None if session not found."""
+        session = SessionService.get_by_id(db, session_id)
+        if not session:
+            return None
+        user = db.query(User).filter(User.user_id == user_id).first()
+        if not user:
+            raise ValueError("USER_NOT_FOUND")
+        # Idempotent: avoid duplicate association rows
+        if user not in (session.users or []):
+            session.users.append(user)
+            db.commit()
+            db.refresh(session)
+        return session
+
+    @staticmethod
     def delete(db: Session, session_id: int) -> bool:
         """Delete session by id. Return True if deleted, False if not found."""
         session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
