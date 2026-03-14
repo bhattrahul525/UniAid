@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from db.session import get_db
 from models.mentor_model import Mentor
-from schemas.session_schema import SessionCreate, SessionRead, SessionUpdate
+from schemas.session_schema import SessionCreate, SessionRead, SessionUpdate, SessionUserAdd
 from services.session_service import SessionService
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
@@ -62,6 +62,26 @@ def update_session(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Session not found",
         )
+    return SessionService.to_read(session, db)
+
+
+@router.post("/users", response_model=SessionRead, status_code=status.HTTP_200_OK)
+def add_user_to_session(
+    payload: SessionUserAdd,
+    db: Session = Depends(get_db),
+) -> SessionRead:
+    """Add a user to a session (inserts into session_users)."""
+    try:
+        session = SessionService.add_user(db, session_id=payload.session_id, user_id=payload.user_id)
+    except ValueError as exc:
+        if str(exc) == "USER_NOT_FOUND":
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
+            ) from exc
+        raise
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
     return SessionService.to_read(session, db)
 
 
