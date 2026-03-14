@@ -15,7 +15,7 @@ class Mentor(Base):
 
     __tablename__ = "mentors"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    id = Column("id", Integer, primary_key=True, index=True, autoincrement=True)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
     mentor_type = Column(String(50), nullable=False, index=True)  # student, parent, professor, etc.
