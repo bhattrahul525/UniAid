@@ -68,3 +68,27 @@ python scripts/drop_tables.py
 ```
 
 Then restart the server so tables are created again.
+
+## Recommendation API (mentee_id + payload, accuracy)
+
+Recommendations use `Data/users.csv`, `Data/mentors.csv`, and `Data/interactions.csv` (and optional ML index in `Backend/ML/models/`).
+
+- **POST /recommendations** – Recommend mentors:
+  - **mentee_id**: load mentee from DB and build a profile (users.csv shape) for the model.
+  - **user_profile**: optional payload with same fields as users.csv (for testing without DB).
+  - **request_text**: optional free-text (e.g. "help with visa").
+  - Returns ranked mentors with `similarity`, `quality_score`, `final_score`.
+
+- **GET /recommendations/evaluate** – Offline accuracy for testing:
+  - Uses a sample of (user_id, mentor_id) from interactions and checks if the actual mentor is in top_k.
+  - Query params: `sample_size` (default 200), `top_k` (default 5), `seed` (default 42).
+  - Returns `hit_rate_at_k` and `mrr` (mean reciprocal rank).
+
+**Build ML index once** (from `Backend/ML`):
+
+```bash
+cd Backend/ML
+python recommender.py build
+```
+
+Then run the main backend; the first recommendation call will load the index.
