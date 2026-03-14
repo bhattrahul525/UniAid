@@ -3,6 +3,7 @@
 from sqlalchemy import case, func
 from sqlalchemy.orm import Session, joinedload
 
+from models.mentor_model import Mentor
 from models.session_model import Session as SessionModel, SessionType
 from models.user_model import User
 from schemas.session_schema import SessionCreate, SessionRead, SessionUpdate
@@ -119,16 +120,23 @@ class SessionService:
 
     @staticmethod
     def to_read(session: SessionModel, db: Session) -> SessionRead:
-        """Map Session model to SessionRead; include mentor name and count of subscribed users."""
+        """Map Session model to SessionRead; include mentor name and count of subscribed users.
+        Mentor name comes from User linked to mentor_id if present, else from mentors table."""
         mentor_user = db.query(User).filter(User.mentor_id == session.mentor_id).first()
+        if mentor_user:
+            mentor_first_name, mentor_last_name = mentor_user.first_name, mentor_user.last_name
+        else:
+            mentor = db.query(Mentor).filter(Mentor.id == session.mentor_id).first()
+            mentor_first_name = mentor.first_name if mentor else None
+            mentor_last_name = mentor.last_name if mentor else None
         users_count = len(session.users or [])
         data = {
             "id": session.id,
             "title": session.title,
             "description": session.description,
             "mentor_id": session.mentor_id,
-            "mentor_first_name": mentor_user.first_name if mentor_user else None,
-            "mentor_last_name": mentor_user.last_name if mentor_user else None,
+            "mentor_first_name": mentor_first_name,
+            "mentor_last_name": mentor_last_name,
             "session_type": session.session_type,
             "scheduled_at": session.scheduled_at,
             "users_count": users_count,
