@@ -6,7 +6,7 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from schemas.pagination_schema import EntityCounts, PaginationMeta
+from schemas.pagination_schema import EntityCounts
 
 
 class SessionTypeEnum(str, Enum):
@@ -79,8 +79,7 @@ class SessionRead(BaseModel):
 
 
 class SessionListResponse(BaseModel):
-    """Paginated list of sessions with global counts."""
+    """List of sessions with global counts."""
 
     items: list[SessionRead]
-    pagination: PaginationMeta
     counts: EntityCounts

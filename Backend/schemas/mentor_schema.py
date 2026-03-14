@@ -8,7 +8,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from schemas.pagination_schema import EntityCounts, PaginationMeta
+from schemas.pagination_schema import EntityCounts
 
 
 class MentorBase(BaseModel):
@@ -79,8 +79,7 @@ class MentorBulkUploadResponse(BaseModel):
 
 
 class MentorListResponse(BaseModel):
-    """Paginated list of mentors with global counts."""
+    """List of mentors with global counts."""
 
     items: list[MentorRead]
-    pagination: PaginationMeta
     counts: EntityCounts

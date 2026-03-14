@@ -1,6 +1,6 @@
 """Session API routes."""
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
@@ -10,7 +10,7 @@ from models.mentee_model import Mentee
 from models.mentor_model import Mentor
 from models.session_model import Session as SessionModel
 from models.user_model import User
-from schemas.pagination_schema import EntityCounts, PaginationMeta
+from schemas.pagination_schema import EntityCounts
 from schemas.session_schema import SessionCreate, SessionListResponse, SessionRead, SessionUpdate, SessionUserAdd
 from services.session_service import SessionService
 
@@ -40,17 +40,14 @@ def create_session(
 
 @router.get("", response_model=SessionListResponse)
 def list_sessions(
-    page: int = Query(0, ge=0, description="Page index (0-based)"),
-    size: int = Query(10, gt=0, le=100, description="Page size (items per page)"),
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ) -> SessionListResponse:
-    """List sessions with pagination and global counts."""
+    """List all sessions with global counts."""
     base_query = (
         db.query(SessionModel)
         .filter(SessionModel.scheduled_at.isnot(None))
         .order_by(
-            # Upcoming sessions (scheduled_at >= now) first, then past sessions
             case(
                 (SessionModel.scheduled_at >= func.now(), 0),
                 else_=1,
@@ -59,36 +56,20 @@ def list_sessions(
             SessionModel.id.asc(),
         )
     )
-    total_items = base_query.count()
-    sessions = (
-        base_query.offset(page * size)
-        .limit(size)
-        .all()
-    )
-
-    # Preload users + mentees for each session similar to SessionService.get_all/get_by_id
-    # by reusing SessionService.to_read, which will compute users_count and mentor names.
+    sessions = base_query.all()
     items = [SessionService.to_read(s, db) for s in sessions]
 
-    # Global counts
     total_users = db.query(User).count()
     total_mentors = db.query(Mentor).count()
     total_mentees = db.query(Mentee).count()
     total_sessions = db.query(SessionModel).count()
-
-    pagination = PaginationMeta(
-        page=page,
-        size=size,
-        total_items=total_items,
-        total_pages=(total_items + size - 1) // size if total_items else 0,
-    )
     counts = EntityCounts(
         total_users=total_users,
         total_mentors=total_mentors,
         total_mentees=total_mentees,
         total_sessions=total_sessions,
     )
-    return SessionListResponse(items=items, pagination=pagination, counts=counts)
+    return SessionListResponse(items=items, counts=counts)
 
 
 @router.get("/{session_id}", response_model=SessionRead)

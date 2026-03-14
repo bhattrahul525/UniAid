@@ -1,6 +1,6 @@
 """Mentor API routes."""
 
-from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from api.deps import get_current_user
@@ -10,7 +10,7 @@ from models.mentor_model import Mentor
 from models.session_model import Session as SessionModel
 from models.user_model import User
 from schemas.mentor_schema import MentorBulkUploadResponse, MentorCreate, MentorListResponse, MentorRead, MentorUpdate
-from schemas.pagination_schema import EntityCounts, PaginationMeta
+from schemas.pagination_schema import EntityCounts
 from services.mentor_service import MentorService
 
 router = APIRouter(prefix="/mentors", tags=["mentors"])
@@ -56,41 +56,24 @@ def bulk_upload_mentors(
 
 @router.get("", response_model=MentorListResponse)
 def list_mentors(
-    page: int = Query(0, ge=0, description="Page index (0-based)"),
-    size: int = Query(10, gt=0, le=100, description="Page size (items per page)"),
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ) -> MentorListResponse:
-    """List mentors with pagination and global counts."""
-    base_query = db.query(Mentor)
-    total_items = base_query.count()
-    mentors = (
-        base_query.order_by(Mentor.id)
-        .offset(page * size)
-        .limit(size)
-        .all()
-    )
+    """List all mentors with global counts."""
+    mentors = db.query(Mentor).order_by(Mentor.id).all()
     items = [MentorService.to_read(m) for m in mentors]
 
-    # Global counts
     total_users = db.query(User).count()
-    total_mentors = total_items
+    total_mentors = db.query(Mentor).count()
     total_mentees = db.query(Mentee).count()
     total_sessions = db.query(SessionModel).count()
-
-    pagination = PaginationMeta(
-        page=page,
-        size=size,
-        total_items=total_items,
-        total_pages=(total_items + size - 1) // size if total_items else 0,
-    )
     counts = EntityCounts(
         total_users=total_users,
         total_mentors=total_mentors,
         total_mentees=total_mentees,
         total_sessions=total_sessions,
     )
-    return MentorListResponse(items=items, pagination=pagination, counts=counts)
+    return MentorListResponse(items=items, counts=counts)
 
 
 @router.get("/{mentor_id}", response_model=MentorRead)
