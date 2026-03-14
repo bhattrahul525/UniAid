@@ -1,8 +1,8 @@
 """Pydantic request/response schemas."""
 
-from .user_schema import UserCreate, UserRead
+from .user_schema import UserProfilePayload, UserRead
 
 __all__ = [
-    "UserCreate",
+    "UserProfilePayload",
     "UserRead",
 ]
