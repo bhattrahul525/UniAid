@@ -137,3 +137,13 @@ class UserService:
         if not verify_password(password, user.hashed_password):
             return None
         return user
+
+    @staticmethod
+    def delete(db: Session, user_id: int) -> bool:
+        """Delete user by id. Return True if deleted, False if not found."""
+        user = UserService.get_by_id(db, user_id)
+        if not user:
+            return False
+        db.delete(user)
+        db.commit()
+        return True
