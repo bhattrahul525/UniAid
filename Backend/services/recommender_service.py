@@ -101,6 +101,23 @@ def recommend(
         w_similarity=w_similarity,
         w_quality=w_quality,
     )
+    # Enrich results with mentor bios from the database (if a DB session is available).
+    if db_session is not None and results:
+        from models.mentor_model import Mentor
+
+        mentor_ids = [r.get("mentor_id") for r in results if r.get("mentor_id") is not None]
+        if mentor_ids:
+            rows = (
+                db_session.query(Mentor.id, Mentor.bio)
+                .filter(Mentor.id.in_(mentor_ids))
+                .all()
+            )
+            bio_by_id = {mid: bio for mid, bio in rows}
+            for r in results:
+                mid = r.get("mentor_id")
+                if mid in bio_by_id:
+                    r["bio"] = bio_by_id[mid]
+
     return results, profile_used
 
 
