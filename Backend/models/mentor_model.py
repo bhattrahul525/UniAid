@@ -1,6 +1,6 @@
 """Mentor SQLAlchemy model – matches UniAid/Data/mentors.csv."""
 
-from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy import Column, Float, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from db.database import Base
@@ -28,6 +28,7 @@ class Mentor(Base):
     cultural_adaptation_experience = Column(Integer, nullable=True, default=0)  # 0/1
     career_guidance_experience = Column(Integer, nullable=True, default=0)  # 0/1
     languages_spoken = Column(String(255), nullable=True)  # e.g. "English,French"
+    bio = Column(Text, nullable=True)  # short mentor bio / description
     availability_hours_per_week = Column(Integer, nullable=True)
     sessions_completed = Column(Integer, nullable=True, default=0)
     response_time_hours = Column(Integer, nullable=True)

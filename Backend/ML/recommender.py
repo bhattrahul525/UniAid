@@ -69,11 +69,8 @@ def _flag_label(name: str, value: Any) -> Optional[str]:
 def mentor_to_text(row: pd.Series) -> str:
     """
     Convert a mentor row into a text document for semantic embedding.
-    Matches mentors.csv columns:
-    mentor_id, first_name, last_name, mentor_type, university, field_of_study, degree_level,
-    years_in_country, visa_experience, housing_experience, cultural_adaptation_experience,
-    career_guidance_experience, languages_spoken, availability_hours_per_week, sessions_completed,
-    response_time_hours, graduation_year, mentor_rating
+    Works with both the original mentors.csv and the richer mentors_dataset.csv
+    that include mentoring_topics and bio.
     """
     help_tags = [
         _flag_label("visa", row.get("visa_experience")),
@@ -89,12 +86,14 @@ def mentor_to_text(row: pd.Series) -> str:
         f"field of study: {_safe_str(row.get('field_of_study'))}",
         f"degree level: {_safe_str(row.get('degree_level'))}",
         f"years in country: {_safe_str(row.get('years_in_country'))}",
+        f"mentoring topics: {_safe_str(row.get('mentoring_topics'))}",
         f"languages: {_safe_str(row.get('languages_spoken'))}",
         f"can help with: {', '.join(help_tags)}" if help_tags else "",
         f"sessions completed: {_safe_str(row.get('sessions_completed'))}",
         f"response time hours: {_safe_str(row.get('response_time_hours'))}",
         f"mentor rating: {_safe_str(row.get('mentor_rating'))}",
         f"graduation year: {_safe_str(row.get('graduation_year'))}",
+        f"bio: {_safe_str(row.get('bio'))}",
     ]
     return ". ".join([p for p in parts if p])
 
@@ -388,10 +387,12 @@ class MentorRecommender:
             "university",
             "field_of_study",
             "degree_level",
+            "mentoring_topics",
             "languages_spoken",
             "availability_hours_per_week",
             "sessions_completed",
             "response_time_hours",
+            "bio",
             "mentor_rating",
             "similarity",
             "quality_score",
