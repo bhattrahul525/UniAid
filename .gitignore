@@ -90,3 +90,7 @@ Backend/ML/models/*.joblib
 Backend/ML/models/*.npy
 Backend/ML/models/ltr_model.txt
 Backend/ML/models/ltr_features.json
+Frontend/node_modules
+Frontend/.vite
+Frontend/dist
+
