@@ -91,4 +91,7 @@ cd Backend/ML
 python recommender.py build
 ```
 
+**Swagger url**
+http://127.0.0.1:8000/docs
+
 Then run the main backend; the first recommendation call will load the index.
