@@ -231,6 +231,8 @@ class MentorRecommender:
         self._mentor_quality_df: Optional[pd.DataFrame] = None
         self._mentor_embeddings: Optional[np.ndarray] = None
         self._nn: Optional[NearestNeighbors] = None
+        self._ltr_model: Optional[Any] = None
+        self._ltr_feature_names: Optional[List[str]] = None
 
     def _normalize_mentors_df(self, mentors_df: pd.DataFrame) -> pd.DataFrame:
         """Ensure mentors_df has mentor_id (mentors.csv may use 'id' as primary key)."""
@@ -293,6 +295,20 @@ class MentorRecommender:
             interactions_df = pd.read_csv(self.paths.interactions_csv)
             interactions_df = _normalize_interactions_user_id(interactions_df)
             self._mentor_quality_df = compute_mentor_quality(interactions_df, self._mentors_df)
+
+    def _load_ltr_if_present(self) -> None:
+        """Load LTR model and feature names from models_dir if files exist."""
+        if self._ltr_model is not None:
+            return
+        ltr_model_path = self.paths.models_dir / "ltr_model.txt"
+        ltr_features_path = self.paths.models_dir / "ltr_features.json"
+        if ltr_model_path.exists() and ltr_features_path.exists():
+            try:
+                from ltr import load_ltr_model
+                self._ltr_model, self._ltr_feature_names = load_ltr_model(self.paths.models_dir)
+            except Exception:
+                self._ltr_model = None
+                self._ltr_feature_names = None
 
     def _load_users_df(self) -> pd.DataFrame:
         if self._users_df is None:
@@ -410,11 +426,45 @@ class MentorRecommender:
             candidates[col] = candidates[col].fillna(0)
 
         candidates["past_interaction"] = candidates["mentor_id"].astype(int).isin(past_mentor_ids).astype(float)
-        candidates["final_score"] = (
-            w_similarity * candidates["similarity"]
-            + w_quality * candidates["quality_score"]
-            + w_past_interaction * candidates["past_interaction"]
-        )
+
+        # Learning-to-rank: if LTR model is available, score with it for optimal ranking
+        self._load_ltr_if_present()
+        if self._ltr_model is not None and self._ltr_feature_names is not None:
+            try:
+                from ltr import build_ltr_features_df, score_with_ltr
+                ltr_features = build_ltr_features_df(
+                    candidates,
+                    request_text=request_text,
+                    user_profile=user_profile,
+                    university_from_query=candidate_university,
+                    mentor_quality_df=self._mentor_quality_df,
+                )
+                ltr_scores = score_with_ltr(self._ltr_model, ltr_features, self._ltr_feature_names)
+                # Normalize LTR scores to [0, 1] for consistent API response (service will scale to 0-100)
+                if len(ltr_scores) > 0:
+                    smin, smax = float(ltr_scores.min()), float(ltr_scores.max())
+                    if smax > smin + 1e-9:
+                        candidates["final_score"] = (ltr_scores - smin) / (smax - smin)
+                    else:
+                        candidates["final_score"] = 0.85
+                else:
+                    candidates["final_score"] = (
+                        w_similarity * candidates["similarity"]
+                        + w_quality * candidates["quality_score"]
+                        + w_past_interaction * candidates["past_interaction"]
+                    )
+            except Exception:
+                candidates["final_score"] = (
+                    w_similarity * candidates["similarity"]
+                    + w_quality * candidates["quality_score"]
+                    + w_past_interaction * candidates["past_interaction"]
+                )
+        else:
+            candidates["final_score"] = (
+                w_similarity * candidates["similarity"]
+                + w_quality * candidates["quality_score"]
+                + w_past_interaction * candidates["past_interaction"]
+            )
         candidates = candidates.sort_values(["final_score", "similarity"], ascending=False).head(top_k)
 
         # Return only what the frontend needs to display choices

@@ -16,3 +16,4 @@ numpy
 scikit-learn
 sentence-transformers
 joblib
+lightgbm
