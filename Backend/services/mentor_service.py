@@ -6,6 +6,7 @@ is the account for that mentor; use the users API to manage those accounts.
 
 import csv
 import io
+import re
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -39,6 +40,17 @@ def _optional_str(value: Any) -> str | None:
     return s if s else None
 
 
+def _slug_from_name(first_name: str, last_name: str) -> str:
+    """Generate a URL-friendly slug: first_name-last_name (lowercase, normalized)."""
+    base = f"{first_name}-{last_name}"
+    slug = base.strip().lower()
+    # Replace any non-alphanumeric character with hyphen
+    slug = re.sub(r"[^a-z0-9]+", "-", slug)
+    # Collapse consecutive hyphens and trim
+    slug = re.sub(r"-{2,}", "-", slug).strip("-")
+    return slug or "mentor"
+
+
 class MentorService:
     """Service for mentor CRUD operations."""
 
@@ -48,6 +60,7 @@ class MentorService:
         mentor = Mentor(
             first_name=payload.first_name,
             last_name=payload.last_name,
+            slug=_slug_from_name(payload.first_name, payload.last_name),
             mentor_type=payload.mentor_type,
             university=payload.university,
             field_of_study=payload.field_of_study,
@@ -87,8 +100,12 @@ class MentorService:
         if not mentor:
             return None
         data = payload.model_dump(exclude_unset=True)
+        first_name = data.get("first_name", mentor.first_name)
+        last_name = data.get("last_name", mentor.last_name)
         for key, value in data.items():
             setattr(mentor, key, value)
+        # Recompute slug if name changed
+        mentor.slug = _slug_from_name(first_name, last_name)
         db.commit()
         db.refresh(mentor)
         return mentor
