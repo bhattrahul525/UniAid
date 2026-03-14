@@ -3,6 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from api.deps import get_current_user
 from db.session import get_db
 from schemas.user_schema import (
     UserProfilePayload,
@@ -50,7 +51,11 @@ def login(payload: UserLogin, db: Session = Depends(get_db)) -> LoginResponse:
 
 
 @router.post("/profile", response_model=UserRead)
-def add_profile(payload: UserProfilePayload, db: Session = Depends(get_db)) -> UserRead:
+def add_profile(
+    payload: UserProfilePayload,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+) -> UserRead:
     """Create or update profile by user_id: for both mentor and mentee, creates if none else updates (upsert)."""
     try:
         user = UserService.add_profile(db, payload)
@@ -61,7 +66,11 @@ def add_profile(payload: UserProfilePayload, db: Session = Depends(get_db)) -> U
 
 
 @router.get("/{user_id}", response_model=UserRead)
-def get_user(user_id: int, db: Session = Depends(get_db)) -> UserRead:
+def get_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+) -> UserRead:
     """Get a user by ID (includes mentor or mentee profile if set)."""
     user = UserService.get_by_id_with_details(db, user_id)
     if not user:

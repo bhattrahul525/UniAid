@@ -3,6 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from api.deps import get_current_user
 from db.session import get_db
 from schemas.recommendation_schema import (
     EvaluateResponse,
@@ -19,6 +20,7 @@ router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 def recommend_mentors(
     payload: RecommendRequest,
     db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
 ) -> RecommendResponse:
     """
     Recommend mentors for a mentee.
@@ -61,6 +63,7 @@ def get_accuracy(
     sample_size: int = 200,
     top_k: int = 5,
     seed: int = 42,
+    current_user=Depends(get_current_user),
 ) -> EvaluateResponse:
     """
     Run offline evaluation on interactions (users.csv + mentors.csv).
