@@ -9,12 +9,37 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserSignup(BaseModel):
-    """Schema for signup (POST /users): name, email, password."""
+    """Schema for registration (POST /users/register): name, email, password."""
 
     first_name: str = Field(..., min_length=1)
     last_name: str = Field(..., min_length=1)
     email: EmailStr
     password: str = Field(..., min_length=8)
+
+
+class UserLogin(BaseModel):
+    """Schema for login (POST /users/login): email, password."""
+
+    email: EmailStr
+    password: str = Field(..., min_length=1)
+
+
+class UserResponse(BaseModel):
+    """User response for login and registration (no user_details)."""
+
+    model_config = ConfigDict(from_attributes=True)
+    user_id: int
+    first_name: str
+    last_name: str
+    email: str
+
+
+class LoginResponse(BaseModel):
+    """Response for POST /users/login: bearer token + user."""
+
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
 
 
 class UserRead(BaseModel):

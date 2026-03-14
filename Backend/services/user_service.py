@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session, joinedload
 from models.user_details_model import UserDetails
 from models.user_model import User
 from schemas.user_schema import UserCreate, UserRead, UserSignup
-from utils.password import hash_password
+from utils.password import hash_password, verify_password
 
 
 class UserService:
@@ -78,3 +78,19 @@ class UserService:
     def to_read(user: User) -> UserRead:
         """Map User model to UserRead schema (includes user_details if loaded)."""
         return UserRead.model_validate(user)
+
+    @staticmethod
+    def to_response(user: User) -> "UserResponse":
+        """Map User to UserResponse (no user_details)."""
+        from schemas.user_schema import UserResponse
+        return UserResponse.model_validate(user)
+
+    @staticmethod
+    def login(db: Session, email: str, password: str) -> Optional[User]:
+        """Verify email/password and return user if valid, else None."""
+        user = UserService.get_by_email(db, email)
+        if user is None:
+            return None
+        if not verify_password(password, user.hashed_password):
+            return None
+        return user

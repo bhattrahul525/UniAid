@@ -4,24 +4,60 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from db.session import get_db
-from schemas.user_schema import UserCreate, UserRead, UserSignup
+from schemas.user_schema import (
+    UserCreate,
+    UserRead,
+    UserLogin,
+    UserResponse,
+    UserSignup,
+    LoginResponse,
+)
 from services.user_service import UserService
+from utils.jwt import create_access_token
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.post("", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-def create_user(payload: UserSignup, db: Session = Depends(get_db)) -> UserRead:
-    """Sign up a new user (first_name, last_name, email, password)."""
+@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+def register(payload: UserSignup, db: Session = Depends(get_db)) -> UserResponse:
+    """Register a new user. Rejects if email already exists."""
     try:
         user = UserService.signup(db, payload)
-        return UserService.to_read(user)
+        return UserService.to_response(user)
     except ValueError as e:
+        if "already exists" in str(e).lower():
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="A user with this email already exists.",
+            ) from e
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-@router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-def register_user(payload: UserCreate, db: Session = Depends(get_db)) -> UserRead:
+@router.post("/login", response_model=LoginResponse)
+def login(payload: UserLogin, db: Session = Depends(get_db)) -> LoginResponse:
+    """Login with email and password. Returns bearer token and user (no user_details)."""
+    user = UserService.login(db, payload.email, payload.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password.",
+        )
+    access_token = create_access_token(user_id=user.user_id, email=user.email)
+    return LoginResponse(
+        access_token=access_token,
+        token_type="bearer",
+        user=UserService.to_response(user),
+    )
+
+
+@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+def create_user(payload: UserSignup, db: Session = Depends(get_db)) -> UserResponse:
+    """Alias for POST /users/register: register a new user."""
+    return register(payload, db)
+
+
+@router.post("/profile", response_model=UserRead, status_code=status.HTTP_201_CREATED)
+def add_profile(payload: UserCreate, db: Session = Depends(get_db)) -> UserRead:
     """Add profile (user_details) to an existing user. Body must include user_id."""
     try:
         user = UserService.register(db, payload)
