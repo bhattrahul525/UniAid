@@ -9,8 +9,8 @@ from typing import Any
 
 from fastapi import FastAPI
 
-from api.routes_mentees import router as mentees_router
 from api.routes_mentors import router as mentors_router
+from api.routes_recommendations import router as recommendations_router
 from api.routes_users import router as users_router
 from db.database import Base, check_db_connection, engine
 from db.sync_schema import sync_schema
@@ -71,6 +71,7 @@ app.include_router(mentees_router)
 # -----------------------------------------------------------------------------
 # Health & root
 # -----------------------------------------------------------------------------
+app.include_router(recommendations_router)
 
 
 @app.get("/", tags=["Health"])
