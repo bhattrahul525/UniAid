@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
+from schemas.pagination_schema import EntityCounts, PaginationMeta
+
 if TYPE_CHECKING:
     from schemas.mentor_schema import MentorCreate, MentorRead
 
@@ -140,8 +142,17 @@ class MenteeUpdate(BaseModel):
     preferred_language: Optional[str] = None
 
 
+class MenteeListResponse(BaseModel):
+    """Paginated list of mentees with global counts."""
+
+    items: list["MenteeRead"]
+    pagination: PaginationMeta
+    counts: EntityCounts
+
+
 # Resolve forward refs (MentorCreate, MentorRead used in UserRead / UserProfilePayload)
 from schemas.mentor_schema import MentorCreate, MentorRead  # noqa: E402
 
 UserRead.model_rebuild()
 UserProfilePayload.model_rebuild()
+MenteeListResponse.model_rebuild()

@@ -8,6 +8,8 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from schemas.pagination_schema import EntityCounts, PaginationMeta
+
 
 class MentorBase(BaseModel):
     """Shared mentor fields (create/update)."""
@@ -71,3 +73,11 @@ class MentorBulkUploadResponse(BaseModel):
 
     created: int = Field(..., description="Number of mentors created")
     errors: list[str] = Field(default_factory=list, description="Error messages for failed rows")
+
+
+class MentorListResponse(BaseModel):
+    """Paginated list of mentors with global counts."""
+
+    items: list[MentorRead]
+    pagination: PaginationMeta
+    counts: EntityCounts
