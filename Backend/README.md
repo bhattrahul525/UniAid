@@ -128,7 +128,7 @@ Then restart the server so tables are created again.
 
 Recommendations use **Dataset/** (`mentors_dataset.csv`, `mentees_dataset.csv`, `interactions_dataset.csv`) and the ML index in `Backend/ML/models/`. The API returns mentor data from the DB when available.
 
-- **POST /recommendations** – Payload: `request_text` (optional), `top_k`, `user_id` (optional). At least one of `request_text` or `user_id` required. Returns ranked mentors with `mentor` and `final_score` (percentage).
-- **GET /recommendations/evaluate** – Offline accuracy; params: `sample_size`, `top_k`, `seed`. Returns `hit_rate_at_k` and `mrr`.
+- **POST /mentors/recommendations** – Payload: `request_text` (optional), `top_k`, `user_id` (optional). At least one of `request_text` or `user_id` required. Returns ranked mentors with `mentor` and `final_score` (percentage).
+- **GET /mentors/recommendations/evaluate** – Offline accuracy; params: `sample_size`, `top_k`, `seed`. Returns `hit_rate_at_k` and `mrr`.
 
 ML index and LTR model are built in **Steps 6 and 7** above. **Swagger:** http://127.0.0.1:8000/docs

@@ -14,7 +14,7 @@ export const getMentorsAIRecommendations = async (params = {}) => {
     }).filter(([_, v]) => v !== undefined && v !== null)
   );
 
-  const response = await api.post("/recommendations", payload);
+  const response = await api.post("/mentors/recommendations", payload);
 
   return response.data;
 };

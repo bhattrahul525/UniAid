@@ -102,7 +102,7 @@ class RecommendResponse(BaseModel):
 
 
 class EvaluateResponse(BaseModel):
-    """Response for GET /recommendations/evaluate – accuracy metrics."""
+    """Response for GET /mentors/recommendations/evaluate – accuracy metrics."""
     hit_rate_at_k: float = Field(..., description="Fraction of (user, mentor) pairs where mentor in top_k")
     mrr: float = Field(..., description="Mean reciprocal rank")
     n_eval: int = Field(..., description="Number of pairs evaluated")

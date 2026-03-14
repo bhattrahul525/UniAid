@@ -13,7 +13,7 @@ from schemas.recommendation_schema import (
 )
 from services import recommender_service
 
-router = APIRouter(prefix="/recommendations", tags=["recommendations"])
+router = APIRouter(prefix="/mentors/recommendations", tags=["recommendations"])
 
 
 @router.post("", response_model=RecommendResponse)

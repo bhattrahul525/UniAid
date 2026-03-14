@@ -6,11 +6,7 @@ from sqlalchemy.orm import Session
 from api.deps import get_current_user
 from db.session import get_db
 from models.mentee_model import Mentee
-from models.mentor_model import Mentor
-from models.session_model import Session as SessionModel
-from models.user_model import User
-from schemas.pagination_schema import EntityCounts
-from schemas.user_schema import MenteeBase, MenteeListResponse, MenteeRead, MenteeUpdate
+from schemas.user_schema import MenteeBase, MenteeRead, MenteeUpdate
 from services.mentee_service import MenteeService
 
 router = APIRouter(prefix="/mentees", tags=["mentees"])
@@ -27,26 +23,14 @@ def create_mentee(
     return MenteeService.to_read(mentee)
 
 
-@router.get("", response_model=MenteeListResponse)
+@router.get("", response_model=list[MenteeRead])
 def list_mentees(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
-) -> MenteeListResponse:
-    """List all mentees with global counts."""
+) -> list[MenteeRead]:
+    """List all mentees. Returns array of mentee objects directly."""
     mentees = db.query(Mentee).order_by(Mentee.mentee_id).all()
-    items = [MenteeService.to_read(m) for m in mentees]
-
-    total_users = db.query(User).count()
-    total_mentors = db.query(Mentor).count()
-    total_mentees = db.query(Mentee).count()
-    total_sessions = db.query(SessionModel).count()
-    counts = EntityCounts(
-        total_users=total_users,
-        total_mentors=total_mentors,
-        total_mentees=total_mentees,
-        total_sessions=total_sessions,
-    )
-    return MenteeListResponse(items=items, counts=counts)
+    return [MenteeService.to_read(m) for m in mentees]
 
 
 @router.get("/{mentee_id}", response_model=MenteeRead)

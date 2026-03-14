@@ -6,12 +6,9 @@ from sqlalchemy.orm import Session
 
 from api.deps import get_current_user
 from db.session import get_db
-from models.mentee_model import Mentee
 from models.mentor_model import Mentor
 from models.session_model import Session as SessionModel
-from models.user_model import User
-from schemas.pagination_schema import EntityCounts
-from schemas.session_schema import SessionCreate, SessionListResponse, SessionRead, SessionUpdate, SessionUserAdd
+from schemas.session_schema import SessionCreate, SessionRead, SessionUpdate, SessionUserAdd
 from services.session_service import SessionService
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
@@ -38,12 +35,12 @@ def create_session(
     return SessionService.to_read(session, db)
 
 
-@router.get("", response_model=SessionListResponse)
+@router.get("", response_model=list[SessionRead])
 def list_sessions(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
-) -> SessionListResponse:
-    """List all sessions with global counts."""
+) -> list[SessionRead]:
+    """List all sessions. Returns array of session objects directly."""
     base_query = (
         db.query(SessionModel)
         .filter(SessionModel.scheduled_at.isnot(None))
@@ -57,19 +54,7 @@ def list_sessions(
         )
     )
     sessions = base_query.all()
-    items = [SessionService.to_read(s, db) for s in sessions]
-
-    total_users = db.query(User).count()
-    total_mentors = db.query(Mentor).count()
-    total_mentees = db.query(Mentee).count()
-    total_sessions = db.query(SessionModel).count()
-    counts = EntityCounts(
-        total_users=total_users,
-        total_mentors=total_mentors,
-        total_mentees=total_mentees,
-        total_sessions=total_sessions,
-    )
-    return SessionListResponse(items=items, counts=counts)
+    return [SessionService.to_read(s, db) for s in sessions]
 
 
 @router.get("/{session_id}", response_model=SessionRead)
