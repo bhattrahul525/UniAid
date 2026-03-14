@@ -13,7 +13,7 @@ class Interaction(Base):
 
     interaction_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False, index=True)
-    mentor_id = Column(Integer, ForeignKey("mentors.mentor_id", ondelete="CASCADE"), nullable=False, index=True)
+    mentor_id = Column(Integer, ForeignKey("mentors.id", ondelete="CASCADE"), nullable=False, index=True)
     interaction_type = Column(String(50), nullable=True)  # e.g. chat, video_call
     session_duration_minutes = Column(Integer, nullable=True)
     rating_given_by_user = Column(Integer, nullable=True)

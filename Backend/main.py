@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from api.routes_mentors import router as mentors_router
+from api.routes_recommendations import router as recommendations_router
 from api.routes_users import router as users_router
 from db.database import Base, check_db_connection, engine
 from db.sync_schema import sync_schema
@@ -40,6 +41,7 @@ app = FastAPI(
 
 app.include_router(users_router)
 app.include_router(mentors_router)
+app.include_router(recommendations_router)
 
 
 @app.get("/")
