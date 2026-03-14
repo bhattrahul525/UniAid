@@ -124,7 +124,7 @@ python scripts/drop_tables.py
 
 Then restart the server so tables are created again.
 
-## Recommendation API
+## Recommendation API 
 
 Recommendations use **Dataset/** (`mentors_dataset.csv`, `mentees_dataset.csv`, `interactions_dataset.csv`) and the ML index in `Backend/ML/models/`. The API returns mentor data from the DB when available.
 
