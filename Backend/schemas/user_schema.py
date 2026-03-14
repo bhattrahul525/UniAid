@@ -109,6 +109,7 @@ class MenteeBase(BaseModel):
     degree_level: Optional[str] = None
     budget_range: Optional[str] = None
     preferred_language: Optional[str] = None
+    bio: Optional[str] = Field(None, description="Short mentee bio / description")
 
 
 class MenteeCreate(MenteeBase):
@@ -140,6 +141,7 @@ class MenteeUpdate(BaseModel):
     degree_level: Optional[str] = None
     budget_range: Optional[str] = None
     preferred_language: Optional[str] = None
+    bio: Optional[str] = Field(None, description="Short mentee bio / description")
 
 
 class MenteeListResponse(BaseModel):
