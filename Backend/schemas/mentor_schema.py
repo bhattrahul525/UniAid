@@ -60,7 +60,14 @@ class MentorUpdate(BaseModel):
 
 
 class MentorRead(MentorBase):
-    """Schema for mentor in responses."""
+    """Schema for mentor in responses. Primary key is `id` (matches mentors table and mentors.csv)."""
 
     model_config = ConfigDict(from_attributes=True)
-    id: int
+    id: int = Field(..., description="Primary key of the mentors table")
+
+
+class MentorBulkUploadResponse(BaseModel):
+    """Response for POST /mentors/bulk-upload."""
+
+    created: int = Field(..., description="Number of mentors created")
+    errors: list[str] = Field(default_factory=list, description="Error messages for failed rows")
