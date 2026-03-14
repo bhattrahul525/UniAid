@@ -2,6 +2,11 @@
 
 Steps to run the backend after cloning the repo.
 
+## Data model (relevant tables)
+
+- **users** – `first_name`, `last_name`, `email`, `password` (stored hashed), and optionally `mentor_id` (FK to `mentors.mentor_id`) if the user is a mentor, or `mentee_id` if the user is a mentee.
+- **mentors** – Mentor profile (student, parent, professor, etc.). Referenced by `users.mentor_id` when a user account is linked to a mentor.
+
 ## 1. Go to the Backend directory
 
 ```bash
@@ -12,7 +17,8 @@ cd Backend
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate (macOS)
+Windows (PowerShell) .venv\Scripts\Activate.ps1
 ```
 
 

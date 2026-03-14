@@ -9,12 +9,14 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserSignup(BaseModel):
-    """Schema for registration (POST /users/register): name, email, password."""
+    """Schema for registration (POST /users/register): name, email, password; optional mentor_id or mentee_id."""
 
     first_name: str = Field(..., min_length=1)
     last_name: str = Field(..., min_length=1)
     email: EmailStr
     password: str = Field(..., min_length=8)
+    mentor_id: Optional[int] = Field(None, description="Set if this user is a mentor (FK to mentors)")
+    mentee_id: Optional[int] = Field(None, description="Set if this user is a mentee")
 
 
 class UserLogin(BaseModel):
@@ -32,6 +34,8 @@ class UserResponse(BaseModel):
     first_name: str
     last_name: str
     email: str
+    mentor_id: Optional[int] = None
+    mentee_id: Optional[int] = None
 
 
 class LoginResponse(BaseModel):
@@ -50,6 +54,8 @@ class UserRead(BaseModel):
     first_name: str
     last_name: str
     email: str
+    mentor_id: Optional[int] = None
+    mentee_id: Optional[int] = None
     user_details_id: Optional[int] = None
     user_details: Optional["UserDetailsRead"] = None
 
