@@ -26,12 +26,20 @@ LTR_FEATURE_NAMES = [
     "housing_match",
     "cultural_match",
     "career_match",
+    "language_match",
     "mentor_rating_norm",
     "success_rate",
     "interaction_count_norm",
     "availability_norm",
     "response_time_inv",
 ]
+
+# Language names we detect in request text (lowercase)
+_LANGUAGE_KEYWORDS = (
+    "mandarin", "chinese", "english", "spanish", "french", "hindi", "arabic",
+    "italian", "german", "japanese", "korean", "vietnamese", "thai", "indonesian",
+    "malay", "portuguese", "russian", "bengali", "tamil", "telugu", "turkish",
+)
 
 
 def _safe_float(x: Any, default: float = 0.0) -> float:
@@ -68,11 +76,34 @@ def _university_match(mentor_uni: Any, query_uni: Optional[str]) -> float:
     return 1.0 if _safe_str(mentor_uni) == _safe_str(query_uni) else 0.0
 
 
+def _detect_requested_languages(request_text: Optional[str]) -> List[str]:
+    """Detect which languages are mentioned in request text."""
+    if not request_text or not str(request_text).strip():
+        return []
+    t = _safe_str(request_text)
+    return [lang for lang in _LANGUAGE_KEYWORDS if lang in t]
+
+
+def _mentor_speaks_any(mentor: Dict[str, Any], languages: List[str]) -> bool:
+    """True if mentor's languages_spoken contains any of the requested languages."""
+    if not languages:
+        return True
+    spoken = (mentor.get("languages_spoken") or "").strip()
+    if not spoken:
+        return False
+    parts = [p.strip().lower() for p in spoken.replace(";", ",").split(",") if p.strip()]
+    for req in languages:
+        for part in parts:
+            if req in part or part in req:
+                return True
+    return False
+
+
 def _request_mentor_match(
     mentor: Dict[str, Any],
     request_text: Optional[str],
     university_from_query: Optional[str],
-) -> Tuple[float, float, float, float, float]:
+) -> Tuple[float, float, float, float, float, float, float]:
     """
     From request_text and optional university, compute explicit match flags
     (university_match, field_cs_match, visa_match, housing_match, cultural_match, career_match).
@@ -89,18 +120,20 @@ def _request_mentor_match(
     housing = 1.0 if (any(k in t for k in ("housing", "accommodation")) and _safe_float(mentor.get("housing_experience")) == 1.0) else 0.0
     cultural = 1.0 if (any(k in t for k in ("cultural", "culture", "adaptation")) and _safe_float(mentor.get("cultural_adaptation_experience")) == 1.0) else 0.0
     career = 1.0 if (any(k in t for k in ("career", "job", "employment")) and _safe_float(mentor.get("career_guidance_experience")) == 1.0) else 0.0
+    requested_languages = _detect_requested_languages(request_text)
+    language_match = 1.0 if requested_languages and _mentor_speaks_any(mentor, requested_languages) else 0.0
 
-    return uni_match, field_match, visa, housing, cultural, career
+    return uni_match, field_match, visa, housing, cultural, career, language_match
 
 
 def _profile_mentor_match(
     mentor: Dict[str, Any],
     user_profile: Optional[Dict[str, Any]],
     university_from_query: Optional[str],
-) -> Tuple[float, float, float, float, float, float]:
+) -> Tuple[float, float, float, float, float, float, float]:
     """
     From user profile (mentee) and optional university, compute explicit match flags.
-    Returns (university_match, field_cs_match, visa_match, housing_match, cultural_match, career_match).
+    Returns (university_match, field_cs_match, visa_match, housing_match, cultural_match, career_match, language_match).
     """
     uni = university_from_query or (user_profile.get("target_university") if user_profile else None)
     uni_match = _university_match(mentor.get("university"), uni)
@@ -108,7 +141,6 @@ def _profile_mentor_match(
     field_match = 0.0
     if user_profile and _safe_float(user_profile.get("concern_academics")) == 1.0:
         field_match = _field_cs_match(mentor.get("field_of_study"))
-    # Also match if user's field_of_study is CS and mentor's is CS
     if user_profile and _field_cs_match(user_profile.get("field_of_study")) == 1.0:
         field_match = max(field_match, _field_cs_match(mentor.get("field_of_study")))
 
@@ -116,8 +148,13 @@ def _profile_mentor_match(
     housing = 1.0 if (user_profile and _safe_float(user_profile.get("concern_accommodation")) == 1.0 and _safe_float(mentor.get("housing_experience")) == 1.0) else 0.0
     cultural = 1.0 if (user_profile and _safe_float(user_profile.get("concern_culture")) == 1.0 and _safe_float(mentor.get("cultural_adaptation_experience")) == 1.0) else 0.0
     career = 1.0 if (user_profile and _safe_float(user_profile.get("concern_career")) == 1.0 and _safe_float(mentor.get("career_guidance_experience")) == 1.0) else 0.0
+    pref_lang = (user_profile.get("preferred_language") or "").strip().lower() if user_profile else ""
+    if pref_lang:
+        language_match = 1.0 if _mentor_speaks_any(mentor, [pref_lang]) else 0.0
+    else:
+        language_match = 0.0
 
-    return uni_match, field_match, visa, housing, cultural, career
+    return uni_match, field_match, visa, housing, cultural, career, language_match
 
 
 def build_ltr_features_row(
@@ -140,11 +177,11 @@ def build_ltr_features_row(
     Used at inference. For training, use build_ltr_features_df.
     """
     if request_text:
-        uni_match, field_match, visa, housing, cultural, career = _request_mentor_match(
+        uni_match, field_match, visa, housing, cultural, career, language_match = _request_mentor_match(
             mentor, request_text, university_from_query
         )
     else:
-        uni_match, field_match, visa, housing, cultural, career = _profile_mentor_match(
+        uni_match, field_match, visa, housing, cultural, career, language_match = _profile_mentor_match(
             mentor, user_profile, university_from_query
         )
 
@@ -173,6 +210,7 @@ def build_ltr_features_row(
         housing,
         cultural,
         career,
+        language_match,
         mentor_rating_norm,
         success_rate,
         interaction_count_norm,

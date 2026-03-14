@@ -80,7 +80,7 @@ python train_ltr.py
 cd ..
 ```
 
-This creates `ML/models/ltr_model.txt` and `ML/models/ltr_features.json`. The API uses them automatically when present.
+This creates `ML/models/ltr_model.txt` and `ML/models/ltr_features.json`. The API uses them automatically when present. **If the codebase adds new LTR features (e.g. language_match), retrain LTR** so the saved model matches the current feature set.
 
 ### 8. Run the server
 
