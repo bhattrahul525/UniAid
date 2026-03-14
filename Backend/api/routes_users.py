@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from db.session import get_db
 from schemas.user_schema import (
-    UserCreate,
+    UserProfilePayload,
     UserRead,
     UserLogin,
     UserResponse,
@@ -49,11 +49,11 @@ def login(payload: UserLogin, db: Session = Depends(get_db)) -> LoginResponse:
     )
 
 
-@router.post("/profile", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-def add_profile(payload: UserCreate, db: Session = Depends(get_db)) -> UserRead:
-    """Add mentee profile to an existing user. Body must include user_id."""
+@router.post("/profile", response_model=UserRead)
+def add_profile(payload: UserProfilePayload, db: Session = Depends(get_db)) -> UserRead:
+    """Create or update profile by user_id: for both mentor and mentee, creates if none else updates (upsert)."""
     try:
-        user = UserService.register(db, payload)
+        user = UserService.add_profile(db, payload)
         user = UserService.get_by_id_with_details(db, user.user_id)
         return UserService.to_read(user)
     except ValueError as e:
@@ -62,7 +62,7 @@ def add_profile(payload: UserCreate, db: Session = Depends(get_db)) -> UserRead:
 
 @router.get("/{user_id}", response_model=UserRead)
 def get_user(user_id: int, db: Session = Depends(get_db)) -> UserRead:
-    """Get a user by ID (includes mentee profile if set)."""
+    """Get a user by ID (includes mentor or mentee profile if set)."""
     user = UserService.get_by_id_with_details(db, user_id)
     if not user:
         raise HTTPException(
