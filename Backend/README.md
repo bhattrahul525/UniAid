@@ -16,7 +16,8 @@ cd Backend
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate (macOS)
+Windows (PowerShell) .venv\Scripts\Activate.ps1
 ```
 
 Windows (PowerShell):

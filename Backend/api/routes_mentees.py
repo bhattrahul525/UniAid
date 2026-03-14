@@ -11,6 +11,7 @@ from models.session_model import Session as SessionModel
 from models.user_model import User
 from schemas.pagination_schema import EntityCounts, PaginationMeta
 from schemas.user_schema import MenteeBase, MenteeListResponse, MenteeRead, MenteeUpdate
+from schemas.user_schema import MenteeBase, MenteeRead, MenteeUpdate
 from services.mentee_service import MenteeService
 
 router = APIRouter(prefix="/mentees", tags=["mentees"])
