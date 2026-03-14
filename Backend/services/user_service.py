@@ -15,12 +15,16 @@ class UserService:
 
     @staticmethod
     def signup(db: Session, payload: UserSignup) -> User:
-        """Create a new user (email, password only)."""
+        """Create a new user: first_name, last_name, email, password; optional mentor_id or mentee_id."""
         if UserService.get_by_email(db, payload.email) is not None:
             raise ValueError("A user with this email already exists")
         user = User(
+            first_name=payload.first_name,
+            last_name=payload.last_name,
             email=payload.email,
             hashed_password=hash_password(payload.password),
+            mentor_id=payload.mentor_id,
+            mentee_id=payload.mentee_id,
         )
         db.add(user)
         db.commit()
