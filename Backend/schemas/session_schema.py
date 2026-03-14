@@ -1,5 +1,6 @@
 """Pydantic schemas for Session."""
 
+from datetime import datetime
 from enum import Enum
 from typing import Any, Optional
 
@@ -36,6 +37,7 @@ class SessionBase(BaseModel):
         default=SessionTypeEnum.public,
         description="Enum: public | private",
     )
+    scheduled_at: datetime = Field(..., description="Date and time of the session (ISO 8601)")
 
 
 class SessionCreate(SessionBase):
@@ -51,6 +53,7 @@ class SessionUpdate(BaseModel):
     description: Optional[str] = Field(None, max_length=2000)
     mentor_id: Optional[int] = None
     session_type: Optional[SessionTypeEnum] = None
+    scheduled_at: Optional[datetime] = Field(None, description="Date and time of the session (ISO 8601)")
     user_ids: Optional[list[int]] = Field(None, description="Replace session's users with these user IDs")
 
 
@@ -65,6 +68,7 @@ class SessionRead(BaseModel):
     mentor_first_name: Optional[str] = Field(None, description="From user table (user linked to this mentor)")
     mentor_last_name: Optional[str] = Field(None, description="From user table (user linked to this mentor)")
     session_type: SessionTypeEnum
+    scheduled_at: Optional[datetime] = Field(None, description="Date and time of the session (ISO 8601)")
     users: list[UserInSessionRead] = Field(default_factory=list)
 
     @field_validator("session_type", mode="before")
