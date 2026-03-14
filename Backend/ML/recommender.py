@@ -157,12 +157,13 @@ def _minmax_0_1(series: pd.Series) -> pd.Series:
 def compute_mentor_quality(interactions_df: pd.DataFrame, mentors_df: pd.DataFrame) -> pd.DataFrame:
     """
     Build a per-mentor quality table from interactions.csv.
-    Columns expected:
-    interaction_id,user_id,mentor_id,interaction_type,session_duration_minutes,rating_given_by_user,
-    helpfulness_score,match_success
+    mentors_df must have mentor_id (or id, then we use id as mentor_id).
     """
+    mdf = mentors_df.copy()
+    if "mentor_id" not in mdf.columns and "id" in mdf.columns:
+        mdf["mentor_id"] = mdf["id"]
     if interactions_df.empty:
-        out = mentors_df[["mentor_id"]].copy()
+        out = mdf[["mentor_id"]].copy()
         out["interaction_count"] = 0
         out["success_rate"] = 0.0
         out["avg_helpfulness"] = 0.0
@@ -193,8 +194,8 @@ def compute_mentor_quality(interactions_df: pd.DataFrame, mentors_df: pd.DataFra
     )
 
     # Ensure every mentor_id exists (fill missing with zeros)
-    out = mentors_df[["mentor_id"]].merge(agg[["mentor_id", "interaction_count", "success_rate", "avg_helpfulness", "avg_user_rating", "quality_score"]],
-                                         on="mentor_id", how="left")
+    out = mdf[["mentor_id"]].merge(agg[["mentor_id", "interaction_count", "success_rate", "avg_helpfulness", "avg_user_rating", "quality_score"]],
+                                  on="mentor_id", how="left")
     for col in ["interaction_count", "success_rate", "avg_helpfulness", "avg_user_rating", "quality_score"]:
         out[col] = out[col].fillna(0)
     out["interaction_count"] = out["interaction_count"].astype(int)
@@ -219,8 +220,16 @@ class MentorRecommender:
         self._mentor_embeddings: Optional[np.ndarray] = None
         self._nn: Optional[NearestNeighbors] = None
 
+    def _normalize_mentors_df(self, mentors_df: pd.DataFrame) -> pd.DataFrame:
+        """Ensure mentors_df has mentor_id (mentors.csv may use 'id' as primary key)."""
+        df = mentors_df.copy()
+        if "mentor_id" not in df.columns and "id" in df.columns:
+            df["mentor_id"] = df["id"]
+        return df
+
     def load_dataframes(self) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         mentors_df = pd.read_csv(self.paths.mentors_csv)
+        mentors_df = self._normalize_mentors_df(mentors_df)
         users_df = pd.read_csv(self.paths.users_csv)
         interactions_df = pd.read_csv(self.paths.interactions_csv)
         return mentors_df, users_df, interactions_df
@@ -232,7 +241,6 @@ class MentorRecommender:
 
     def build_and_persist_index(self) -> None:
         mentors_df, _, interactions_df = self.load_dataframes()
-
         mentors_df = mentors_df.copy()
         mentors_df["text_repr"] = mentors_df.apply(mentor_to_text, axis=1)
 
@@ -261,6 +269,7 @@ class MentorRecommender:
             self.build_and_persist_index()
 
         self._mentors_df = joblib.load(self.paths.mentor_df_joblib)
+        self._mentors_df = self._normalize_mentors_df(self._mentors_df)
         self._mentor_embeddings = np.load(self.paths.mentor_embeddings_npy)
         self._nn = joblib.load(self.paths.nn_index_joblib)
 
@@ -275,6 +284,14 @@ class MentorRecommender:
         if self._users_df is None:
             self._users_df = pd.read_csv(self.paths.users_csv)
         return self._users_df
+
+    def _get_user_past_mentor_ids(self, user_id: int) -> set[int]:
+        """Return set of mentor_ids this user has interacted with (from interactions.csv)."""
+        interactions_df = pd.read_csv(self.paths.interactions_csv)
+        if interactions_df.empty or "user_id" not in interactions_df.columns or "mentor_id" not in interactions_df.columns:
+            return set()
+        subset = interactions_df.loc[interactions_df["user_id"] == user_id, "mentor_id"]
+        return set(int(x) for x in subset.dropna().unique())
 
     def get_user_profile(self, user_id: int) -> Dict[str, Any]:
         users_df = self._load_users_df()
@@ -291,14 +308,16 @@ class MentorRecommender:
         request_text: Optional[str] = None,
         top_k: int = 5,
         candidate_pool: int = 50,
-        w_similarity: float = 0.85,
+        w_similarity: float = 0.65,
         w_quality: float = 0.15,
+        w_past_interaction: float = 0.35,
     ) -> List[Dict[str, Any]]:
         """
         Returns a ranked list of mentors with scores.
 
         - Uses semantic similarity (cosine) between (user profile + request) and mentors.
-        - Applies a small interactions-based boost via quality_score.
+        - Applies quality_score from interactions and a boost for mentors the user has interacted with,
+          so that past-good matches can appear in top_k (improves hit_rate in evaluation and UX).
         """
         self._load_index_artifacts()
         assert self._mentors_df is not None
@@ -313,6 +332,10 @@ class MentorRecommender:
         if not query_text:
             raise ValueError("Provide at least one of: user_id, user_profile, request_text")
 
+        past_mentor_ids: set[int] = set()
+        if user_id is not None:
+            past_mentor_ids = self._get_user_past_mentor_ids(user_id)
+
         model = self._load_model()
         q_emb = model.encode([query_text], normalize_embeddings=True)
 
@@ -324,12 +347,36 @@ class MentorRecommender:
 
         candidates = self._mentors_df.iloc[idxs].copy()
         candidates["similarity"] = sim
-        candidates = candidates.merge(self._mentor_quality_df[["mentor_id", "quality_score", "interaction_count", "success_rate", "avg_helpfulness", "avg_user_rating"]],
-                                      on="mentor_id", how="left")
+
+        # Include mentors the user has interacted with if not already in semantic pool
+        if past_mentor_ids:
+            in_pool = set(candidates["mentor_id"].astype(int))
+            for mid in past_mentor_ids:
+                if mid in in_pool:
+                    continue
+                row = self._mentors_df[self._mentors_df["mentor_id"] == mid]
+                if row.empty:
+                    continue
+                extra = row.copy()
+                extra["similarity"] = 0.0
+                candidates = pd.concat([candidates, extra], ignore_index=True)
+                in_pool.add(mid)
+
+        candidates = candidates.drop_duplicates(subset=["mentor_id"], keep="first")
+        candidates = candidates.merge(
+            self._mentor_quality_df[["mentor_id", "quality_score", "interaction_count", "success_rate", "avg_helpfulness", "avg_user_rating"]],
+            on="mentor_id",
+            how="left",
+        )
         for col in ["quality_score", "interaction_count", "success_rate", "avg_helpfulness", "avg_user_rating"]:
             candidates[col] = candidates[col].fillna(0)
 
-        candidates["final_score"] = (w_similarity * candidates["similarity"]) + (w_quality * candidates["quality_score"])
+        candidates["past_interaction"] = candidates["mentor_id"].astype(int).isin(past_mentor_ids).astype(float)
+        candidates["final_score"] = (
+            w_similarity * candidates["similarity"]
+            + w_quality * candidates["quality_score"]
+            + w_past_interaction * candidates["past_interaction"]
+        )
         candidates = candidates.sort_values(["final_score", "similarity"], ascending=False).head(top_k)
 
         # Return only what the frontend needs to display choices
@@ -362,6 +409,50 @@ class MentorRecommender:
             return x
 
         return [{k: _py(v) for k, v in r.items()} for r in records]
+
+    def evaluate(
+        self,
+        *,
+        sample_size: Optional[int] = 200,
+        top_k: int = 5,
+        seed: int = 42,
+    ) -> Dict[str, Any]:
+        """
+        Simple offline evaluation: for (user_id, mentor_id) in interactions,
+        get recommendations for user_id and check if mentor_id is in top_k.
+        Returns hit_rate_at_k and mean_reciprocal_rank.
+        """
+        self._load_index_artifacts()
+        self._load_users_df()
+        interactions_df = pd.read_csv(self.paths.interactions_csv)
+        if interactions_df.empty:
+            return {"hit_rate_at_k": 0.0, "mrr": 0.0, "n_eval": 0, "top_k": top_k}
+
+        eval_df = interactions_df[["user_id", "mentor_id"]].drop_duplicates()
+        if sample_size and len(eval_df) > sample_size:
+            rng = np.random.default_rng(seed)
+            eval_df = eval_df.sample(n=sample_size, random_state=rng)
+        hits = 0
+        mrr_sum = 0.0
+        n = 0
+        for _, row in eval_df.iterrows():
+            uid, true_mid = int(row["user_id"]), int(row["mentor_id"])
+            try:
+                recs = self.recommend(user_id=uid, top_k=top_k, candidate_pool=min(100, len(self._mentors_df)))
+                rec_mids = [int(r["mentor_id"]) for r in recs]
+                if true_mid in rec_mids:
+                    hits += 1
+                    rank = rec_mids.index(true_mid) + 1
+                    mrr_sum += 1.0 / rank
+            except (ValueError, KeyError):
+                continue
+            n += 1
+        return {
+            "hit_rate_at_k": round(hits / n, 4) if n else 0.0,
+            "mrr": round(mrr_sum / n, 4) if n else 0.0,
+            "n_eval": n,
+            "top_k": top_k,
+        }
 
 
 if __name__ == "__main__":
