@@ -34,6 +34,3 @@ class User(Base):
 
     mentor = relationship("Mentor", back_populates="users", foreign_keys=[mentor_id])
     mentee = relationship("Mentee", back_populates="user", uselist=False)
-    interactions = relationship(
-        "Interaction", back_populates="user", foreign_keys="Interaction.user_id"
-    )

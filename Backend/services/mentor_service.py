@@ -77,7 +77,7 @@ class MentorService:
     @staticmethod
     def get_by_id(db: Session, mentor_id: int) -> Mentor | None:
         """Return mentor by id or None."""
-        return db.query(Mentor).filter(Mentor.mentor_id == mentor_id).first()
+        return db.query(Mentor).filter(Mentor.id == mentor_id).first()
 
     @staticmethod
     def update(db: Session, mentor_id: int, payload: MentorUpdate) -> Mentor | None:
