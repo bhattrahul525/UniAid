@@ -8,15 +8,23 @@ from db.database import Base
 
 class User(Base):
     """
-    User account (login): email, password.
-    Optional mentee profile is linked via mentee_id.
+    User account: first_name, last_name, email, password.
+    Optional mentor_id (FK to mentors) if user is a mentor; optional mentee_id (FK to mentee) if user is a mentee.
     """
 
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(100), nullable=False)
     email = Column(String(255), nullable=False, unique=True, index=True)
     hashed_password = Column(String(255), nullable=False)
+    mentor_id = Column(
+        Integer,
+        ForeignKey("mentors.mentor_id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
     mentee_id = Column(
         Integer,
         ForeignKey("mentee.mentee_id", ondelete="SET NULL"),
@@ -24,4 +32,8 @@ class User(Base):
         index=True,
     )
 
+    mentor = relationship("Mentor", back_populates="users", foreign_keys=[mentor_id])
     mentee = relationship("Mentee", back_populates="user", uselist=False)
+    interactions = relationship(
+        "Interaction", back_populates="user", foreign_keys="Interaction.user_id"
+    )

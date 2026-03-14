@@ -9,14 +9,18 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserSignup(BaseModel):
-    """Schema for registration (POST /user/register): email, password."""
+    """Schema for registration (POST /users/register): first_name, last_name, email, password; optional mentor_id or mentee_id."""
 
+    first_name: str = Field(..., min_length=1)
+    last_name: str = Field(..., min_length=1)
     email: EmailStr
     password: str = Field(..., min_length=8)
+    mentor_id: Optional[int] = Field(None, description="Set if this user is a mentor (FK to mentors)")
+    mentee_id: Optional[int] = Field(None, description="Set if this user is a mentee")
 
 
 class UserLogin(BaseModel):
-    """Schema for login (POST /user/login): email, password."""
+    """Schema for login (POST /users/login): email, password."""
 
     email: EmailStr
     password: str = Field(..., min_length=1)
@@ -27,11 +31,15 @@ class UserResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
     user_id: int
+    first_name: str
+    last_name: str
     email: str
+    mentor_id: Optional[int] = None
+    mentee_id: Optional[int] = None
 
 
 class LoginResponse(BaseModel):
-    """Response for POST /user/login: token (Bearer + JWT) and user."""
+    """Response for POST /users/login: token (Bearer + JWT) and user."""
 
     token: str = Field(..., description="Bearer token, e.g. 'Bearer <access_token>'")
     user: UserResponse
@@ -42,7 +50,10 @@ class UserRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
     user_id: int
+    first_name: str
+    last_name: str
     email: str
+    mentor_id: Optional[int] = None
     mentee_id: Optional[int] = None
     mentee: Optional["MenteeRead"] = None
 
@@ -76,7 +87,7 @@ class MenteeRead(MenteeBase):
 
 
 class UserCreate(MenteeCreate):
-    """Schema for adding mentee profile to an existing user (POST /user/profile)."""
+    """Schema for adding mentee profile to an existing user (POST /users/profile)."""
 
     user_id: int = Field(..., description="ID of the user to attach this profile to")
 
