@@ -3,6 +3,8 @@
 -- Then restart the backend server.
 -- Order matters: users has FKs to mentors and mentee.
 
+DROP TABLE IF EXISTS session_users;
+DROP TABLE IF EXISTS sessions;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS mentee;
 DROP TABLE IF EXISTS mentors;

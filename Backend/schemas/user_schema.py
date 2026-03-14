@@ -29,10 +29,12 @@ class UserLogin(BaseModel):
 
 
 class UserResponse(BaseModel):
-    """User response for login and registration."""
+    """User response for login and registration (first_name, last_name not required)."""
 
     model_config = ConfigDict(from_attributes=True)
     user_id: int
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: str
     mentor_id: Optional[int] = None
     mentee_id: Optional[int] = None
@@ -50,6 +52,8 @@ class UserRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
     user_id: int
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: str
     mentor_id: Optional[int] = None
     mentee_id: Optional[int] = None
