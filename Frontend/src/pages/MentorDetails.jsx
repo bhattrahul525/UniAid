@@ -15,8 +15,7 @@ import {
   Stack,
   Typography
 } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { mentors } from "../assets/mentors";
+import { useParams, useLocation } from "react-router-dom";
 
 // Increased Label font size from 0.75rem to 0.85rem
 const Label = ({ children }) => (
@@ -40,7 +39,10 @@ const mentorGreenBorder = "#6E8367";
 
 export default function MentorDetails() {
   const { slug } = useParams();
-  const mentor = mentors.find((m) => m.slug === slug);
+  const location = useLocation();
+
+  const mentor = location.state;
+  console.log(mentor, "Mentor details passed via state");
   if (!mentor) {
     return (
       <Container sx={{ mt: 10 }}>
@@ -132,9 +134,9 @@ export default function MentorDetails() {
             <Avatar
               src={
                 mentor.profileImage ||
-                `https://ui-avatars.com/api/?name=${mentor.firstName}+${mentor.lastName}&background=1976d2&color=fff&size=256`
+                `https://ui-avatars.com/api/?name=${mentor.first_name}+${mentor.last_name}&background=1976d2&color=fff&size=256`
               }
-              alt={`${mentor.firstName} ${mentor.lastName}`}
+              alt={`${mentor.first_name} ${mentor.last_name}`}
               sx={{
                 width: 150,
                 height: 150,
@@ -149,7 +151,6 @@ export default function MentorDetails() {
                 }
               }}
             />
-
             <Chip
               icon={<VerifiedUserIcon style={{ color: "black" }} />}
               label={mentor.mentor_type}
@@ -164,14 +165,22 @@ export default function MentorDetails() {
                 }
               }}
             />
+            <Chip
+              label={`⭐ AI Match Score: ${mentor.final_score?.toFixed(2) || "N/A"}`}
+              sx={{ mt: 2 }}
+            />
 
             <Stack spacing={3} sx={{ textAlign: "left", width: "100%" }}>
               <Box display="flex" alignItems="center" gap={2}>
                 <TranslateIcon color="action" />
                 <Box>
                   <Label>Languages</Label>
-                  <Typography variant="body1" fontWeight={500} fontSize="1.05rem">
-                    {mentor.languages_spoken}
+                  <Typography
+                    variant="body1"
+                    fontWeight={500}
+                    fontSize="1.05rem"
+                  >
+                    {mentor.languages_spoken?.split(";").join(", ")}
                   </Typography>
                 </Box>
               </Box>
@@ -180,7 +189,11 @@ export default function MentorDetails() {
                 <PublicIcon color="action" />
                 <Box>
                   <Label>Local Experience</Label>
-                  <Typography variant="body1" fontWeight={500} fontSize="1.05rem">
+                  <Typography
+                    variant="body1"
+                    fontWeight={500}
+                    fontSize="1.05rem"
+                  >
                     {mentor.years_in_country} Years in Country
                   </Typography>
                 </Box>
@@ -190,7 +203,11 @@ export default function MentorDetails() {
                 <AccessTimeIcon color="action" />
                 <Box>
                   <Label>Availability</Label>
-                  <Typography variant="body1" fontWeight={500} fontSize="1.05rem">
+                  <Typography
+                    variant="body1"
+                    fontWeight={500}
+                    fontSize="1.05rem"
+                  >
                     {mentor.availability_hours_per_week} hrs/week
                   </Typography>
                 </Box>
@@ -214,10 +231,20 @@ export default function MentorDetails() {
                 boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
               }}
             >
-              <Typography sx={{ fontSize: "1.15rem", fontWeight: 500, display: "block", mb: 0.5 }}>
-                Avg. Response: <strong>{mentor.response_time_hours} hours</strong>
+              <Typography
+                sx={{
+                  fontSize: "1.15rem",
+                  fontWeight: 500,
+                  display: "block",
+                  mb: 0.5
+                }}
+              >
+                Avg. Response:{" "}
+                <strong>{mentor.response_time_hours} hours</strong>
               </Typography>
-              <Typography sx={{ fontSize: "1.25rem", fontWeight: 700, display: "block" }}>
+              <Typography
+                sx={{ fontSize: "1.25rem", fontWeight: 700, display: "block" }}
+              >
                 ★ {mentor.mentor_rating}{" "}
                 <span style={{ fontSize: "0.95rem", fontWeight: 400 }}>
                   ({mentor.sessions_completed} sessions)
@@ -266,7 +293,7 @@ export default function MentorDetails() {
                   fontSize: { xs: "2.5rem", md: "3.5rem" }
                 }}
               >
-                {mentor.firstName} {mentor.lastName}
+                {mentor.first_name} {mentor.last_name}
               </Typography>
               <Typography
                 variant="h6"
@@ -294,7 +321,13 @@ export default function MentorDetails() {
             >
               <Box>
                 <Label>Field of Study</Label>
-                <Typography sx={{ fontWeight: 600, fontSize: "1.4rem", color: mentorGreenBorder }}>
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: "1.4rem",
+                    color: mentorGreenBorder
+                  }}
+                >
                   {mentor.field_of_study}
                 </Typography>
               </Box>
@@ -310,7 +343,9 @@ export default function MentorDetails() {
             {/* GUIDANCE AREAS */}
             <Box mb={6}>
               <Label>I can guide you with:</Label>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 1.5 }}>
+              <Box
+                sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 1.5 }}
+              >
                 {getExpertiseTags().map((skill, index) => (
                   <Chip
                     key={index}
