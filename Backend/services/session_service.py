@@ -1,11 +1,11 @@
 """Session CRUD service."""
 
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session, joinedload
 
 from models.session_model import Session as SessionModel, SessionType
 from models.user_model import User
-from schemas.session_schema import SessionCreate, SessionRead, SessionUpdate, UserInSessionRead
-from schemas.user_schema import MenteeRead
+from schemas.session_schema import SessionCreate, SessionRead, SessionUpdate
 
 
 class SessionService:
@@ -38,13 +38,25 @@ class SessionService:
 
     @staticmethod
     def get_all(db: Session) -> list[SessionModel]:
-        """Return all sessions with users and each user's mentee loaded."""
+        """Return all sessions with users and each user's mentee loaded.
+
+        Sessions that are about to start (future scheduled_at) appear first, ordered by
+        soonest start time; past sessions follow, ordered from most recent to oldest.
+        """
         return (
             db.query(SessionModel)
+            .filter(SessionModel.scheduled_at.isnot(None))
             .options(
                 joinedload(SessionModel.users).joinedload(User.mentee),
             )
-            .order_by(SessionModel.id)
+            .order_by(
+                case(
+                    (SessionModel.scheduled_at >= func.now(), 0),
+                    else_=1,
+                ),
+                SessionModel.scheduled_at.asc(),
+                SessionModel.id.asc(),
+            )
             .all()
         )
 
@@ -106,24 +118,10 @@ class SessionService:
         return True
 
     @staticmethod
-    def _user_to_in_session_read(user: User) -> UserInSessionRead:
-        """Build UserInSessionRead from User (mentee already loaded on user.mentee)."""
-        mentee_data = None
-        if user.mentee is not None:
-            mentee_data = MenteeRead.model_validate(user.mentee)
-        return UserInSessionRead(
-            user_id=user.user_id,
-            email=user.email,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            mentee=mentee_data,
-        )
-
-    @staticmethod
     def to_read(session: SessionModel, db: Session) -> SessionRead:
-        """Map Session model to SessionRead; include mentor name and users with nested mentee data."""
+        """Map Session model to SessionRead; include mentor name and count of subscribed users."""
         mentor_user = db.query(User).filter(User.mentor_id == session.mentor_id).first()
-        users_data = [SessionService._user_to_in_session_read(u) for u in (session.users or [])]
+        users_count = len(session.users or [])
         data = {
             "id": session.id,
             "title": session.title,
@@ -133,6 +131,6 @@ class SessionService:
             "mentor_last_name": mentor_user.last_name if mentor_user else None,
             "session_type": session.session_type,
             "scheduled_at": session.scheduled_at,
-            "users": users_data,
+            "users_count": users_count,
         }
         return SessionRead.model_validate(data)
