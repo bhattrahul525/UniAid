@@ -16,7 +16,7 @@ import {
   Typography
 } from "@mui/material";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import * as Yup from "yup";
 import { useProfile, useUpdateProfile } from "../hooks/useProfile";
 import { useSelector } from "react-redux";
@@ -115,9 +115,8 @@ const validationSchema = Yup.object({
 
   lastName: Yup.string().trim().required("Last name required"),
 
-  field_of_study: mentor?.field_of_study || mentee?.field_of_study || "",
-
-  degree_level: mentor?.degree_level || mentee?.degree_level || "",
+  field_of_study: Yup.string().required("Field required"),
+  degree_level: Yup.string().required("Degree required"),
 
   /* -------------------- MENTOR VALIDATION -------------------- */
 
@@ -265,7 +264,7 @@ export const mapApiToFormik = (data) => {
     lastName: data?.last_name || mentor?.last_name || "",
 
     field_of_study: mentor?.field_of_study || mentee?.field_of_study || "",
-    degree_level: Yup.string().required("Degree level required"),
+    degree_level: mentor?.degree_level || mentee?.degree_level || "",
 
     /* Mentor fields */
     mentor_type: mentor?.mentor_type || "",
@@ -311,6 +310,10 @@ export default function RegisterPage() {
   console.log("Mapped Form Values:", mapApiToFormik(profileData));
   const updateProfile = useUpdateProfile();
 
+  const formInitialValues = useMemo(() => {
+    return profileData ? mapApiToFormik(profileData) : initialValues;
+  }, [profileData]);
+
   if (isLoading) {
     return <Typography>Loading profile...</Typography>;
   }
@@ -319,6 +322,7 @@ export default function RegisterPage() {
     console.warn("Profile API failed, using default values");
   }
   const handleSubmit = (values) => {
+    console.log("Formik values:", values);
     const payload = {
       user_id: userId,
       first_name: values.firstName,
@@ -336,28 +340,31 @@ export default function RegisterPage() {
         university: values.university,
         field_of_study: values.field_of_study,
         degree_level: values.degree_level,
-        languages_spoken: values.languages_spoken,
         years_in_country: Number(values.years_in_country),
-        availability_hours_per_week: Number(values.availability_hours_per_week),
-        graduation_year: Number(values.graduation_year),
         visa_experience: values.visa_experience ? 1 : 0,
         housing_experience: values.housing_experience ? 1 : 0,
         cultural_adaptation_experience: values.cultural_adaptation_experience
           ? 1
           : 0,
         career_guidance_experience: values.career_guidance_experience ? 1 : 0,
+        languages_spoken: values.languages_spoken,
+        bio: "",
+        availability_hours_per_week: Number(values.availability_hours_per_week),
         sessions_completed: 0,
         response_time_hours: 24,
+        graduation_year: Number(values.graduation_year),
         mentor_rating: 0
       };
     } else {
       payload.mentee = {
         user_type: values.mentee_type,
         home_country: values.home_country,
-        preferred_destination_country: values.target_university,
+        university: values.target_university,
         field_of_study: values.field_of_study,
         degree_level: values.degree_level,
-        preferred_language: values.preferred_language
+        budget_range: "",
+        preferred_language: values.preferred_language,
+        bio: ""
       };
     }
 
@@ -365,11 +372,11 @@ export default function RegisterPage() {
 
     updateProfile.mutate(payload, {
       onSuccess: () => {
-        toast.success("Profile updated!");
+        toast.success("Profile updated successfully!");
       },
       onError: (err) => {
-        toast.error("Failed to update profile");
         console.error(err);
+        toast.error("Failed to update profile");
       }
     });
   };
@@ -402,7 +409,6 @@ export default function RegisterPage() {
             validateOnChange={false}
             validateOnBlur={false}
             enableReinitialize
-            validateOnMount
           >
             {({ values, handleChange, errors, touched, setFieldValue }) => (
               <Form>
