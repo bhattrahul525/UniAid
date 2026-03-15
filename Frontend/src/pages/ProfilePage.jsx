@@ -187,7 +187,8 @@ const validationSchema = Yup.object({
   }),
 
   intended_start_year: Yup.number()
-    .typeError("Must be a number")
+    .nullable()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
     .when("role", {
       is: "Mentee",
       then: (s) => s.required("Start year required")
@@ -323,48 +324,56 @@ export default function RegisterPage() {
   }
   const handleSubmit = (values) => {
     console.log("Formik values:", values);
+
     const payload = {
       user_id: userId,
-      first_name: values.firstName,
-      last_name: values.lastName,
-      user_type: values.role === "Mentor" ? "mentor" : "mentee",
+      first_name: values?.firstName ?? "",
+      last_name: values?.lastName ?? "",
+      user_type: values?.role === "Mentor" ? "mentor" : "mentee",
       mentor: null,
       mentee: null
     };
 
-    if (values.role === "Mentor") {
+    if (values?.role === "Mentor") {
       payload.mentor = {
-        first_name: values.firstName,
-        last_name: values.lastName,
-        mentor_type: values.mentor_type,
-        university: values.university,
-        field_of_study: values.field_of_study,
-        degree_level: values.degree_level,
-        years_in_country: Number(values.years_in_country),
-        visa_experience: values.visa_experience ? 1 : 0,
-        housing_experience: values.housing_experience ? 1 : 0,
-        cultural_adaptation_experience: values.cultural_adaptation_experience
+        first_name: values?.firstName ?? "",
+        last_name: values?.lastName ?? "",
+        mentor_type: values?.mentor_type ?? "",
+        university: values?.university ?? "",
+        field_of_study: values?.field_of_study ?? "",
+        degree_level: values?.degree_level ?? "",
+        years_in_country: Number(values?.years_in_country ?? 0),
+
+        visa_experience: values?.visa_experience ? 1 : 0,
+        housing_experience: values?.housing_experience ? 1 : 0,
+        cultural_adaptation_experience: values?.cultural_adaptation_experience
           ? 1
           : 0,
-        career_guidance_experience: values.career_guidance_experience ? 1 : 0,
-        languages_spoken: values.languages_spoken,
-        bio: "",
-        availability_hours_per_week: Number(values.availability_hours_per_week),
+        career_guidance_experience: values?.career_guidance_experience ? 1 : 0,
+
+        languages_spoken: values?.languages_spoken ?? "",
+        bio: values?.bio ?? "",
+
+        availability_hours_per_week: Number(
+          values?.availability_hours_per_week ?? 0
+        ),
+
         sessions_completed: 0,
         response_time_hours: 24,
-        graduation_year: Number(values.graduation_year),
+
+        graduation_year: Number(values?.graduation_year ?? 0),
         mentor_rating: 0
       };
     } else {
       payload.mentee = {
-        user_type: values.mentee_type,
-        home_country: values.home_country,
-        university: values.target_university,
-        field_of_study: values.field_of_study,
-        degree_level: values.degree_level,
-        budget_range: "",
-        preferred_language: values.preferred_language,
-        bio: ""
+        user_type: values?.mentee_type ?? "",
+        home_country: values?.home_country ?? "",
+        university: values?.target_university ?? "",
+        field_of_study: values?.field_of_study ?? "",
+        degree_level: values?.degree_level ?? "",
+        budget_range: values?.budget_range ?? "",
+        preferred_language: values?.preferred_language ?? "",
+        bio: values?.bio ?? ""
       };
     }
 
@@ -401,13 +410,9 @@ export default function RegisterPage() {
           }}
         >
           <Formik
-            initialValues={
-              profileData ? mapApiToFormik(profileData) : initialValues
-            }
+            initialValues={formInitialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
-            validateOnChange={false}
-            validateOnBlur={false}
             enableReinitialize
           >
             {({ values, handleChange, errors, touched, setFieldValue }) => (
@@ -431,7 +436,20 @@ export default function RegisterPage() {
                     value={values.role}
                     exclusive
                     onChange={(e, newRole) => {
-                      if (newRole !== null) setFieldValue("role", newRole);
+                      if (!newRole) return;
+
+                      setFieldValue("role", newRole);
+
+                      // reset role-specific fields
+                      if (newRole === "Mentor") {
+                        setFieldValue("home_country", "");
+                        setFieldValue("intended_start_year", "");
+                        setFieldValue("preferred_language", "");
+                      } else {
+                        setFieldValue("mentor_type", "");
+                        setFieldValue("university", "");
+                        setFieldValue("years_in_country", "");
+                      }
                     }}
                     sx={{ mb: 4 }}
                   >
@@ -732,6 +750,10 @@ export default function RegisterPage() {
                           name="intended_start_year"
                           type="number"
                           value={values.intended_start_year}
+                          helperText={
+                            touched.intended_start_year &&
+                            errors.intended_start_year
+                          }
                           onChange={handleChange}
                           sx={{ width: 200 }}
                           error={
