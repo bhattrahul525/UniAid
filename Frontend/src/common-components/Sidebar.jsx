@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../slices/authSlice";
+import logo from "../assets/uniaid-logo.png";
 
 const drawerWidth = 240;
 const itemStyle = {
@@ -23,7 +24,7 @@ const itemStyle = {
   "&:hover": {
     background: "rgba(46,204,113,0.12)"
   }
-}
+};
 function Sidebar({ open, onClose, variant = "temporary" }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,22 +62,26 @@ function Sidebar({ open, onClose, variant = "temporary" }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          px: 3,
           py: 3
         }}
       >
-        <IconButton
-          onClick={onClose}
+        {/* Logo */}
+        <Box
+          component="img"
+          src={logo}
+          alt="UniAid Logo"
           sx={{
             position: "absolute",
-            right: 8,
-            top: 8
+            left: "-28px",
+            width: "128px",
+            height: "128px",
+            objectFit: "contain",
+            bottom: "-14px",
           }}
-        >
-          <CloseIcon />
-        </IconButton>
+        />
 
-        {/* Brand */}
-
+        {/* Brand text */}
         <Typography
           sx={{
             fontSize: 24,
@@ -90,6 +95,17 @@ function Sidebar({ open, onClose, variant = "temporary" }) {
         >
           UniAid
         </Typography>
+
+        {/* Close button */}
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
       </Box>
 
       <Divider />
