@@ -10,11 +10,20 @@ from recommender import MentorRecommender, RecommenderPaths
 
 
 APP_DIR = Path(__file__).resolve().parent
-DATA_DIR = APP_DIR.parent / "Dataset"
+# Support both: Dataset inside ML/ (for deployment) or sibling at repo root (local)
+_DATASET_IN_ML = APP_DIR / "Dataset"
+_DATASET_SIBLING = APP_DIR.parent / "Dataset"
+DATA_DIR = _DATASET_IN_ML if _DATASET_IN_ML.exists() else _DATASET_SIBLING
 MODELS_DIR = APP_DIR / "models"
 
 recommender = MentorRecommender(
-    paths=RecommenderPaths(data_dir=DATA_DIR, models_dir=MODELS_DIR),
+    paths=RecommenderPaths(
+        data_dir=DATA_DIR,
+        models_dir=MODELS_DIR,
+        mentors_csv_name="mentors_dataset.csv",
+        users_csv_name="mentees_dataset.csv",
+        interactions_csv_name="interactions_dataset.csv",
+    ),
     model_name="all-MiniLM-L6-v2",
 )
 

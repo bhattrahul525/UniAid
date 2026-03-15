@@ -19,6 +19,13 @@ Train and run the mentor recommendation model here. The **Backend** calls this s
    Do **not** use plain `uvicorn` if you have multiple Pythons (e.g. conda base); use `./run.sh` or `.venv/bin/uvicorn`.
 4. In Backend `.env`, set `ML_SERVICE_URL=http://127.0.0.1:8001`.
 
+## Deployment (e.g. Railway)
+
+- **Root directory:** Set to `ML` so the service runs from the ML folder.
+- **Dataset:** The code looks for `Dataset/` inside `ML/` first, then as a sibling (repo root). For a self-contained deploy, **copy the repo’s `Dataset` folder into `ML/`** so the deployed app has `ML/Dataset/` with `mentors_dataset.csv`, `mentees_dataset.csv`, `interactions_dataset.csv`. Alternatively deploy the full repo with root = repo root and start command: `cd ML && uvicorn api:app --host 0.0.0.0 --port $PORT`.
+- **Start command:** `uvicorn api:app --host 0.0.0.0 --port $PORT`
+- **Models:** Ensure `ML/models/` contains the built artifacts (e.g. `mentors_df.joblib`, `mentor_embeddings.npy`, `mentor_nn.joblib`, and optionally LTR files). Build them locally and commit, or run a build step in deploy.
+
 ## Endpoints used by Backend
 
 - **POST /recommend** – Body: `{ "request_text?", "user_profile?", "top_k", "candidate_university?" }`. Returns `[{ "mentor_id", "final_score" }, ...]`.
