@@ -6,8 +6,8 @@ Builds training data from interactions: (mentee_id, mentor_id) pairs with labels
 mentors. Features: similarity, quality_score, explicit matches, etc.
 Trains LightGBM LambdaRank and saves to ML/models/.
 
-Run from repo root:  python -m ML.train_ltr
-Or from ML/:          python train_ltr.py
+Run from Backend/:  python -m ML.train_ltr
+Or from Backend/ML/: python train_ltr.py
 """
 
 from __future__ import annotations
@@ -247,7 +247,7 @@ def _cosine_distance(a: np.ndarray, b: np.ndarray) -> float:
 
 def main():
     base = Path(__file__).resolve().parent
-    data_dir = base.parent / "Dataset"
+    data_dir = base.parent.parent / "Dataset"
     models_dir = base / "models"
     paths = RecommenderPaths(
         data_dir=data_dir,

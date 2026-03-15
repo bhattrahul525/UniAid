@@ -1,13 +1,7 @@
-"""Recommendation service – calls external ML service for ranking; Backend enriches from DB."""
+"""Recommendation service – bridges Backend (mentee_id, DB) with ML recommender (users.csv, mentors.csv)."""
 
-import logging
-import os
 from pathlib import Path
 from typing import Any, Optional
-
-import requests
-
-logger = logging.getLogger(__name__)
 
 # Requirement keywords: request_text -> mentor attribute checks
 _REQ_VISA = ("visa",)
@@ -26,7 +20,11 @@ _LANGUAGE_KEYWORDS = (
     "malay", "portuguese", "russian", "bengali", "tamil", "telugu", "turkish",
 )
 
+# Resolve paths: Backend/services -> Backend -> UniAid
 _BACKEND_ROOT = Path(__file__).resolve().parent.parent
+_DATA_DIR = _BACKEND_ROOT.parent / "Dataset"  # Dataset/ (mentors_dataset, mentees_dataset, interactions_dataset)
+_ML_DIR = _BACKEND_ROOT / "ML"
+_MODELS_DIR = _ML_DIR / "models"
 
 # Known universities (for matching from request_text or user profile)
 _KNOWN_UNIVERSITIES = (
@@ -38,59 +36,7 @@ _KNOWN_UNIVERSITIES = (
     "University of Newcastle", "Flinders University", "James Cook University", "University of Tasmania",
 )
 
-
-def _get_ml_service_url() -> str:
-    url = os.environ.get("ML_SERVICE_URL", "").strip()
-    if not url:
-        raise ValueError(
-            "ML_SERVICE_URL is not set. Start the ML service (e.g. from repo root: cd ML && uvicorn api:app --port 8001) "
-            "and set ML_SERVICE_URL to its base URL (e.g. http://127.0.0.1:8001)."
-        )
-    return url.rstrip("/")
-
-
-def _call_ml_recommend(
-    request_text: Optional[str] = None,
-    user_profile: Optional[dict[str, Any]] = None,
-    top_k: int = 5,
-    candidate_university: Optional[str] = None,
-) -> list[dict[str, Any]]:
-    """Call ML service POST /recommend; returns list of { mentor_id, final_score }."""
-    base = _get_ml_service_url()
-    payload = {
-        "request_text": request_text or None,
-        "user_profile": user_profile,
-        "top_k": top_k,
-        "candidate_university": candidate_university,
-    }
-    try:
-        r = requests.post(f"{base}/recommend", json=payload, timeout=60)
-        r.raise_for_status()
-        data = r.json()
-        return data if isinstance(data, list) else []
-    except requests.RequestException as e:
-        logger.warning("ML service call failed: %s", e)
-        return []
-
-
-def _call_ml_evaluate(
-    sample_size: int = 200,
-    top_k: int = 5,
-    seed: int = 42,
-) -> dict[str, Any]:
-    """Call ML service GET /evaluate; returns hit_rate_at_k, mrr, n_eval, top_k."""
-    base = _get_ml_service_url()
-    try:
-        r = requests.get(
-            f"{base}/evaluate",
-            params={"sample_size": sample_size, "top_k": top_k, "seed": seed},
-            timeout=120,
-        )
-        r.raise_for_status()
-        return r.json()
-    except requests.RequestException as e:
-        logger.warning("ML service evaluate call failed: %s", e)
-        return {"hit_rate_at_k": 0.0, "mrr": 0.0, "n_eval": 0, "top_k": top_k}
+_recommender_instance: Optional[Any] = None
 
 
 def _normalize_university(name: Optional[str]) -> Optional[str]:
@@ -134,6 +80,26 @@ def _filter_results_by_university(
         if uni and str(uni).strip().lower() == u_lower:
             out.append(item)
     return out
+
+
+def _get_ml_recommender():
+    """Lazy-load the ML MentorRecommender (uses Dataset/ and ML/models)."""
+    global _recommender_instance
+    if _recommender_instance is not None:
+        return _recommender_instance
+    import sys
+    if str(_ML_DIR) not in sys.path:
+        sys.path.insert(0, str(_ML_DIR))
+    from recommender import MentorRecommender, RecommenderPaths
+    paths = RecommenderPaths(
+        data_dir=_DATA_DIR,
+        models_dir=_MODELS_DIR,
+        mentors_csv_name="mentors_dataset.csv",
+        users_csv_name="mentees_dataset.csv",
+        interactions_csv_name="interactions_dataset.csv",
+    )
+    _recommender_instance = MentorRecommender(paths=paths, model_name="all-MiniLM-L6-v2")
+    return _recommender_instance
 
 
 def _mentor_to_recommendation_item(mentor: Any, scores: dict[str, Any]) -> dict[str, Any]:
@@ -261,8 +227,6 @@ def _rerank_by_requirements(
     """
     Re-score and re-sort results using explicit requirement match when request_text is present.
     Puts mentors who satisfy visa/housing/field etc. higher when the user asked for them.
-    When results come from the ML service we only have final_score (no similarity/quality_score);
-    in that case we blend ML final_score with requirement_match instead of replacing it.
     """
     if not request_text or not results:
         return results
@@ -276,15 +240,45 @@ def _rerank_by_requirements(
         qual = float(item.get("quality_score") or 0)
         req_score = _requirement_match_score(mentor, requirements, request_text)
         item["requirement_match"] = req_score
-        ml_score = item.get("final_score")
-        # If we have ML final_score (from external ML service) but no similarity/quality, blend it with req_score
-        if ml_score is not None and (sim == 0 and qual == 0):
-            item["final_score"] = (1.0 - w_requirement) * float(ml_score) + w_requirement * req_score
-        else:
-            item["final_score"] = w_similarity * sim + w_quality * qual + w_requirement * req_score
+        # Recompute final_score so requirement match has weight
+        item["final_score"] = w_similarity * sim + w_quality * qual + w_requirement * req_score
 
     results.sort(key=lambda x: (float(x.get("final_score") or 0), float(x.get("similarity") or 0)), reverse=True)
     return results
+
+
+def _ml_result_to_recommendation_item(flat: dict[str, Any]) -> dict[str, Any]:
+    """Convert flat ML/CSV result to nested shape (mentor + scores)."""
+    mentor_data = {
+        "mentor_id": flat.get("mentor_id"),
+        "first_name": flat.get("first_name"),
+        "last_name": flat.get("last_name"),
+        "mentor_type": flat.get("mentor_type"),
+        "university": flat.get("university"),
+        "field_of_study": flat.get("field_of_study"),
+        "degree_level": flat.get("degree_level"),
+        "years_in_country": flat.get("years_in_country"),
+        "visa_experience": flat.get("visa_experience"),
+        "housing_experience": flat.get("housing_experience"),
+        "cultural_adaptation_experience": flat.get("cultural_adaptation_experience"),
+        "career_guidance_experience": flat.get("career_guidance_experience"),
+        "languages_spoken": flat.get("languages_spoken"),
+        "bio": flat.get("bio"),
+        "availability_hours_per_week": flat.get("availability_hours_per_week"),
+        "sessions_completed": flat.get("sessions_completed"),
+        "response_time_hours": flat.get("response_time_hours"),
+        "graduation_year": flat.get("graduation_year"),
+        "mentor_rating": flat.get("mentor_rating"),
+        "mentoring_topics": flat.get("mentoring_topics"),
+    }
+    return {
+        "mentor": mentor_data,
+        "similarity": flat.get("similarity"),
+        "quality_score": flat.get("quality_score"),
+        "final_score": flat.get("final_score"),
+        "interaction_count": flat.get("interaction_count"),
+        "success_rate": flat.get("success_rate"),
+    }
 
 
 def mentee_to_user_profile(mentee: Any, user: Any) -> dict[str, Any]:
@@ -354,28 +348,48 @@ def recommend(
             profile_used = mentee_to_user_profile(user.mentee, user)
             user_profile = profile_used
 
-    # If request_text mentions a university (e.g. "Monash University"), filter mentors to that university.
+    # If request_text mentions a university (e.g. "Monash University"), filter mentors to that university
+    # and run the recommendation model on the filtered list only.
     university_filter = _extract_university(user_profile, req_text)
 
-    # Call ML service for ranking (returns list of { mentor_id, final_score }).
-    ml_results = _call_ml_recommend(
-        request_text=req_text or None,
-        user_profile=user_profile,
-        top_k=top_k,
-        candidate_university=university_filter,
-    )
+    rec = _get_ml_recommender()
+    try:
+        ml_results = rec.recommend(
+            user_id=user_id if not req_text else None,
+            user_profile=user_profile,
+            request_text=req_text or None,
+            top_k=top_k,
+            candidate_pool=80,
+            w_similarity=0.85,
+            w_quality=0.15,
+            candidate_university=university_filter,
+        )
+    except Exception:
+        ml_results = []
+    # When user asked for a specific university, do not fall back to unfiltered results.
 
-    # Enrich from DB: fetch full mentor rows and build response with final_score from ML.
+    # Return mentors from DB when possible; use ML only for ranking, then fetch full mentor from DB.
     if db_session is not None and ml_results:
         from models.mentor_model import Mentor
 
-        ordered_mentor_ids = [r["mentor_id"] for r in ml_results]
-        scores_by_id = {r["mentor_id"]: {"final_score": r["final_score"]} for r in ml_results}
+        ordered_mentor_ids = [r.get("mentor_id") for r in ml_results if r.get("mentor_id") is not None]
+        scores_by_id = {
+            r["mentor_id"]: {
+                "similarity": r.get("similarity"),
+                "quality_score": r.get("quality_score"),
+                "final_score": r.get("final_score"),
+                "interaction_count": r.get("interaction_count"),
+                "success_rate": r.get("success_rate"),
+            }
+            for r in ml_results
+            if r.get("mentor_id") is not None
+        }
         db_mentors = (
             db_session.query(Mentor)
             .filter(Mentor.id.in_(ordered_mentor_ids))
             .all()
         )
+        # When university was requested, only include mentors from that university (DB may differ from ML data).
         if university_filter:
             u_lower = university_filter.strip().lower()
             db_mentors = [m for m in db_mentors if (getattr(m, "university", None) or "").strip().lower() == u_lower]
@@ -387,6 +401,10 @@ def recommend(
                 continue
             scores = scores_by_id.get(mid) or {}
             results.append(_mentor_to_recommendation_item(mentor, scores))
+        # If no ML mentor_ids exist in DB (e.g. DB empty or different seed), return ML results
+        # so the API still returns recommendations; once DB is seeded from same source as ML, we return DB.
+        if not results:
+            results = [_ml_result_to_recommendation_item(r) for r in ml_results]
         results = _rerank_by_requirements(results, req_text)
         results = _filter_results_by_university(results, university_filter)
         return results, profile_used
@@ -408,10 +426,13 @@ def recommend(
         results = _filter_results_by_university(results, university_filter)
         return results, profile_used
 
-    # ML returned results but no db_session: cannot enrich; return empty (API always passes db_session).
-    return [], profile_used
+    results = [_ml_result_to_recommendation_item(r) for r in ml_results]
+    results = _rerank_by_requirements(results, req_text)
+    results = _filter_results_by_university(results, university_filter)
+    return results, profile_used
 
 
 def evaluate(sample_size: Optional[int] = 200, top_k: int = 5, seed: int = 42) -> dict[str, Any]:
-    """Run offline evaluation via ML service; returns hit_rate_at_k, mrr, n_eval, top_k."""
-    return _call_ml_evaluate(sample_size=sample_size, top_k=top_k, seed=seed)
+    """Run offline evaluation; returns hit_rate_at_k, mrr, n_eval, top_k."""
+    rec = _get_ml_recommender()
+    return rec.evaluate(sample_size=sample_size, top_k=top_k, seed=seed)
