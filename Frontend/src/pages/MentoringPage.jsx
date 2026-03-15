@@ -126,16 +126,7 @@ export default function MentorshipPage() {
   const userId = useSelector((state) => state.auth.user?.user_id);
   const { data: mentors = [], isLoading, isError } = useMentors();
   const [mode, setMode] = useState("all");
-  const recommendationParams =
-    mode === "profile"
-      ? { userId, topK: 8 }
-      : mode === "prompt"
-        ? {
-            userId,
-            numberOfQuery: 10,
-            prompt
-          }
-        : null;
+  const [recommendationParams, setRecommendationParams] = useState(null);
 
   const {
     data: recommendedMentors,
@@ -262,6 +253,11 @@ export default function MentorshipPage() {
           <Box
             onClick={() => {
               if (prompt.trim().length > 0) setMode("prompt");
+              setRecommendationParams({
+                userId,
+                numberOfQuery: 10,
+                prompt
+              });
             }}
             sx={{
               px: 3,
@@ -286,36 +282,23 @@ export default function MentorshipPage() {
           >
             Customize
           </Box>
-
-          {/* AI MATCH BUTTON */}
-
-          <Box
-            onClick={() => setMode("profile")}
-            sx={{
-              px: 3,
-              height: "56px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "40px",
-              fontWeight: 600,
-              fontSize: "14px",
-              color: "white",
-              cursor: "pointer",
-              background: "linear-gradient(135deg,#1b5e20,#43a047)",
-              boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
-              transition: "all 0.2s ease",
-              whiteSpace: "nowrap",
-
-              "&:hover": {
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
-              }
-            }}
-          >
-            🤖 Find My Best Mentor Match
-          </Box>
         </Box>
+        <Typography
+          sx={{
+            mt: -2,
+            mb: 3,
+            fontSize: "13px",
+            color: "#848ca9",
+            lineHeight: 1.6
+          }}
+        >
+          <strong>Try detailed prompts like:</strong> I am starting my Masters
+          in Computer Science at University of Technology Sydney and need a
+          mentor with visa and accommodation experience in Australia who can
+          help with cultural adaptation, has a background in IT or software, and
+          can speak Mandarin language
+        </Typography>
+
         {mode === "prompt" && (
           <Typography sx={{ mb: 2, fontWeight: 600 }}>
             🤖 AI matched mentors for: "{prompt}"
@@ -327,6 +310,40 @@ export default function MentorshipPage() {
             🤖 Best mentors based on your profile
           </Typography>
         )}
+        {/* AI MATCH BUTTON */}
+
+        <Box
+          onClick={() => {
+            setMode("profile");
+            setRecommendationParams({
+              userId,
+              numberOfQuery: 8
+            });
+          }}
+          sx={{
+            px: 3,
+            height: "56px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "40px",
+            fontWeight: 600,
+            fontSize: "14px",
+            color: "white",
+            cursor: "pointer",
+            background: "linear-gradient(135deg,#1b5e20,#43a047)",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+            transition: "all 0.2s ease",
+            whiteSpace: "nowrap",
+
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
+            }
+          }}
+        >
+          🤖 Find My Best Mentor Match
+        </Box>
       </Container>
 
       {/* SCROLL AREA */}
@@ -334,6 +351,7 @@ export default function MentorshipPage() {
       <Box
         sx={{
           flex: 1,
+
           overflowY: "auto",
           px: 3,
           pb: 4
