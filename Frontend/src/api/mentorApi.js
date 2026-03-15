@@ -8,8 +8,8 @@ export const getMentors = async () => {
 export const getMentorsAIRecommendations = async (params = {}) => {
   const payload = Object.fromEntries(
     Object.entries({
-      request_text: params.requestText,
-      top_k: params.topK,
+      request_text: params.prompt,
+      top_k: 10,
       user_id: params.userId
     }).filter(([_, v]) => v !== undefined && v !== null)
   );

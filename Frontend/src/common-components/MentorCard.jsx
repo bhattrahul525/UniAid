@@ -18,12 +18,12 @@ export default function MentorCard({
       <Card
         onClick={onClick}
         sx={{
-          height: 340,
+          height: '370px',
+          width: '270px',
           p: 3,
           borderRadius: 4,
           textAlign: "center",
           cursor: "pointer",
-          width: "240px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
