@@ -73,11 +73,11 @@ function Sidebar({ open, onClose, variant = "temporary" }) {
           alt="UniAid Logo"
           sx={{
             position: "absolute",
-            left: "-28px",
-            width: "128px",
-            height: "128px",
+            left: "-52px",
+            width: "190px",
+            height: "180px",
             objectFit: "contain",
-            bottom: "-14px",
+            bottom: "-37px",
           }}
         />
 
