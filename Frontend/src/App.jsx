@@ -14,60 +14,63 @@ import RootLayout from "./pages/RootLayout";
 import SessionsGridPage from "./pages/SessionPage";
 import ProtectedRoute from "./routes/ProtectedRouter";
 import PublicRoute from "./routes/PublicRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
- 
   return (
-    <Routes>
-      {/* PUBLIC ROUTES */}
+    <>
+      <Toaster position="top-right" />
+      <Routes>
+        {/* PUBLIC ROUTES */}
 
-      <Route
-        path="/"
-        element={
-          <PublicRoute>
-            <Landing />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Landing />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <LoginPage />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <RegistrationPage />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <RegistrationPage />
+            </PublicRoute>
+          }
+        />
 
-      {/* PROTECTED ROUTES */}
+        {/* PROTECTED ROUTES */}
 
-      <Route
-        element={
-          <ProtectedRoute>
-            <RootLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/forum" element={<ForumPage />} />
-        <Route path="/mentorship" element={<MentorshipPage />} />
-        <Route path="/mentor/:slug" element={<MentorDetails />} />
-        <Route path="/chat" element={<ChatPage />} />
-        <Route path="/city-info" element={<GlobePage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/city/:city" element={<CityPage />} />
-        <Route path="/sessions" element={<SessionsGridPage />} />
-      </Route>
-    </Routes>
+        <Route
+          element={
+            <ProtectedRoute>
+              <RootLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/forum" element={<ForumPage />} />
+          <Route path="/mentorship" element={<MentorshipPage />} />
+          <Route path="/mentor/:slug" element={<MentorDetails />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/city-info" element={<GlobePage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/city/:city" element={<CityPage />} />
+          <Route path="/sessions" element={<SessionsGridPage />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 

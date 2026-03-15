@@ -393,8 +393,8 @@ export default function MentorshipPage() {
                 alt="AI Processing"
                 sx={{
                   width: 180,
-                  borderRadius: "18px",
-                  boxShadow: "0 8px 25px rgba(0,0,0,0.2)"
+                  borderRadius: "50%",
+                  boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
                 }}
               />
 
@@ -479,7 +479,7 @@ export default function MentorshipPage() {
               ))}
             </Grid>
           ) : (
-            <Typography color="text.secondary" sx={{ mt: 4 }}>
+            <Typography color="#2e7d32" sx={{ mt: 4 }}>
               No mentors found.
             </Typography>
           )}

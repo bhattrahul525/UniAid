@@ -16,6 +16,7 @@ import {
   Typography
 } from "@mui/material";
 import { useParams, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 // Increased Label font size from 0.75rem to 0.85rem
 const Label = ({ children }) => (
@@ -261,8 +262,8 @@ export default function MentorDetails() {
                 position: "absolute",
                 top: 32,
                 right: 32,
-                bgcolor: "primary.main", // (Or whatever background color you chose)
-                color: "#000", // <--- Changed to black
+                bgcolor: "primary.main",
+                color: "#000",
                 textTransform: "none",
                 borderRadius: 4,
                 px: 4,
@@ -275,7 +276,14 @@ export default function MentorDetails() {
                 display: { xs: "none", md: "flex" },
                 zIndex: 10
               }}
-              onClick={() => console.log("Open Scheduling Modal")}
+              onClick={() => {
+                toast.success(
+                  "Email sent with mentor availability. Check your inbox to select a time.",
+                  {
+                    duration: 5000
+                  }
+                );
+              }}
             >
               Book a Session
             </Button>
