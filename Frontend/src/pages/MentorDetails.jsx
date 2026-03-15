@@ -168,7 +168,7 @@ export default function MentorDetails() {
             />
             <Chip
               label={`⭐ AI Match Score: ${mentor.final_score?.toFixed(2) || "N/A"}`}
-              sx={{ mt: 2 }}
+              sx={{ mb: 2, mt: 1 }}
             />
 
             <Stack spacing={3} sx={{ textAlign: "left", width: "100%" }}>
@@ -218,10 +218,10 @@ export default function MentorDetails() {
             {/* UPDATED STATS BOX: Dark background, black text, larger fonts */}
             <Box
               sx={{
-                mt: "auto",
                 pt: 2,
                 pb: 2,
                 px: 3,
+                mt: 2,
                 width: "100%",
                 bgcolor: mentorGreen,
                 color: "#000",
