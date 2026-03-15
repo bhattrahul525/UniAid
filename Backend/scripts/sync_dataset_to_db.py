@@ -5,6 +5,7 @@ Sync mentor and mentee data from Dataset CSVs into the DB (upsert).
 - For each row: if the id exists in the DB, updates that row from the CSV; otherwise inserts.
 - Preserves mentor_id / user_id from the CSV so IDs stay in sync with the Dataset.
 
+Requires: pip install pandas (not in Backend requirements.txt; install when running this script.)
 Run from Backend (venv activated):
   python scripts/sync_dataset_to_db.py
 """

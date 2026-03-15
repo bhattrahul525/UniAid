@@ -85,11 +85,12 @@ yarn-error.log*
 # Large media (host elsewhere or use LFS)
 Frontend/public/hero-video.mp4
 
-# Backend / ML artifacts (generated; run recommender.py build & train_ltr.py to recreate)
-Backend/ML/models/*.joblib
-Backend/ML/models/*.npy
-Backend/ML/models/ltr_model.txt
-Backend/ML/models/ltr_features.json
+# ML artifacts at repo root (generated; run ML/recommender.py build & ML/train_ltr.py to recreate)
+ML/models/*.joblib
+ML/models/*.npy
+ML/models/ltr_model.txt
+ML/models/ltr_features.json
+ML/models/ml-artifacts.zip
 
 Frontend/node_modules
 Frontend/.vite

@@ -33,10 +33,12 @@ pip install -r requirements.txt
 
 ### 4. Configure environment
 
-Create a `.env` file in the `Backend` directory with your PostgreSQL URL:
+Create a `.env` file in the `Backend` directory:
 
 ```
 DATABASE_URL=postgresql://user:password@localhost:5432/uniaid
+# Required for /mentors/recommendations: base URL of the ML service (no trailing slash)
+ML_SERVICE_URL=http://127.0.0.1:8001
 ```
 
 ### 5. (Optional) Reset database and sync data
@@ -48,13 +50,13 @@ python scripts/sync_dataset_to_db.py
 
 ### 6. Build the ML recommendation index
 
-Recommendations need the embedding index. From the **Backend** directory:
+Recommendations need the embedding index. **ML lives at repo root** (`UniAid/ML/`). From the **repo root**:
 
 ```bash
 python ML/recommender.py build
 ```
 
-Or from `Backend/ML`:
+Or from `ML/`:
 
 ```bash
 cd ML
@@ -66,13 +68,13 @@ This creates `ML/models/mentors_df.joblib`, `mentor_embeddings.npy`, `mentor_nn.
 
 ### 7. (Optional) Train the Learning-to-Rank (LTR) model
 
-For better recommendation ordering, train the LTR model **after** step 6:
+For better recommendation ordering, train the LTR model **after** step 6. From **repo root**:
 
 ```bash
-python ML/train_ltr.py
+python -m ML.train_ltr
 ```
 
-Or from `Backend/ML`:
+Or from `ML/`:
 
 ```bash
 cd ML
@@ -80,24 +82,49 @@ python train_ltr.py
 cd ..
 ```
 
-This creates `ML/models/ltr_model.txt` and `ML/models/ltr_features.json`. The API uses them automatically when present. **If the codebase adds new LTR features (e.g. language_match), retrain LTR** so the saved model matches the current feature set.
+This creates `ML/models/ltr_model.txt` and `ML/models/ltr_features.json`. The Backend API uses them automatically when present. **If the codebase adds new LTR features (e.g. language_match), retrain LTR** so the saved model matches the current feature set.
 
-### 8. Run the server
+### 8. Start the ML service (separate process)
+
+The Backend calls an external ML service for recommendations; it does not bundle ML code or heavy ML dependencies. From **repo root**:
 
 ```bash
-uvicorn main:app --reload --port 8000
+cd ML
+pip install -r requirements.txt
+uvicorn api:app --reload --port 8001
 ```
 
-Or:
+Leave this running. Ensure `ML_SERVICE_URL` in Backend `.env` matches (e.g. `http://127.0.0.1:8001`).
+
+### 9. Run the Backend server
+
+From the **Backend** directory, use the project venv (so PyJWT and other deps are available):
 
 ```bash
 ./run.sh
 ```
 
-- **API:** http://127.0.0.1:8000  
-- **Docs:** http://127.0.0.1:8000/docs  
+Or activate the venv then run uvicorn:
 
-Restart the server after rebuilding the ML index (step 6) or retraining LTR (step 7) so it loads the new artifacts.
+```bash
+source .venv/bin/activate
+uvicorn main:app --reload --port 8000
+```
+
+- **Backend API:** http://127.0.0.1:8000  
+- **Backend docs:** http://127.0.0.1:8000/docs  
+- **ML service:** http://127.0.0.1:8001 (health: http://127.0.0.1:8001/health)
+
+Restart the ML service after rebuilding the index (step 6) or retraining LTR (step 7).
+
+### Deploying Backend and ML separately
+
+Backend has no ML dependencies; it calls the ML service over HTTP. For production:
+
+1. **Deploy the ML service** (e.g. from `ML/` with its own runtime, or a separate container). Build the index and train LTR there (steps 6–7). Set the ML service’s base URL.
+2. **Deploy the Backend** with `ML_SERVICE_URL` set to that base URL (e.g. `https://your-ml-service.example.com`).
+
+See [docs/DEPLOYMENT_OPTIONS.md](docs/DEPLOYMENT_OPTIONS.md) for more.
 
 ---
 
@@ -126,9 +153,13 @@ Then restart the server so tables are created again.
 
 ## Recommendation API
 
-Recommendations use **Dataset/** (`mentors_dataset.csv`, `mentees_dataset.csv`, `interactions_dataset.csv`) and the ML index in `Backend/ML/models/`. The API returns mentor data from the DB when available.
+Recommendations are computed by the **ML service** (repo root `ML/`). The Backend calls it via `ML_SERVICE_URL` and enriches results with mentor data from the DB. The `/mentors/recommendations` API returns mentor rows with `final_score`.
 
 - **POST /mentors/recommendations** – Payload: `request_text` (optional), `top_k`, `user_id` (optional). At least one of `request_text` or `user_id` required. Returns ranked mentors with `mentor` and `final_score` (percentage).
 - **GET /mentors/recommendations/evaluate** – Offline accuracy; params: `sample_size`, `top_k`, `seed`. Returns `hit_rate_at_k` and `mrr`.
 
 ML index and LTR model are built in **Steps 6 and 7** above. **Swagger:** http://127.0.0.1:8000/docs
+
+## Deployment: ML vs backend
+
+If your deploy build times out (e.g. on Railway) because of heavy ML deps, you can either **separate ML and backend** into two services or **keep one app** and use CPU-only PyTorch. See [docs/DEPLOYMENT_OPTIONS.md](docs/DEPLOYMENT_OPTIONS.md) for details.

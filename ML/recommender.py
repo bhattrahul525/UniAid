@@ -549,10 +549,10 @@ class MentorRecommender:
 if __name__ == "__main__":
     import sys
 
-    # Default paths: data in UniAid/Dataset, models in UniAid/Backend/ML/models
-    _base = Path(__file__).resolve().parent  # UniAid/Backend/ML
+    # Paths: data in UniAid/Dataset, models in UniAid/ML/models (ML at repo root)
+    _base = Path(__file__).resolve().parent
     _paths = RecommenderPaths(
-        data_dir=_base.parent.parent / "Dataset",
+        data_dir=_base.parent / "Dataset",
         models_dir=_base / "models",
         mentors_csv_name="mentors_dataset.csv",
         users_csv_name="mentees_dataset.csv",
@@ -565,5 +565,6 @@ if __name__ == "__main__":
         print("Index built. Artifacts saved under models/")
     else:
         print("Usage: python recommender.py build")
-        print("  Then start the API: uvicorn main:app --reload --port 8000 (from Backend)")
-
+        print("  Run from repo root: python ML/recommender.py build")
+        print("  Or from ML/: python recommender.py build")
+        print("  Then start the API from Backend/: uvicorn main:app --reload --port 8000")
