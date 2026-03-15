@@ -411,7 +411,6 @@ export default function RegisterPage() {
         >
           <Formik
             initialValues={formInitialValues}
-            validationSchema={validationSchema}
             onSubmit={handleSubmit}
             enableReinitialize
           >
