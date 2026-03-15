@@ -81,7 +81,7 @@ export default function LoginPage() {
               <Form>
                 <Box display="flex" flexDirection="column" gap={3}>
                   <TextField
-                    label="Username"
+                    label="Email"
                     name="username"
                     value={values.username}
                     onChange={handleChange}
