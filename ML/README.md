@@ -19,7 +19,17 @@ Train and run the mentor recommendation model here. The **Backend** calls this s
    Do **not** use plain `uvicorn` if you have multiple Pythons (e.g. conda base); use `./run.sh` or `.venv/bin/uvicorn`.
 4. In Backend `.env`, set `ML_SERVICE_URL=http://127.0.0.1:8001`.
 
-## Deployment (e.g. Railway)
+## Deployment
+
+### Google Cloud Run (Docker, recommended)
+
+A **Dockerfile** and step-by-step instructions are in **[DEPLOY_CLOUD_RUN.md](./DEPLOY_CLOUD_RUN.md)**. Summary:
+
+1. From repo root: `gcloud builds submit --tag gcr.io/PROJECT_ID/unicaid-ml ./ML`
+2. Deploy: `gcloud run deploy unicaid-ml --image gcr.io/PROJECT_ID/unicaid-ml --region REGION --allow-unauthenticated --memory 2Gi --port 8080`
+3. Set Backend env **`ML_SERVICE_URL`** to the Cloud Run URL.
+
+### Railway
 
 - **Root directory:** Set to `ML` so the service runs from the ML folder.
 - **Dataset:** The code looks for `Dataset/` inside `ML/` first, then as a sibling (repo root). For a self-contained deploy, **copy the repo’s `Dataset` folder into `ML/`** so the deployed app has `ML/Dataset/` with `mentors_dataset.csv`, `mentees_dataset.csv`, `interactions_dataset.csv`. Alternatively deploy the full repo with root = repo root and start command: `cd ML && uvicorn api:app --host 0.0.0.0 --port $PORT`.
