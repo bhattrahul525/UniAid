@@ -21,6 +21,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { useSessions } from "../hooks/useSessions";
+import toast from "react-hot-toast";
 const mockSessions = [
   {
     id: 1,
@@ -166,7 +167,8 @@ const mockSessions = [
 export default function SessionsGridPage() {
   const { data: sessions = [], isLoading, isError } = useSessions();
 
-  const displaySessions = sessions.length === 0 && !isLoading ? mockSessions : sessions;
+  const displaySessions =
+    sessions.length === 0 && !isLoading ? mockSessions : sessions;
   if (isLoading) return <Typography>Loading sessions...</Typography>;
   if (isError) return <Typography>Error loading sessions</Typography>;
   const mappedSessions = displaySessions.map((s) => {
@@ -198,8 +200,18 @@ export default function SessionsGridPage() {
     };
   });
 
+  const handleEnterRoom = (session) => {
+    toast.success(`You successfully joined "${session.topic}"`);
+  };
+
+  const handleRegister = (session) => {
+    toast.success(`You successfully registered for "${session.topic}"`);
+  };
+
   const privateSessions = mappedSessions.filter((s) => s.type === "private");
-  const registeredSessions = mappedSessions.filter((s) => s.type === "registered");
+  const registeredSessions = mappedSessions.filter(
+    (s) => s.type === "registered"
+  );
   const publicSessions = mappedSessions.filter((s) => s.type === "public");
 
   const SessionCard = ({ session }) => (
@@ -294,7 +306,12 @@ export default function SessionsGridPage() {
         </Stack>
       </Box>
 
-      <Tooltip title={session.description} arrow placement="top" enterDelay={300}>
+      <Tooltip
+        title={session.description}
+        arrow
+        placement="top"
+        enterDelay={300}
+      >
         <Typography
           variant="body1"
           color="text.secondary"
@@ -328,7 +345,9 @@ export default function SessionsGridPage() {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Stack direction="row" alignItems="center" spacing={1.5}>
-              <CalendarTodayIcon sx={{ fontSize: 22, color: "text.secondary" }} />
+              <CalendarTodayIcon
+                sx={{ fontSize: 22, color: "text.secondary" }}
+              />
               <Typography variant="body1" fontWeight="600" noWrap>
                 {session.date}
               </Typography>
@@ -346,7 +365,9 @@ export default function SessionsGridPage() {
 
           <Grid item xs={12}>
             <Stack direction="row" alignItems="center" spacing={1.5}>
-              <HourglassEmptyIcon sx={{ fontSize: 22, color: "text.secondary" }} />
+              <HourglassEmptyIcon
+                sx={{ fontSize: 22, color: "text.secondary" }}
+              />
               <Typography variant="body1" fontWeight="600" noWrap>
                 {session.duration}
               </Typography>
@@ -362,6 +383,7 @@ export default function SessionsGridPage() {
             variant="contained"
             fullWidth
             disableElevation
+            onClick={() => handleEnterRoom(session)}
             sx={{
               borderRadius: 2,
               py: 1.5,
@@ -376,6 +398,7 @@ export default function SessionsGridPage() {
             size="large"
             variant="outlined"
             fullWidth
+            onClick={() => handleRegister(session)}
             sx={{
               borderRadius: 2,
               py: 1.5,
@@ -393,13 +416,23 @@ export default function SessionsGridPage() {
   );
 
   return (
-    <Box sx={{ backgroundColor: "background.default", minHeight: "100vh", pt: 8, pb: 10 }}>
+    <Box
+      sx={{
+        backgroundColor: "background.default",
+        minHeight: "100vh",
+        pt: 8,
+        pb: 10
+      }}
+    >
       <Container maxWidth="lg">
         {privateSessions.length > 0 && (
           <Box mb={6}>
             <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
               <PersonOutlineIcon color="primary" sx={{ fontSize: 36 }} />
-              <Typography variant="h4" sx={{ fontFamily: "Playfair Display", fontWeight: 600 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontFamily: "Playfair Display", fontWeight: 600 }}
+              >
                 Private Sessions
               </Typography>
             </Stack>
@@ -420,7 +453,10 @@ export default function SessionsGridPage() {
           <Box mb={6}>
             <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
               <EventAvailableIcon color="success" sx={{ fontSize: 36 }} />
-              <Typography variant="h4" sx={{ fontFamily: "Playfair Display", fontWeight: 600 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontFamily: "Playfair Display", fontWeight: 600 }}
+              >
                 My Registered Workshops
               </Typography>
             </Stack>
@@ -441,7 +477,10 @@ export default function SessionsGridPage() {
           <Box>
             <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
               <TravelExploreIcon color="secondary" sx={{ fontSize: 36 }} />
-              <Typography variant="h4" sx={{ fontFamily: "Playfair Display", fontWeight: 600 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontFamily: "Playfair Display", fontWeight: 600 }}
+              >
                 Available Public Sessions
               </Typography>
             </Stack>
