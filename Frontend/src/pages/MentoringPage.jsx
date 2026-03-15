@@ -123,6 +123,8 @@ const randomBios = [
 export default function MentorshipPage() {
   const [prompt, setPrompt] = useState("");
   const navigate = useNavigate();
+  const [showAiLoader, setShowAiLoader] = useState(false);
+
   const userId = useSelector((state) => state.auth.user?.user_id);
   const { data: mentors = [], isLoading, isError } = useMentors();
   const [mode, setMode] = useState("all");
@@ -166,13 +168,14 @@ export default function MentorshipPage() {
   const displayMentors =
     mode === "all" ? enrichedMentors : enrichedRecommendedMentors;
 
-  if (isLoading || isRecommendationsLoading) {
+  if (isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
         <CircularProgress />
       </Box>
     );
   }
+
   if (isError || isRecommendationsError) {
     return (
       <Typography sx={{ textAlign: "center", mt: 10 }}>
@@ -253,11 +256,18 @@ export default function MentorshipPage() {
           <Box
             onClick={() => {
               if (prompt.trim().length > 0) setMode("prompt");
+
+              setShowAiLoader(true);
+
               setRecommendationParams({
                 userId,
                 numberOfQuery: 10,
                 prompt
               });
+
+              setTimeout(() => {
+                setShowAiLoader(false);
+              }, 5000);
             }}
             sx={{
               px: 3,
@@ -315,10 +325,17 @@ export default function MentorshipPage() {
         <Box
           onClick={() => {
             setMode("profile");
+
+            setShowAiLoader(true);
+
             setRecommendationParams({
               userId,
               numberOfQuery: 8
             });
+
+            setTimeout(() => {
+              setShowAiLoader(false);
+            }, 5000);
           }}
           sx={{
             px: 3,
@@ -351,7 +368,6 @@ export default function MentorshipPage() {
       <Box
         sx={{
           flex: 1,
-
           overflowY: "auto",
           px: 3,
           pb: 4
@@ -365,7 +381,86 @@ export default function MentorshipPage() {
             flexDirection: "column"
           }}
         >
-          {displayMentors.length > 0 ? (
+          {showAiLoader ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "60vh",
+                flexDirection: "column"
+              }}
+            >
+              <Box
+                component="img"
+                src="/ai-loader.gif"
+                alt="AI Processing"
+                sx={{
+                  width: 180,
+                  borderRadius: "18px",
+                  boxShadow: "0 8px 25px rgba(0,0,0,0.2)"
+                }}
+              />
+
+              <Typography
+                sx={{
+                  mt: 3,
+                  fontWeight: 700,
+                  fontSize: "18px",
+                  color: "#2e7d32",
+                  textAlign: "center",
+
+                  animation: "pulseGlow 2s infinite ease-in-out",
+
+                  "@keyframes pulseGlow": {
+                    "0%": {
+                      opacity: 0.5,
+                      textShadow: "0 0 4px rgba(46,125,50,0.2)"
+                    },
+                    "50%": {
+                      opacity: 1,
+                      textShadow: "0 0 14px rgba(46,125,50,0.8)"
+                    },
+                    "100%": {
+                      opacity: 0.5,
+                      textShadow: "0 0 4px rgba(46,125,50,0.2)"
+                    }
+                  }
+                }}
+              >
+                🤖 Machine Learning algorithm is processing your request...
+              </Typography>
+
+              <Typography
+                sx={{
+                  mt: 3,
+                  fontWeight: 700,
+                  fontSize: "18px",
+                  color: "#2e7d32",
+                  textAlign: "center",
+
+                  animation: "pulseGlow 2s infinite ease-in-out",
+
+                  "@keyframes pulseGlow": {
+                    "0%": {
+                      opacity: 0.5,
+                      textShadow: "0 0 4px rgba(46,125,50,0.2)"
+                    },
+                    "50%": {
+                      opacity: 1,
+                      textShadow: "0 0 14px rgba(46,125,50,0.8)"
+                    },
+                    "100%": {
+                      opacity: 0.5,
+                      textShadow: "0 0 4px rgba(46,125,50,0.2)"
+                    }
+                  }
+                }}
+              >
+                Analyzing mentor expertise and compatibility
+              </Typography>
+            </Box>
+          ) : displayMentors.length > 0 ? (
             <Grid container spacing={3}>
               {displayMentors.map((mentor) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={mentor.id}>
