@@ -115,12 +115,9 @@ const validationSchema = Yup.object({
 
   lastName: Yup.string().trim().required("Last name required"),
 
-  field_of_study: Yup.string().when("role", {
-    is: "Mentor",
-    then: (s) => s.required("Field of study required")
-  }),
+  field_of_study: mentor?.field_of_study || mentee?.field_of_study || "",
 
-  degree_level: Yup.string().required("Degree level required"),
+  degree_level: mentor?.degree_level || mentee?.degree_level || "",
 
   /* -------------------- MENTOR VALIDATION -------------------- */
 
@@ -262,13 +259,13 @@ export const mapApiToFormik = (data) => {
     ...initialValues,
     profileImage: null,
 
-    role: mentor ? "Mentor" : "Mentee",
+    role: data?.mentor ? "Mentor" : "Mentee",
 
     firstName: data?.first_name || mentor?.first_name || "",
     lastName: data?.last_name || mentor?.last_name || "",
 
     field_of_study: mentor?.field_of_study || mentee?.field_of_study || "",
-    degree_level: mentor?.degree_level || mentee?.degree_level || "",
+    degree_level: Yup.string().required("Degree level required"),
 
     /* Mentor fields */
     mentor_type: mentor?.mentor_type || "",
@@ -324,10 +321,9 @@ export default function RegisterPage() {
   const handleSubmit = (values) => {
     const payload = {
       user_id: userId,
-      first_name: values.first_name,
-      last_name: values.last_name,
+      first_name: values.firstName,
+      last_name: values.lastName,
       user_type: values.role === "Mentor" ? "mentor" : "mentee",
-      email: values.email,
       mentor: null,
       mentee: null
     };
@@ -341,18 +337,15 @@ export default function RegisterPage() {
         field_of_study: values.field_of_study,
         degree_level: values.degree_level,
         languages_spoken: values.languages_spoken,
-
         years_in_country: Number(values.years_in_country),
         availability_hours_per_week: Number(values.availability_hours_per_week),
         graduation_year: Number(values.graduation_year),
-
         visa_experience: values.visa_experience ? 1 : 0,
         housing_experience: values.housing_experience ? 1 : 0,
         cultural_adaptation_experience: values.cultural_adaptation_experience
           ? 1
           : 0,
         career_guidance_experience: values.career_guidance_experience ? 1 : 0,
-
         sessions_completed: 0,
         response_time_hours: 24,
         mentor_rating: 0
@@ -368,20 +361,17 @@ export default function RegisterPage() {
       };
     }
 
+    console.log("Submitting payload:", payload);
+
     updateProfile.mutate(payload, {
       onSuccess: () => {
-        toast.success(
-          "🎉 Profile updated successfully! Your information is now saved.", { duration: 5000 }
-        );
+        toast.success("Profile updated!");
       },
-      onError: () => {
-        toast.error(
-          "⚠️ We couldn't update your profile right now. Please check your information and try again.", { duration: 5000 }
-        );
+      onError: (err) => {
+        toast.error("Failed to update profile");
+        console.error(err);
       }
     });
-
-    console.log("Formatted DB Payload:", payload);
   };
 
   return (
@@ -409,7 +399,10 @@ export default function RegisterPage() {
             }
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            validateOnChange={false}
+            validateOnBlur={false}
             enableReinitialize
+            validateOnMount
           >
             {({ values, handleChange, errors, touched, setFieldValue }) => (
               <Form>
@@ -585,6 +578,9 @@ export default function RegisterPage() {
                           name="years_in_country"
                           type="number"
                           value={values.years_in_country}
+                          helperText={
+                            touched.years_in_country && errors.years_in_country
+                          }
                           onChange={handleChange}
                           fullWidth
                           error={
@@ -740,7 +736,7 @@ export default function RegisterPage() {
                       </Grid>
 
                       {/* Preferred Language: Full width */}
-                      <Grid item xs={12} sm={14}>
+                      <Grid item xs={12}>
                         <TextField
                           label="Preferred Language for Guidance"
                           name="preferred_language"
