@@ -1,10 +1,7 @@
-import LocationCityIcon from "@mui/icons-material/LocationCity";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import {
   Box,
-  Chip,
   Container,
-  Divider,
   Grid,
   Stack,
   Typography
@@ -33,8 +30,7 @@ export default function CityPage() {
 
   if (!data) return <Typography>City not found</Typography>;
 
-  const formattedCity =
-    city.charAt(0).toUpperCase() + city.slice(1);
+  const formattedCity = city.charAt(0).toUpperCase() + city.slice(1);
 
   return (
     <Box
@@ -51,7 +47,6 @@ export default function CityPage() {
           maxWidth: "1100px"
         }}
       >
-
         {/* UNIVERSITIES */}
 
         {data.universities && (
