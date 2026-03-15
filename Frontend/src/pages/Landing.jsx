@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect , useRef, useState} from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll } from "framer-motion";
 
 const features = [
   {
@@ -55,27 +55,30 @@ export default function Landing() {
     }
   }, [auth, navigate]);
 
+  const { scrollYProgress } = useScroll();
+  const lastProgress = useRef(0);
+
   useEffect(() => {
     const video = videoRef.current;
+    if (!video) return;
 
-    const handleScroll = () => {
-      if (!video) return;
+    const unsubscribe = scrollYProgress.on("change", (progress) => {
+      if (!video.duration) return;
 
-      const scrollTop = window.scrollY;
-      const scrollHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const smoothProgress =
+        lastProgress.current + (progress - lastProgress.current) * 0.08;
 
-      const scrollFraction = scrollTop / scrollHeight;
+      const targetTime = video.duration * smoothProgress;
 
-      const duration = video.duration || 1;
+      if (Math.abs(video.currentTime - targetTime) > 0.03) {
+        video.currentTime = targetTime;
+      }
 
-      video.currentTime = duration * scrollFraction;
-    };
+      lastProgress.current = smoothProgress;
+    });
 
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => unsubscribe();
+  }, [scrollYProgress]);
 
   return (
     <Box>
@@ -100,9 +103,6 @@ export default function Landing() {
             mt: 3,
             zIndex: 5,
             borderRadius: "40px",
-
-            backdropFilter: scrolled ? "none" : "blur(10px)",
-            hidden: !scrolled,
 
             transition: "all 0.4s ease"
           }}
@@ -163,10 +163,24 @@ export default function Landing() {
             height: "100%",
             objectFit: "cover",
             zIndex: -1,
+            pointerEvents: "none",
+            transform: "translateZ(0)",
+            willChange: "transform"
+          }}
+        />
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.65))",
+            zIndex: 1,
             pointerEvents: "none"
           }}
         />
-
         <Container
           maxWidth="md"
           sx={{
@@ -179,8 +193,8 @@ export default function Landing() {
         >
           <motion.div
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            animate={{ opacity: scrolled ? 0.2 : 1, y: scrolled ? -40 : 0 }}
+            transition={{ duration: 0.6 }}
           >
             <Typography variant="h2" gutterBottom>
               UniAid: Your Ultimate Guide to University Life Abroad
