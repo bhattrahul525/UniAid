@@ -1,8 +1,10 @@
 """Session API routes."""
 
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import case, func
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from api.deps import get_current_user
 from db.session import get_db
@@ -40,10 +42,21 @@ def list_sessions(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ) -> list[SessionRead]:
-    """List all sessions. Returns array of session objects directly."""
+    """List sessions from 5 days ago to 5 days from today (inclusive)."""
+    now = datetime.now(timezone.utc)
+    start = now - timedelta(days=5)
+    end = now + timedelta(days=5)
     base_query = (
         db.query(SessionModel)
-        .filter(SessionModel.scheduled_at.isnot(None))
+        .filter(
+            SessionModel.scheduled_at.isnot(None),
+            SessionModel.scheduled_at >= start,
+            SessionModel.scheduled_at <= end,
+        )
+        .options(
+            joinedload(SessionModel.mentor),
+            joinedload(SessionModel.users),
+        )
         .order_by(
             case(
                 (SessionModel.scheduled_at >= func.now(), 0),

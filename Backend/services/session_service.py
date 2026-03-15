@@ -121,15 +121,20 @@ class SessionService:
     @staticmethod
     def to_read(session: SessionModel, db: Session) -> SessionRead:
         """Map Session model to SessionRead; include mentor name and count of subscribed users.
-        Mentor name comes from User linked to mentor_id if present, else from mentors table."""
-        mentor_user = db.query(User).filter(User.mentor_id == session.mentor_id).first()
-        if mentor_user:
-            mentor_first_name, mentor_last_name = mentor_user.first_name, mentor_user.last_name
+        Uses session.mentor / session.users when already loaded (e.g. by joinedload) to avoid N+1 queries."""
+        mentor_first_name, mentor_last_name = None, None
+        if session.mentor is not None:
+            mentor_first_name = session.mentor.first_name
+            mentor_last_name = session.mentor.last_name
         else:
-            mentor = db.query(Mentor).filter(Mentor.id == session.mentor_id).first()
-            mentor_first_name = mentor.first_name if mentor else None
-            mentor_last_name = mentor.last_name if mentor else None
-        users_count = len(session.users or [])
+            mentor_user = db.query(User).filter(User.mentor_id == session.mentor_id).first()
+            if mentor_user:
+                mentor_first_name, mentor_last_name = mentor_user.first_name, mentor_user.last_name
+            else:
+                mentor = db.query(Mentor).filter(Mentor.id == session.mentor_id).first()
+                if mentor:
+                    mentor_first_name, mentor_last_name = mentor.first_name, mentor.last_name
+        users_count = len(session.users) if session.users else 0
         data = {
             "id": session.id,
             "title": session.title,
