@@ -20,6 +20,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { useProfile, useUpdateProfile } from "../hooks/useProfile";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const countries = [
   "Afghanistan",
@@ -137,7 +138,8 @@ const validationSchema = Yup.object({
     .typeError("Must be a number")
     .when("role", {
       is: "Mentor",
-      then: (s) => s.min(0, "Must be 0 or more").required("Years in country required")
+      then: (s) =>
+        s.min(0, "Must be 0 or more").required("Years in country required")
     }),
 
   languages_spoken: Yup.string().when("role", {
@@ -157,7 +159,10 @@ const validationSchema = Yup.object({
     .when("role", {
       is: "Mentor",
       then: (s) =>
-        s.min(1990, "Invalid year").max(2100, "Invalid year").required("Graduation year required")
+        s
+          .min(1990, "Invalid year")
+          .max(2100, "Invalid year")
+          .required("Graduation year required")
     }),
 
   /* -------------------- EXPERIENCE SWITCHES -------------------- */
@@ -235,7 +240,13 @@ const initialValues = {
 const SectionTitle = ({ children }) => (
   <Typography
     variant="h6"
-    sx={{ mt: 5, mb: 3, fontWeight: 700, fontFamily: "Playfair Display", color: "primary.main" }}
+    sx={{
+      mt: 5,
+      mb: 3,
+      fontWeight: 700,
+      fontFamily: "Playfair Display",
+      color: "primary.main"
+    }}
   >
     {children}
   </Typography>
@@ -269,7 +280,9 @@ export const mapApiToFormik = (data) => {
 
     visa_experience: Boolean(mentor?.visa_experience),
     housing_experience: Boolean(mentor?.housing_experience),
-    cultural_adaptation_experience: Boolean(mentor?.cultural_adaptation_experience),
+    cultural_adaptation_experience: Boolean(
+      mentor?.cultural_adaptation_experience
+    ),
     career_guidance_experience: Boolean(mentor?.career_guidance_experience),
 
     /* Mentee fields */
@@ -335,7 +348,9 @@ export default function RegisterPage() {
 
         visa_experience: values.visa_experience ? 1 : 0,
         housing_experience: values.housing_experience ? 1 : 0,
-        cultural_adaptation_experience: values.cultural_adaptation_experience ? 1 : 0,
+        cultural_adaptation_experience: values.cultural_adaptation_experience
+          ? 1
+          : 0,
         career_guidance_experience: values.career_guidance_experience ? 1 : 0,
 
         sessions_completed: 0,
@@ -355,10 +370,14 @@ export default function RegisterPage() {
 
     updateProfile.mutate(payload, {
       onSuccess: () => {
-        console.log("Profile updated successfully");
+        toast.success(
+          "🎉 Profile updated successfully! Your information is now saved.", { duration: 5000 }
+        );
       },
-      onError: (err) => {
-        console.error("Update failed", err);
+      onError: () => {
+        toast.error(
+          "⚠️ We couldn't update your profile right now. Please check your information and try again.", { duration: 5000 }
+        );
       }
     });
 
@@ -366,14 +385,28 @@ export default function RegisterPage() {
   };
 
   return (
-    <Box sx={{ backgroundColor: "background.default", minHeight: "100vh", pt: 8, pb: 10 }}>
+    <Box
+      sx={{
+        backgroundColor: "background.default",
+        minHeight: "100vh",
+        pt: 8,
+        pb: 10
+      }}
+    >
       <Container maxWidth="md">
         <Paper
           elevation={0}
-          sx={{ p: { xs: 3, sm: 6 }, border: "1px solid", borderColor: "divider", borderRadius: 4 }}
+          sx={{
+            p: { xs: 3, sm: 6 },
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 4
+          }}
         >
           <Formik
-            initialValues={profileData ? mapApiToFormik(profileData) : initialValues}
+            initialValues={
+              profileData ? mapApiToFormik(profileData) : initialValues
+            }
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
             enableReinitialize
@@ -381,7 +414,12 @@ export default function RegisterPage() {
             {({ values, handleChange, errors, touched, setFieldValue }) => (
               <Form>
                 {/* ROLE SELECTION */}
-                <Box display="flex" flexDirection="column" alignItems="center" mb={4}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  mb={4}
+                >
                   <Typography
                     variant="overline"
                     color="text.secondary"
@@ -479,7 +517,9 @@ export default function RegisterPage() {
                       value={values.degree_level}
                       onChange={handleChange}
                       sx={{ width: 200 }}
-                      error={touched.degree_level && Boolean(errors.degree_level)}
+                      error={
+                        touched.degree_level && Boolean(errors.degree_level)
+                      }
                       helperText={touched.degree_level && errors.degree_level}
                       SelectProps={{ MenuProps: longerDropdownProps }}
                     >
@@ -504,7 +544,9 @@ export default function RegisterPage() {
                           value={values.university}
                           onChange={handleChange}
                           fullWidth
-                          error={touched.university && Boolean(errors.university)}
+                          error={
+                            touched.university && Boolean(errors.university)
+                          }
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -514,7 +556,9 @@ export default function RegisterPage() {
                           name="mentor_type"
                           value={values.mentor_type}
                           onChange={handleChange}
-                          error={touched.mentor_type && Boolean(errors.mentor_type)}
+                          error={
+                            touched.mentor_type && Boolean(errors.mentor_type)
+                          }
                           helperText={touched.mentor_type && errors.mentor_type}
                           sx={{ width: 150 }}
                         >
@@ -543,7 +587,10 @@ export default function RegisterPage() {
                           value={values.years_in_country}
                           onChange={handleChange}
                           fullWidth
-                          error={touched.years_in_country && Boolean(errors.years_in_country)}
+                          error={
+                            touched.years_in_country &&
+                            Boolean(errors.years_in_country)
+                          }
                         />
                       </Grid>
                       <Grid item xs={12} sm={4}>
@@ -577,21 +624,27 @@ export default function RegisterPage() {
                       Toggle the topics you can help students with:
                     </Typography>
                     <Grid container spacing={2}>
-                      {Object.entries(mentorExperienceLabels).map(([key, label]) => (
-                        <Grid item xs={12} sm={6} key={key}>
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={values[key]}
-                                onChange={(e) => setFieldValue(key, e.target.checked)}
-                                color="primary"
-                              />
-                            }
-                            label={<Typography variant="body1">{label}</Typography>}
-                            sx={{ wordBreak: "break-word" }}
-                          />
-                        </Grid>
-                      ))}
+                      {Object.entries(mentorExperienceLabels).map(
+                        ([key, label]) => (
+                          <Grid item xs={12} sm={6} key={key}>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={values[key]}
+                                  onChange={(e) =>
+                                    setFieldValue(key, e.target.checked)
+                                  }
+                                  color="primary"
+                                />
+                              }
+                              label={
+                                <Typography variant="body1">{label}</Typography>
+                              }
+                              sx={{ wordBreak: "break-word" }}
+                            />
+                          </Grid>
+                        )
+                      )}
                     </Grid>
                   </>
                 )}
@@ -606,14 +659,19 @@ export default function RegisterPage() {
                         <Autocomplete
                           options={countries}
                           value={values.home_country || null}
-                          onChange={(e, value) => setFieldValue("home_country", value || "")}
+                          onChange={(e, value) =>
+                            setFieldValue("home_country", value || "")
+                          }
                           sx={{ width: 300 }}
                           ListboxProps={{ style: { maxHeight: 400 } }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
                               label="Home Country"
-                              error={touched.home_country && Boolean(errors.home_country)}
+                              error={
+                                touched.home_country &&
+                                Boolean(errors.home_country)
+                              }
                             />
                           )}
                         />
@@ -674,7 +732,10 @@ export default function RegisterPage() {
                           value={values.intended_start_year}
                           onChange={handleChange}
                           sx={{ width: 200 }}
-                          error={touched.intended_start_year && Boolean(errors.intended_start_year)}
+                          error={
+                            touched.intended_start_year &&
+                            Boolean(errors.intended_start_year)
+                          }
                         />
                       </Grid>
 
@@ -695,21 +756,27 @@ export default function RegisterPage() {
                       Toggle the areas where you need guidance:
                     </Typography>
                     <Grid container spacing={2}>
-                      {Object.entries(menteeConcernLabels).map(([key, label]) => (
-                        <Grid item xs={12} sm={6} key={key}>
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={values[key]}
-                                onChange={(e) => setFieldValue(key, e.target.checked)}
-                                color="primary"
-                              />
-                            }
-                            label={<Typography variant="body1">{label}</Typography>}
-                            sx={{ wordBreak: "break-word" }}
-                          />
-                        </Grid>
-                      ))}
+                      {Object.entries(menteeConcernLabels).map(
+                        ([key, label]) => (
+                          <Grid item xs={12} sm={6} key={key}>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={values[key]}
+                                  onChange={(e) =>
+                                    setFieldValue(key, e.target.checked)
+                                  }
+                                  color="primary"
+                                />
+                              }
+                              label={
+                                <Typography variant="body1">{label}</Typography>
+                              }
+                              sx={{ wordBreak: "break-word" }}
+                            />
+                          </Grid>
+                        )
+                      )}
                     </Grid>
                   </>
                 )}
