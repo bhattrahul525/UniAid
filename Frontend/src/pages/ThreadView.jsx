@@ -4,9 +4,11 @@ import { Formik, Form } from "formik";
 
 export default function ThreadView({ post }) {
   // This state now resets whenever post.id changes because of the key in ForumPage
-  const [comments, setComments] = useState([
-    { id: 'initial', author: "System", text: `Welcome to the discussion for ${post.title}.` }
-  ]);
+ const [comments, setComments] = useState(
+  post.comments || [
+    { id: "initial", author: "System", text: `Welcome to the discussion for ${post.title}.` }
+  ]
+);
 
   return (
     <Paper 
