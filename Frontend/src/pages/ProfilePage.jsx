@@ -429,9 +429,6 @@ export default function RegisterPage() {
                       }}
                     />
                   </Box>
-                  <Typography variant="caption" sx={{ mt: 1, color: "text.secondary" }}>
-                    Upload Photo
-                  </Typography>
                 </Box>
 
                 <Divider sx={{ my: 4 }} />
